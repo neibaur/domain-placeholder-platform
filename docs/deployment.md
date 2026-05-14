@@ -43,17 +43,33 @@ The architecture rationale for static output and Cloudflare Pages hosting is doc
 
 Use `pnpm build` for Cloudflare Pages because Cloudflare injects project environment variables into the build process. Use `pnpm build:local` only for local builds that should explicitly load `.env`.
 
+## Deployment Safety Controls
+
+Deployment safety depends on keeping each domain isolated and each deployment target explicit.
+
+- Verify the Cloudflare Pages project name follows `placeholder-[domain-name]` before changing settings.
+- Confirm the selected project matches the intended custom domain.
+- Review deployment-specific `PUBLIC_` variables before each production rollout.
+- Confirm `PUBLIC_SITE_URL` matches the exact production origin for that project.
+- Validate canonical URLs, sitemap output, and `robots.txt` after deployment.
+- Keep `PUBLIC_ROBOTS_INDEX=false` until indexing is explicitly intended.
+- Minimize unnecessary exposure of operational metadata in generated output and documentation.
+
+Predictable project names support safer rollback procedures, operational clarity, multi-domain scaling, and future Terraform/IaC import or management.
+
 ## Production Deployment Checklist
 
-- `pnpm validate` passes locally.
-- The target Cloudflare Pages project has all required `PUBLIC_` variables configured.
-- `PUBLIC_SITE_URL` exactly matches the production origin, including `https://`.
-- `PUBLIC_ROBOTS_INDEX` is `false` until the domain is intentionally ready for search indexing.
-- No secrets, Cloudflare account IDs, registrant details, or private contact details are committed.
-- GitHub branch protection requires the validation workflow before merge.
-- Cloudflare production deployments are connected to `main`.
-- Preview deployments do not publish unintended ownership or operational metadata.
-- `public/.well-known/security.txt` is either intentionally configured with public URLs or removed.
+- [ ] `pnpm validate` passes locally.
+- [ ] Correct Cloudflare Pages project selected, using `placeholder-[domain-name]`.
+- [ ] Correct custom domain mapped to the selected Pages project.
+- [ ] Project-specific `PUBLIC_` variables reviewed.
+- [ ] `PUBLIC_SITE_URL` exactly matches the production origin, including `https://`.
+- [ ] `PUBLIC_ROBOTS_INDEX` matches the intended indexing posture.
+- [ ] Smoke validation and accessibility validation pass before rollout.
+- [ ] No secrets, Cloudflare account IDs, registrant details, or private contact details are committed.
+- [ ] Preview deployments do not publish unintended ownership or operational metadata.
+- [ ] Rollback path is understood for the selected single-domain Pages project.
+- [ ] `public/.well-known/security.txt` is either intentionally configured with public URLs or removed.
 
 The full Definition of Done is maintained in [Governance](governance.md#definition-of-done).
 
@@ -128,6 +144,8 @@ https://<domain>/sitemap-index.xml
 
 Use the least disruptive rollback that isolates the affected domain while preserving the shared repository and other Pages projects.
 
+Prefer rollback when the deployed output is broken, the wrong project/domain was targeted, canonical or robots behavior is unsafe, or the fix is not immediately obvious. Prefer a forward-fix when the issue is low-risk, clearly understood, and can be corrected faster than reverting without increasing exposure.
+
 Recommended order:
 
 1. Roll back the affected Pages project to the previous successful deployment from the Cloudflare Pages dashboard.
@@ -144,6 +162,14 @@ Break-glass options for a single affected domain:
 - Set `PUBLIC_ROBOTS_INDEX=false` and redeploy if indexing exposure is the concern.
 
 Record the action taken, affected project name, timestamp, and follow-up owner in the incident or deployment notes. Do not add private incident details to public repository files.
+
+Validate rollback success by checking:
+
+- the affected domain serves the expected placeholder content again
+- canonical metadata points to the correct domain
+- `robots.txt` and page-level robots metadata match the intended indexing posture
+- `sitemap-index.xml` references the correct production origin
+- other pilot domains remain unaffected
 
 ## Privacy Notes
 

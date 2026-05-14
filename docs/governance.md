@@ -23,6 +23,10 @@ Every PR should answer:
 - Does it preserve environment-variable-driven rendering?
 - Does it remain lightweight and maintainable?
 
+## Operational Philosophy
+
+Operational changes should favor fail-fast validation, domain-level deployment isolation, operational clarity over abstraction, and reversible steps. The platform should minimize unnecessary exposure of operational metadata while keeping deployment behavior easy to inspect and explain.
+
 ## CI/CD Pipeline
 
 The repository's validation commands are part of the operational governance model. They make formatting, build behavior, environment validation, production-output smoke checks, and accessibility checks repeatable locally and in GitHub Actions.
@@ -120,6 +124,25 @@ Cloudflare deployment work should preserve the multi-project model documented in
 - project-specific `PUBLIC_` variables
 - no production domain values hardcoded into application source
 - rollback or disablement scoped to the affected domain whenever possible
+
+High-risk change areas require extra review:
+
+- deployment workflows and GitHub Actions
+- environment validation logic
+- canonical URL handling
+- robots and sitemap generation
+- Cloudflare environment documentation
+- secret scanning configuration
+- future Terraform or infrastructure-as-code files
+
+Production change checklist:
+
+- [ ] Correct Cloudflare Pages project selected.
+- [ ] Correct custom domain mapped.
+- [ ] Deployment-specific `PUBLIC_` variables reviewed.
+- [ ] Smoke and accessibility validation pass.
+- [ ] No secrets or unnecessary operational metadata exposed.
+- [ ] Rollback or forward-fix path is understood.
 
 ## Secret Scanning Governance
 
