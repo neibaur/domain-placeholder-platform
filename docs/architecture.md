@@ -15,6 +15,18 @@ This platform builds a static placeholder page that can be reused across multipl
 | Privacy posture | Minimize unnecessary exposure of operational metadata in source code and rendered output. |
 | Localization    | Lightweight locale-ready copy structure before adding a full i18n framework.              |
 
+## Platform Characteristics
+
+| Characteristic                   | Implementation Posture                                                                                   |
+| -------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| Configuration-driven rendering   | Public rendering values come from validated `PUBLIC_` variables.                                         |
+| Deployment-specific environments | Each Cloudflare Pages project owns its own project variables.                                            |
+| Isolated deployments             | Each pilot domain should use a separate Pages project.                                                   |
+| Reusable topology                | One repository can support multiple domains without hardcoding production values.                        |
+| Validation-first workflow        | Formatting, linting, env validation, build, smoke, and accessibility checks run through `pnpm validate`. |
+| Security-first governance        | CodeQL, Gitleaks, no-secret guidance, and protected-file care are documented.                            |
+| Future IaC compatibility         | Naming and safety principles are documented before Terraform scaffolding is introduced.                  |
+
 ## Why Astro
 
 Astro is a strong fit for this repository because the platform needs fast, static, low-maintenance placeholder pages rather than a hydrated application shell.
@@ -52,8 +64,21 @@ flowchart LR
 
 Deployment readiness is covered in [Deployment](deployment.md). CI/CD and review expectations are covered in [Governance](governance.md).
 
+## Operational Lifecycle
+
+```mermaid
+flowchart LR
+  config[PUBLIC_ configuration] --> validate[Fail-fast validation]
+  validate --> build[Static build]
+  build --> verify[Smoke and accessibility checks]
+  verify --> deploy[Isolated Pages deployment]
+  deploy --> observe[Post-deployment verification]
+```
+
+This lifecycle keeps validation before provisioning, domain deployments isolated, and rollback or forward-fix decisions easier to reason about.
+
 ## Future IaC Readiness
 
-TODO(terraform): Represent each Cloudflare Pages project as data-driven infrastructure with per-domain environment variables, DNS bindings, and deployment policies.
+Terraform/IaC planning is documented in [Terraform and IaC Planning](iac.md). The current repository is ready for a future non-destructive validation skeleton, but it does not include provider configuration, backend configuration, imports, applies, or provisioning automation.
 
-TODO(terraform): Add non-secret examples for environment variable maps while keeping sensitive Cloudflare API tokens in GitHub or Cloudflare secret stores.
+TODO(terraform): Represent each Cloudflare Pages project as data-driven infrastructure with per-domain environment variables, DNS bindings, and deployment policies once import and state-management safety is reviewed.

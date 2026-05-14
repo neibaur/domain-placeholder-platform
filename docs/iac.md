@@ -2,6 +2,12 @@
 
 Phase 5A is planning-only. It documents the intended infrastructure-as-code direction for this repository and does not provision, import, modify, or destroy any Cloudflare resources.
 
+## Current Maturity
+
+The repository has an operational governance, validation, and deployment-readiness foundation. Terraform/IaC is still planning-only: there is no provider configuration, no backend configuration, no state, no import workflow, and no apply automation.
+
+This project is ready for a future non-destructive Terraform validation phase where formatting and validation can run without touching real infrastructure.
+
 ## Intended Future Scope
 
 Future Terraform work may manage:
@@ -24,6 +30,8 @@ The Cloudflare dashboard remains the source of truth until resources are intenti
 - Keep Cloudflare dashboard configuration authoritative until each resource is intentionally imported or recreated.
 - Prefer small, reversible changes with clear rollback notes.
 - Minimize unnecessary exposure of operational metadata in code, plans, state, logs, and documentation.
+
+> IaC work should validate before provisioning. Manual review remains required before infrastructure changes, imports, remediation, or apply workflows.
 
 ## Naming Conventions
 
@@ -74,9 +82,11 @@ Do not commit local state files, generated plans, provider credentials, or backe
 
 ## Phase 5 Roadmap
 
-| Phase | Goal                                                                                |
-| ----- | ----------------------------------------------------------------------------------- |
-| 5B    | Add a validation-only Terraform skeleton and formatting/check guidance.             |
-| 5C    | Design Cloudflare provider usage and reusable module boundaries.                    |
-| 5D    | Document safe import and migration strategy for existing Cloudflare Pages projects. |
-| 5E    | Consider optional helper automation once manual workflows are proven.               |
+| Phase    | Goal                                | Success Definition                                                                                               |
+| -------- | ----------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| 5B       | Terraform Validation Skeleton       | Terraform formatting and validation can run in CI without provisioning or modifying infrastructure.              |
+| 5C       | Cloudflare Module Design            | Reusable module structure and provider strategy are documented or scaffolded safely without destructive changes. |
+| 5D       | Safe Import / Migration Strategy    | Existing Cloudflare resources can be mapped to future Terraform state through a reviewed, reversible plan.       |
+| 5E       | Optional Automation Helpers         | Helper tooling improves inventory or onboarding workflows without storing secrets or applying unmanaged changes. |
+| Future 6 | Localization / Internationalization | Multilingual placeholder structure is planned or implemented with accessibility and UTF-8 considerations.        |
+| Future 7 | Operational Expansion               | Optional features are evaluated without weakening the core low-cost, governance-first platform model.            |
