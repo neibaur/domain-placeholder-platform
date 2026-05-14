@@ -12,5 +12,13 @@ pnpm-debug.log*
 coverage/
 tmp/
 temp/
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfplan
+terraform.tfvars
+terraform.tfvars.json
+crash.log
+crash.*.log
 .DS_Store
 Thumbs.db

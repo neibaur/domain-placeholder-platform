@@ -4,9 +4,9 @@ Phase 5A is planning-only. It documents the intended infrastructure-as-code dire
 
 ## Current Maturity
 
-The repository has an operational governance, validation, and deployment-readiness foundation. Terraform/IaC is still planning-only: there is no provider configuration, no backend configuration, no state, no import workflow, and no apply automation.
+The repository has an operational governance, validation, and deployment-readiness foundation. Terraform/IaC now has a validation-only skeleton: there is provider version pinning and backend-free validation, but no resources, no backend configuration, no state, no import workflow, and no apply automation.
 
-This project is ready for a future non-destructive Terraform validation phase where formatting and validation can run without touching real infrastructure.
+This project can run non-destructive Terraform formatting and validation without touching real infrastructure.
 
 ## Intended Future Scope
 
@@ -33,6 +33,25 @@ The Cloudflare dashboard remains the source of truth until resources are intenti
 
 > IaC work should validate before provisioning. Manual review remains required before infrastructure changes, imports, remediation, or apply workflows.
 
+## Terraform Validation Skeleton
+
+Phase 5B introduces:
+
+- `infra/terraform/versions.tf`
+- `infra/terraform/providers.tf`
+- placeholder directories for `modules/`, `environments/`, and `shared/`
+- a Terraform validation-only GitHub Actions workflow
+
+The workflow and local commands run formatting, backend-free initialization, and validation only:
+
+```sh
+terraform fmt -recursive -check
+terraform init -backend=false
+terraform validate
+```
+
+They do not include `terraform apply`, `terraform destroy`, remote state, imports, production environments, Cloudflare resources, or credentials.
+
 ## Naming Conventions
 
 Future Cloudflare Pages resources should preserve the existing project naming convention:
@@ -51,20 +70,21 @@ Examples:
 
 Predictable names support safer imports, operational clarity, rollback and debugging, and future automation.
 
-## Proposed Future Directory Structure
+## Current Directory Structure
 
-No Terraform files are added in Phase 5A. A future skeleton may use:
+The current validation skeleton uses:
 
 ```text
 infra/
   terraform/
+    versions.tf
+    providers.tf
     modules/
-      cloudflare-pages/
     environments/
-      pilot/
+    shared/
 ```
 
-Phase 5B should introduce only validation-safe placeholder structure and formatting commands. Provider configuration, backend configuration, and credentials should wait until the safety model is reviewed.
+Provider resource design, backend configuration, production environments, imports, and credentials should wait until the safety model is reviewed.
 
 ## State Management Considerations
 
