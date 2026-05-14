@@ -26,7 +26,10 @@ The validation workflow runs:
 - Prettier check
 - ESLint
 - markdownlint
+- Zod environment validation checks
 - Astro type checking
 - Production build
+- Production smoke tests
+- pa11y accessibility validation against generated output
 
 CodeQL runs on pull requests, pushes to `main`, and a weekly schedule.
