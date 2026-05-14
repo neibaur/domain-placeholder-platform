@@ -12,6 +12,7 @@ This repository uses governance-first engineering: small reviewed changes, expli
 - Prefer documentation-first changes for architecture, deployment, security, and operational practices.
 - Keep Cloudflare deployment changes separate from documentation-only governance changes unless a small repo hygiene update is clearly necessary.
 - Keep local `.env` usage separate from deployed configuration; Cloudflare Pages project variables are the source of truth for production and preview behavior.
+- Keep Terraform/IaC work plan-first until [Terraform and IaC Planning](iac.md) progresses beyond documentation-only scope.
 
 ## Review Standards
 
@@ -134,6 +135,8 @@ High-risk change areas require extra review:
 - Cloudflare environment documentation
 - secret scanning configuration
 - future Terraform or infrastructure-as-code files
+
+Terraform/IaC planning is documented in [Terraform and IaC Planning](iac.md). Until a future phase explicitly introduces a reviewed skeleton or workflow, this repository should not include Cloudflare provider credentials, Terraform backend configuration, or production apply automation.
 
 Production change checklist:
 
