@@ -4,6 +4,8 @@
 
 `PUBLIC_` variables are public by design. Values may appear in HTML, metadata, generated files, or browser-visible assets.
 
+The platform should minimize unnecessary exposure of operational metadata. Keep private ownership, account, deployment, and contact details out of source control unless they are intentionally public and reviewed.
+
 Do not store these values in `PUBLIC_` variables:
 
 - API tokens

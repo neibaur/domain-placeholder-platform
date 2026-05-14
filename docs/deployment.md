@@ -1,5 +1,7 @@
 # Deployment
 
+This document covers deployment readiness only. Cloudflare implementation work should remain separate from documentation and governance refinement changes.
+
 ## Cloudflare Pages
 
 Create one Cloudflare Pages project per deployed domain when isolated configuration, branch controls, or future operational ownership boundaries are useful.
@@ -12,6 +14,8 @@ Recommended build settings:
 - Node.js version: `22`
 - Package manager: `pnpm`
 
+The architecture rationale for static output and Cloudflare Pages hosting is documented in [Architecture](architecture.md#why-astro).
+
 ## Pre-Deployment Checklist
 
 - `pnpm validate` passes locally.
@@ -23,6 +27,8 @@ Recommended build settings:
 - Cloudflare production deployments are connected to `main`.
 - Preview deployments do not publish unintended ownership or operational metadata.
 - `public/.well-known/security.txt` is either intentionally configured with public URLs or removed.
+
+The full Definition of Done is maintained in [Governance](governance.md#definition-of-done).
 
 ## Environment Variables
 
@@ -42,7 +48,7 @@ Repeat with the appropriate `PUBLIC_SITE_URL` for `6gou8.com` and `6xi8.com`.
 
 ## Privacy Notes
 
-Avoid storing registrant names, contact emails, account IDs, or private business context in repository files. Public contact URLs may be configured only when intentionally published.
+Minimize unnecessary exposure of operational metadata in repository files, generated output, and deployment settings. Avoid storing registrant names, contact emails, account IDs, private ownership context, or private business context in source control. Public contact URLs may be configured only when intentionally published.
 
 ## Future Terraform Integration
 

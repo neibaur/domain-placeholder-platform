@@ -10,6 +10,16 @@ Initial pilot domains:
 
 Domain-specific values are intentionally not hardcoded. Each Cloudflare Pages project should provide `PUBLIC_` environment variables at build time.
 
+## Documentation Map
+
+| Document                                                   | Purpose                                                                                             |
+| ---------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| [Architecture](docs/architecture.md)                       | Explains the Astro/static-site design, configuration flow, SEO behavior, and future IaC boundaries. |
+| [Governance](docs/governance.md)                           | Defines workflow expectations, CI/CD gates, review standards, and Definition of Done.               |
+| [Deployment](docs/deployment.md)                           | Captures Cloudflare Pages setup expectations and the pre-deployment checklist.                      |
+| [Security and Privacy](docs/security-and-privacy.md)       | Defines public configuration boundaries and operational metadata privacy expectations.              |
+| [Cloudflare Environment Variables](docs/cloudflare-env.md) | Provides documentation-only examples for pilot domain environment configuration.                    |
+
 ## Local Development
 
 ```sh
@@ -36,6 +46,8 @@ This is the main local confidence command. It runs:
 - production smoke tests against generated `dist/` output
 - automated accessibility checks against the served production output
 
+The same validation path is expected in CI before merge. See [Governance](docs/governance.md#cicd-pipeline) for the full CI/CD pipeline and branch protection expectations.
+
 Useful focused commands:
 
 ```sh
@@ -50,6 +62,8 @@ pnpm build
 `pnpm check:a11y` runs pa11y against the built site served locally from `dist/`. It checks practical WCAG 2.2 AA issues including landmark usage, heading structure, semantic HTML concerns, image alternative text when images exist, and detectable color contrast issues.
 
 Automated checks are useful but incomplete. They cannot fully prove usability with screen readers, keyboard-only workflows, cognitive accessibility, translation quality, or whether visible content is contextually clear. Manual review should remain part of any production launch.
+
+Accessibility is treated as a first-class engineering concern, not a final polish step. The platform starts with semantic HTML, responsive layout behavior, low client-side complexity, and multilingual readiness so future domains can grow without rebuilding the accessibility baseline. See [Governance](docs/governance.md#accessibility-philosophy).
 
 If pa11y cannot locate a browser locally, set:
 
