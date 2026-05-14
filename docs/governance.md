@@ -10,6 +10,7 @@ This repository uses governance-first engineering: small reviewed changes, expli
 - Require passing validation checks before merge.
 - Use conventional commits.
 - Prefer documentation-first changes for architecture, deployment, security, and operational practices.
+- Keep Cloudflare deployment changes separate from documentation-only governance changes unless a small repo hygiene update is clearly necessary.
 
 ## Review Standards
 
@@ -83,4 +84,15 @@ A change is done when:
 | Environment config is validated      | Zod validation and smoke checks cover required public configuration.                        |
 | Accessibility checks pass            | pa11y runs successfully, with manual review planned for production-facing changes.          |
 
-Deployment-specific readiness is tracked in [Deployment](deployment.md#pre-deployment-checklist).
+Deployment-specific readiness is tracked in [Deployment](deployment.md#production-deployment-checklist).
+
+## Deployment Governance
+
+Cloudflare deployment work should preserve the multi-project model documented in [Deployment](deployment.md):
+
+- one shared repository
+- one Cloudflare Pages project per pilot domain
+- strict `placeholder-[domain-name]` project naming
+- project-specific `PUBLIC_` variables
+- no production domain values hardcoded into application source
+- rollback or disablement scoped to the affected domain whenever possible

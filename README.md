@@ -20,6 +20,18 @@ Domain-specific values are intentionally not hardcoded. Each Cloudflare Pages pr
 | [Security and Privacy](docs/security-and-privacy.md)       | Defines public configuration boundaries and operational metadata privacy expectations.              |
 | [Cloudflare Environment Variables](docs/cloudflare-env.md) | Provides documentation-only examples for pilot domain environment configuration.                    |
 
+## Deployment Model
+
+The recommended Cloudflare Pages model is one shared GitHub repository with one Cloudflare Pages project per domain. Each project supplies its own `PUBLIC_` environment variables, so production domain values stay out of application source code.
+
+| Domain      | Cloudflare Pages Project |
+| ----------- | ------------------------ |
+| `68tai.com` | `placeholder-68tai-com`  |
+| `6gou8.com` | `placeholder-6gou8-com`  |
+| `6xi8.com`  | `placeholder-6xi8-com`   |
+
+See [Deployment](docs/deployment.md) for production, preview, verification, and rollback checklists before connecting Cloudflare resources.
+
 ## Local Development
 
 ```sh

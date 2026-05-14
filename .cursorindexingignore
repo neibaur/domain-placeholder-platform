@@ -1,0 +1,28 @@
+# Best-effort indexing hygiene only.
+# Do not rely on this file to protect secrets.
+
+.env
+.env.*
+!.env.example
+
+dist/
+node_modules/
+coverage/
+.astro/
+.wrangler/
+.vercel/
+
+*.log
+astro-dev*.log
+pnpm-debug.log*
+
+tmp/
+temp/
+
+*.pem
+*.key
+*.p12
+*.pfx
+*secret*
+*credential*
+*token*
