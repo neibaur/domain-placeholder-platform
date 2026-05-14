@@ -1,0 +1,12 @@
+---
+import PlaceholderPage from "@/components/PlaceholderPage.astro";
+import { getPublicConfig } from "@/config/public";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import "@/styles/global.css";
+
+const config = getPublicConfig(import.meta.env);
+---
+
+<BaseLayout config={config}>
+  <PlaceholderPage config={config} />
+</BaseLayout>

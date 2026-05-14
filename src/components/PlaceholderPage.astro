@@ -1,0 +1,62 @@
+---
+import type { PublicConfig } from "@/config/public";
+import { getConfiguredLocales, getLocaleCopy } from "@/content/locales";
+
+type Props = {
+  config: PublicConfig;
+};
+
+const { config } = Astro.props;
+const locales = getConfiguredLocales(config);
+const primaryCopy = getLocaleCopy(config.PUBLIC_PRIMARY_LOCALE);
+const secondaryLocale = config.PUBLIC_SECONDARY_LOCALE;
+const secondaryCopy = secondaryLocale
+  ? getLocaleCopy(secondaryLocale)
+  : undefined;
+---
+
+<main class="page-shell" aria-labelledby="page-title">
+  <section class="intro" aria-describedby="page-description">
+    <p class="eyebrow">{primaryCopy.eyebrow}</p>
+    <h1 id="page-title">{config.PUBLIC_SITE_TITLE}</h1>
+    <p id="page-description" class="lede">{config.PUBLIC_SITE_DESCRIPTION}</p>
+  </section>
+
+  <section class="status-grid" aria-label="Domain status">
+    <div>
+      <span>{primaryCopy.statusLabel}</span>
+      <strong>{primaryCopy.statusValue}</strong>
+    </div>
+    <div>
+      <span>Domain</span>
+      <strong>{new URL(config.PUBLIC_SITE_URL).hostname}</strong>
+    </div>
+    <div>
+      <span>Locales</span>
+      <strong>{locales.join(" / ")}</strong>
+    </div>
+  </section>
+
+  <section class="message" aria-label="Localized message">
+    <article lang={config.PUBLIC_PRIMARY_LOCALE}>
+      <h2>{primaryCopy.heading}</h2>
+      <p>{primaryCopy.description}</p>
+    </article>
+    {
+      secondaryCopy && secondaryLocale ? (
+        <article lang={secondaryLocale}>
+          <h2>{secondaryCopy.heading}</h2>
+          <p>{secondaryCopy.description}</p>
+        </article>
+      ) : null
+    }
+  </section>
+
+  {
+    config.PUBLIC_CONTACT_URL ? (
+      <p class="contact">
+        <a href={config.PUBLIC_CONTACT_URL}>{primaryCopy.contactLabel}</a>
+      </p>
+    ) : null
+  }
+</main>
