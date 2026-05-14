@@ -8,6 +8,12 @@ The repository has an operational governance, validation, and deployment-readine
 
 This project can run non-destructive Terraform formatting and validation without touching real infrastructure.
 
+## Authority Model
+
+Terraform is currently validation-only and non-authoritative. Stage 0 means Cloudflare is managed manually and Terraform validates structure only. Stage 1 means import planning and inventory can happen, but Terraform still does not manage live resources.
+
+This repository is between Stage 0 and Stage 1. Cloudflare dashboard configuration remains the operational source of truth until a later reviewed phase intentionally introduces Terraform-managed resources, state, imports, and authority.
+
 ## Intended Future Scope
 
 Future Terraform work may manage:
@@ -242,5 +248,5 @@ Do not run `terraform destroy` or destructive apply operations as part of initia
 | 5C       | Cloudflare Module Design            | Reusable module structure and provider strategy are documented or scaffolded safely without destructive changes. |
 | 5D       | Safe Import / Migration Strategy    | Existing Cloudflare resources can be mapped to future Terraform state through a reviewed, reversible plan.       |
 | 5E       | Operational Readiness Cleanup       | Documentation, inventory guidance, and governance language are cohesive before localization/i18n work begins.    |
-| Future 6 | Localization / Internationalization | Multilingual placeholder structure is planned or implemented with accessibility and UTF-8 considerations.        |
+| Future 6 | Localization / Internationalization | Multilingual placeholder structure is designed or implemented with accessibility, SEO, and UTF-8 considerations. |
 | Future 7 | Operational Expansion               | Optional features are evaluated without weakening the core low-cost, governance-first platform model.            |
