@@ -150,6 +150,8 @@ Repeat with the appropriate `PUBLIC_SITE_URL` and `PUBLIC_SITE_TITLE` for `6gou8
 
 `PUBLIC_SITE_URL` remains required because it defines canonical metadata, sitemap generation, Open Graph URLs, and deployment identity. `PUBLIC_ROBOTS_INDEX` defaults to `false` so new or parked domains do not become indexable unless explicitly approved.
 
+Supported locale values are `en` and `zh-CN`. `PUBLIC_PRIMARY_LOCALE` controls the document language and primary localized copy. `PUBLIC_SECONDARY_LOCALE` controls the secondary localized message. Do not configure Thai or route-based localization until a later reviewed phase adds support.
+
 The full pilot matrix is maintained in [Cloudflare Environment Variables](cloudflare-env.md).
 
 Local `.env` files are not a deployment source of truth. They are developer convenience files for local commands, while Cloudflare Pages project variables control preview and production behavior.

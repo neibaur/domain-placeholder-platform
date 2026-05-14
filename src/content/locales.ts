@@ -1,4 +1,4 @@
-import type { PublicConfig } from "@/config/public";
+import type { PublicConfig, SupportedLocale } from "@/config/public";
 
 type LocaleCopy = {
   eyebrow: string;
@@ -6,10 +6,24 @@ type LocaleCopy = {
   description: string;
   statusLabel: string;
   statusValue: string;
+  domainLabel: string;
+  localesLabel: string;
   contactLabel: string;
 };
 
-const copyByLanguage: Record<string, LocaleCopy> = {
+export type LocalizedPageContent = {
+  primary: {
+    locale: SupportedLocale;
+    copy: LocaleCopy;
+  };
+  secondary?: {
+    locale: SupportedLocale;
+    copy: LocaleCopy;
+  };
+  visibleLocales: SupportedLocale[];
+};
+
+const copyByLocale = {
   en: {
     eyebrow: "Placeholder platform",
     heading: "A lightweight domain placeholder is being prepared.",
@@ -17,29 +31,51 @@ const copyByLanguage: Record<string, LocaleCopy> = {
       "This page is rendered from deployment environment variables and can be reused across multiple domains without hardcoded ownership details.",
     statusLabel: "Status",
     statusValue: "Reserved for future service",
+    domainLabel: "Domain",
+    localesLabel: "Locales",
     contactLabel: "Contact",
   },
-  zh: {
+  "zh-CN": {
     eyebrow: "域名占位平台",
-    heading: "轻量域名占位页面正在准备中。",
+    heading: "轻量域名占位页正在准备中。",
     description:
       "此页面由部署环境变量渲染，可在多个域名之间复用，避免在代码中硬编码域名归属信息。",
     statusLabel: "状态",
     statusValue: "预留给未来服务",
+    domainLabel: "域名",
+    localesLabel: "语言",
     contactLabel: "联系",
   },
-};
+} satisfies Record<SupportedLocale, LocaleCopy>;
 
-function languageFamily(locale: string): string {
-  return locale.split("-")[0] ?? locale;
+export function getLocaleCopy(locale: SupportedLocale): LocaleCopy {
+  return copyByLocale[locale] ?? copyByLocale.en;
 }
 
-export function getLocaleCopy(locale: string): LocaleCopy {
-  return copyByLanguage[languageFamily(locale)] ?? copyByLanguage.en;
-}
+export function getLocalizedPageContent(
+  config: Pick<
+    PublicConfig,
+    "PUBLIC_PRIMARY_LOCALE" | "PUBLIC_SECONDARY_LOCALE"
+  >,
+): LocalizedPageContent {
+  const primaryLocale = config.PUBLIC_PRIMARY_LOCALE;
+  const secondaryLocale = config.PUBLIC_SECONDARY_LOCALE;
+  const hasDistinctSecondary = secondaryLocale !== primaryLocale;
+  const visibleLocales = hasDistinctSecondary
+    ? [primaryLocale, secondaryLocale]
+    : [primaryLocale];
 
-export function getConfiguredLocales(config: PublicConfig): string[] {
-  return [config.PUBLIC_PRIMARY_LOCALE, config.PUBLIC_SECONDARY_LOCALE].filter(
-    Boolean,
-  ) as string[];
+  return {
+    primary: {
+      locale: primaryLocale,
+      copy: getLocaleCopy(primaryLocale),
+    },
+    secondary: hasDistinctSecondary
+      ? {
+          locale: secondaryLocale,
+          copy: getLocaleCopy(secondaryLocale),
+        }
+      : undefined,
+    visibleLocales,
+  };
 }

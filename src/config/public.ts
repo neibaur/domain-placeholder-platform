@@ -1,11 +1,11 @@
 import { z } from "zod";
 
-const languageCodeSchema = z
-  .string()
-  .regex(
-    /^[a-z]{2}(-[A-Z]{2})?$/,
-    "Use a BCP 47 language code such as en or zh-CN.",
-  );
+export const supportedLocales = ["en", "zh-CN"] as const;
+export type SupportedLocale = (typeof supportedLocales)[number];
+
+const supportedLocaleSchema = z.enum(supportedLocales, {
+  error: "Use a supported locale: en or zh-CN.",
+});
 
 const siteNameSchema = z.preprocess(
   (value) => (value === "" ? undefined : value),
@@ -24,8 +24,8 @@ export const publicConfigSchema = z
       .min(1)
       .max(180)
       .default("A lightweight placeholder page for a reserved domain."),
-    PUBLIC_PRIMARY_LOCALE: languageCodeSchema.default("en"),
-    PUBLIC_SECONDARY_LOCALE: languageCodeSchema.default("zh-CN"),
+    PUBLIC_PRIMARY_LOCALE: supportedLocaleSchema.default("en"),
+    PUBLIC_SECONDARY_LOCALE: supportedLocaleSchema.default("zh-CN"),
     PUBLIC_CONTACT_URL: z.preprocess(
       (value) => (value === undefined ? "" : value),
       contactUrlSchema,

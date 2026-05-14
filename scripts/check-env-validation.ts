@@ -84,6 +84,40 @@ try {
   );
 }
 
+try {
+  getPublicConfig({
+    ...smokeEnv,
+    PUBLIC_PRIMARY_LOCALE: "fr",
+  });
+  throw new Error("Unsupported PUBLIC_PRIMARY_LOCALE should fail validation.");
+} catch (error) {
+  const message = error instanceof Error ? error.message : String(error);
+  assert(
+    message.includes("PUBLIC_PRIMARY_LOCALE"),
+    "Unsupported primary locale error should identify PUBLIC_PRIMARY_LOCALE.",
+  );
+  assert(
+    message.includes("en or zh-CN"),
+    "Unsupported primary locale error should identify supported locales.",
+  );
+}
+
+try {
+  getPublicConfig({
+    ...smokeEnv,
+    PUBLIC_SECONDARY_LOCALE: "th",
+  });
+  throw new Error(
+    "Unsupported PUBLIC_SECONDARY_LOCALE should fail validation.",
+  );
+} catch (error) {
+  const message = error instanceof Error ? error.message : String(error);
+  assert(
+    message.includes("PUBLIC_SECONDARY_LOCALE"),
+    "Unsupported secondary locale error should identify PUBLIC_SECONDARY_LOCALE.",
+  );
+}
+
 const buildCheck = spawnSync("pnpm build", {
   env: {
     ...process.env,
