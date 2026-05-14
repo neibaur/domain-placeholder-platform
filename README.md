@@ -23,6 +23,7 @@ This platform provides a low-cost, operationally durable foundation for managing
 | [Deployment](docs/deployment.md)                           | Captures Cloudflare Pages setup expectations and the pre-deployment checklist.                      |
 | [Security and Privacy](docs/security-and-privacy.md)       | Defines public configuration boundaries and operational metadata privacy expectations.              |
 | [Cloudflare Environment Variables](docs/cloudflare-env.md) | Provides documentation-only examples for pilot domain environment configuration.                    |
+| [Terraform and IaC Planning](docs/iac.md)                  | Documents future Terraform scope, safety principles, naming, and Phase 5 roadmap.                   |
 
 ## Deployment Model
 
