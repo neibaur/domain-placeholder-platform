@@ -25,7 +25,9 @@ Every PR should answer:
 
 ## CI/CD Pipeline
 
-The validation workflow is the required pre-merge quality gate. It should run for pull requests and pushes to `main`, and branch protection should require the checks to pass before merge.
+The repository's validation commands are part of the operational governance model. They make formatting, build behavior, environment validation, production-output smoke checks, and accessibility checks repeatable locally and in GitHub Actions.
+
+The repository includes GitHub Actions workflows for validation and CodeQL analysis. Branch protection should require passing checks before merge when configured in GitHub, but branch protection settings are managed outside the repository.
 
 ```mermaid
 flowchart TD
@@ -37,21 +39,26 @@ flowchart TD
   env --> build[Astro and TypeScript build validation]
   build --> smoke[Production smoke tests]
   smoke --> a11y[pa11y accessibility validation]
-  a11y --> merge[Eligible for protected-branch merge]
+  a11y --> ready[Ready for review or merge decision]
   pr --> codeql[CodeQL security analysis]
-  codeql --> merge
+  codeql --> ready
 ```
 
-The validation workflow runs:
+## Current CI/CD Gates
 
-- Prettier check
-- ESLint
-- markdownlint
-- Zod environment validation checks
-- Astro type checking
-- Production build
-- Production smoke tests
-- pa11y accessibility validation against generated output
+These gates map to current repository scripts and workflows:
+
+| Gate                                  | Command or Source                                              |
+| ------------------------------------- | -------------------------------------------------------------- |
+| Formatting validation                 | `pnpm format:check`                                            |
+| ESLint validation                     | `pnpm lint`                                                    |
+| markdownlint validation               | `pnpm check:markdown`                                          |
+| Environment validation                | `pnpm check:env`, backed by `scripts/check-env-validation.ts`  |
+| Astro and TypeScript build validation | `pnpm build`, invoked by `pnpm smoke`                          |
+| Production smoke validation           | `pnpm smoke`, backed by `scripts/smoke-production.mjs`         |
+| Accessibility validation              | `pnpm check:a11y`, backed by `scripts/check-accessibility.mjs` |
+| Integrated local/CI validation        | `pnpm validate`                                                |
+| CodeQL security analysis              | `.github/workflows/codeql.yml`                                 |
 
 CodeQL runs on pull requests, pushes to `main`, and a weekly schedule.
 

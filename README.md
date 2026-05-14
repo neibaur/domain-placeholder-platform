@@ -10,6 +10,10 @@ Initial pilot domains:
 
 Domain-specific values are intentionally not hardcoded. Each Cloudflare Pages project should provide `PUBLIC_` environment variables at build time.
 
+## Platform Value
+
+This platform provides a low-cost, operationally durable foundation for managing a domain portfolio. It supports fast future project launches, multilingual placeholder readiness, reusable Cloudflare Pages deployment patterns, and visible platform-engineering governance practices without turning a placeholder page into a heavy application.
+
 ## Documentation Map
 
 | Document                                                   | Purpose                                                                                             |
@@ -56,7 +60,7 @@ Local `.env` files are for local development and validation only. Production and
 
 VS Code or Python env-file injection is unrelated to Astro/pnpm builds unless the variables are actually exported into the shell process that runs `pnpm`.
 
-## Validation
+## Current Validation Commands
 
 ```sh
 pnpm validate
@@ -74,15 +78,15 @@ This is the main local confidence command. It runs:
 
 The same validation path is expected in CI before merge. See [Governance](docs/governance.md#cicd-pipeline) for the full CI/CD pipeline and branch protection expectations.
 
-Useful focused commands:
+Current commands:
 
-```sh
-pnpm check:env
-pnpm smoke
-pnpm check:a11y
-pnpm build
-pnpm build:local
-```
+| Command            | Purpose                                                                                                                  |
+| ------------------ | ------------------------------------------------------------------------------------------------------------------------ |
+| `pnpm build:local` | Loads local `.env` through `dotenv-cli`, then runs the normal build.                                                     |
+| `pnpm check:env`   | Runs [scripts/check-env-validation.ts](scripts/check-env-validation.ts) for positive and negative Zod validation checks. |
+| `pnpm smoke`       | Runs [scripts/smoke-production.mjs](scripts/smoke-production.mjs) against generated production output.                   |
+| `pnpm check:a11y`  | Runs [scripts/check-accessibility.mjs](scripts/check-accessibility.mjs) with pa11y against served `dist/`.               |
+| `pnpm validate`    | Runs formatting, linting, markdown, env, smoke, and accessibility checks as the main confidence command.                 |
 
 ## Accessibility Validation
 
