@@ -30,11 +30,11 @@ Operational changes should favor fail-fast validation, domain-level deployment i
 
 ## Operational Status
 
-| Category                    | Status                                                                                                                                                                                                                                                 |
-| --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Currently operational       | Astro static rendering, Zod env validation, production smoke tests, pa11y accessibility checks, CodeQL, Gitleaks, deployment safety docs, local security preflight guidance, Terraform validation-only skeleton, and Cloudflare Pages module contract. |
-| Planned but not implemented | Terraform imports, provisioning workflows, and optional helper automation.                                                                                                                                                                             |
-| Longer-term enhancements    | Localization expansion, operational inventory helpers, and optional domain-specific features that preserve the low-cost governance-first model.                                                                                                        |
+| Category                    | Status                                                                                                                                                                                                                                                                       |
+| --------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Currently operational       | Astro static rendering, Zod env validation, production smoke tests, pa11y accessibility checks, CodeQL, Gitleaks, deployment safety docs, local security preflight guidance, Terraform validation-only skeleton, Cloudflare Pages module contract, and import planning docs. |
+| Planned but not implemented | Terraform imports, provisioning workflows, localization implementation, and optional helper automation.                                                                                                                                                                      |
+| Longer-term enhancements    | Operational inventory helpers and optional domain-specific features that preserve the low-cost governance-first model.                                                                                                                                                       |
 
 ## Current Operational Snapshot
 
@@ -43,15 +43,15 @@ Operational changes should favor fail-fast validation, domain-level deployment i
 | Current maturity  | Governance-first platform foundation with validated CI/CD, deployment architecture, Cloudflare Pages testing, and Terraform scaffolding. |
 | Production status | Manual Cloudflare Pages deployments are supported; Terraform remains validation-only and non-authoritative.                              |
 | Risk posture      | Low-risk and non-destructive; no automated infrastructure provisioning is enabled.                                                       |
-| Next milestone    | Complete Phase 5D safe import planning before any Terraform onboarding or authority change.                                              |
+| Next milestone    | Begin Phase 6 localization/i18n planning without weakening deployment governance or validation gates.                                    |
 
 ## What Is Real vs Planned
 
-| Category               | Status                                                                                                                                                   |
-| ---------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Real today             | Astro platform, validation scripts, CI/CD workflows, Cloudflare Pages-compatible builds, Terraform validation skeleton, and reusable module scaffolding. |
-| Planned but not active | Terraform provisioning, real imports, remote state, automated apply workflows, and full domain onboarding automation.                                    |
-| Source of truth        | Cloudflare remains the operational source of truth until a reviewed import or recreation plan is executed.                                               |
+| Category               | Status                                                                                                                                                                                  |
+| ---------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Real today             | Astro platform, validation scripts, CI/CD workflows, Cloudflare Pages-compatible builds, Terraform validation skeleton, reusable module scaffolding, and import planning documentation. |
+| Planned but not active | Terraform provisioning, real imports, remote state, automated apply workflows, localization implementation, and full domain onboarding automation.                                      |
+| Source of truth        | Cloudflare remains the operational source of truth until a reviewed import or recreation plan is executed.                                                                              |
 
 ## DevSecOps Posture
 
@@ -165,6 +165,8 @@ Cloudflare deployment work should preserve the multi-project model documented in
 - no production domain values hardcoded into application source
 - rollback or disablement scoped to the affected domain whenever possible
 
+Operational readiness for each domain is tracked through [Deployment](deployment.md#operational-readiness-checklist) and the [Cloudflare Inventory Template](cloudflare-inventory.md). Inventory updates should stay factual, non-sensitive, and tied to manual validation dates.
+
 High-risk change areas require extra review:
 
 - deployment workflows and GitHub Actions
@@ -191,6 +193,21 @@ Production change checklist:
 - [ ] Smoke and accessibility validation pass.
 - [ ] No secrets or unnecessary operational metadata exposed.
 - [ ] Rollback or forward-fix path is understood.
+
+## Operational Conventions
+
+| Area              | Convention                                                                                         |
+| ----------------- | -------------------------------------------------------------------------------------------------- |
+| Branches          | Use short-lived topic branches with conventional commit intent.                                    |
+| Pages projects    | Use `placeholder-platform-[domain-name]`.                                                          |
+| Validation        | Run `pnpm validate` before PR and before deployment-sensitive changes.                             |
+| Deployment review | Confirm project, domain, environment variables, canonical URL, robots, sitemap, and rollback path. |
+| Inventory updates | Update non-sensitive Cloudflare inventory after onboarding, validation, or drift observations.     |
+| Terraform changes | Keep validation-only unless a later reviewed phase explicitly introduces authority.                |
+
+## Ready for Phase 6
+
+The governance baseline is ready for localization/i18n planning because validation gates, accessibility checks, deployment isolation, environment policy, inventory guidance, and Terraform authority boundaries are documented. Phase 6 should add multilingual capability without changing the conservative infrastructure posture by default.
 
 ## Secret Scanning Governance
 
