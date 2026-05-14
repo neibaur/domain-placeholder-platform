@@ -8,6 +8,9 @@ dist/
 !.env.example
 *.log
 astro-dev*.log
+pnpm-debug.log*
 coverage/
+tmp/
+temp/
 .DS_Store
 Thumbs.db
