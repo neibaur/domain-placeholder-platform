@@ -29,6 +29,22 @@ Lightweight placeholder domains are treated as production-grade operational asse
 
 Cloudflare provisioning, Terraform applies, imports, production environment configs, and automation helpers are not implemented.
 
+## What Is Real vs Planned
+
+| Category               | Status                                                                                                                                                                                        |
+| ---------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Real today             | Astro platform, validation scripts, CI/CD workflows, Cloudflare Pages-compatible builds, manual Cloudflare Pages deployments, Terraform validation skeleton, and reusable module scaffolding. |
+| Planned but not active | Terraform provisioning, imports, remote state, automated apply workflows, full domain onboarding automation, and helper tooling.                                                              |
+| Source of truth        | Cloudflare remains the operational source of truth until resources are intentionally imported or recreated through a reviewed plan.                                                           |
+
+## Repository Demonstrates
+
+- DevSecOps governance and CI/CD maturity.
+- Operational safety engineering for multi-domain deployments.
+- Reusable infrastructure design without premature provisioning.
+- IaC planning discipline and import-readiness thinking.
+- Accessibility-aware engineering and secure deployment practices.
+
 ## Documentation Map
 
 | Document                                                   | Purpose                                                                                             |
@@ -44,11 +60,11 @@ Cloudflare provisioning, Terraform applies, imports, production environment conf
 
 The recommended Cloudflare Pages model is one shared GitHub repository with one Cloudflare Pages project per domain. Each project supplies its own `PUBLIC_` environment variables, so production domain values stay out of application source code.
 
-| Domain      | Cloudflare Pages Project |
-| ----------- | ------------------------ |
-| `68tai.com` | `placeholder-68tai-com`  |
-| `6gou8.com` | `placeholder-6gou8-com`  |
-| `6xi8.com`  | `placeholder-6xi8-com`   |
+| Domain      | Cloudflare Pages Project         |
+| ----------- | -------------------------------- |
+| `68tai.com` | `placeholder-platform-68tai-com` |
+| `6gou8.com` | `placeholder-platform-6gou8-com` |
+| `6xi8.com`  | `placeholder-platform-6xi8-com`  |
 
 See [Deployment](docs/deployment.md) for production, preview, verification, and rollback checklists before connecting Cloudflare resources.
 
@@ -179,19 +195,21 @@ Run `pnpm build` before `pnpm check:a11y` when using the accessibility command b
 
 See [.env.example](.env.example) for the public build-time variables expected by the platform.
 
-Required:
+Required per deployment:
 
 - `PUBLIC_SITE_URL`
-- `PUBLIC_SITE_NAME`
 - `PUBLIC_SITE_TITLE`
-- `PUBLIC_SITE_DESCRIPTION`
-- `PUBLIC_PRIMARY_LOCALE`
 
-Optional:
+Defaulted safely when unset:
 
-- `PUBLIC_SECONDARY_LOCALE`
-- `PUBLIC_CONTACT_URL`
+- `PUBLIC_SITE_NAME` defaults to `PUBLIC_SITE_TITLE`
+- `PUBLIC_SITE_DESCRIPTION` defaults to a generic placeholder description
+- `PUBLIC_PRIMARY_LOCALE` defaults to `en`
+- `PUBLIC_SECONDARY_LOCALE` defaults to `zh-CN`
+- `PUBLIC_CONTACT_URL` defaults to an empty string
 - `PUBLIC_ROBOTS_INDEX` defaults to `false` and must be explicitly set to `true` to allow indexing.
+
+`PUBLIC_SITE_URL` remains required because it defines canonical URLs, sitemap output, Open Graph URLs, and deployment identity. Defaults reduce onboarding friction, but identity-critical values still fail fast when missing.
 
 ## Project Structure
 

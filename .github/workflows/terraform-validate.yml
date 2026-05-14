@@ -33,3 +33,9 @@ jobs:
 
       - name: Terraform validate
         run: terraform validate
+
+      - name: Terraform module init without backend
+        run: terraform -chdir=modules/cloudflare-pages init -backend=false
+
+      - name: Terraform module validate
+        run: terraform -chdir=modules/cloudflare-pages validate

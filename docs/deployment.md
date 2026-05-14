@@ -18,16 +18,16 @@ Recommended model:
 Use this strict Cloudflare Pages project naming format:
 
 ```text
-placeholder-[domain-name]
+placeholder-platform-[domain-name]
 ```
 
 Replace dots with hyphens.
 
-| Domain      | Cloudflare Pages Project |
-| ----------- | ------------------------ |
-| `68tai.com` | `placeholder-68tai-com`  |
-| `6gou8.com` | `placeholder-6gou8-com`  |
-| `6xi8.com`  | `placeholder-6xi8-com`   |
+| Domain      | Cloudflare Pages Project         |
+| ----------- | -------------------------------- |
+| `68tai.com` | `placeholder-platform-68tai-com` |
+| `6gou8.com` | `placeholder-platform-6gou8-com` |
+| `6xi8.com`  | `placeholder-platform-6xi8-com`  |
 
 Consistent names improve operational clarity, reduce ambiguity when multiple domains share one repository, and make future Terraform import or state mapping predictable.
 
@@ -47,7 +47,7 @@ Use `pnpm build` for Cloudflare Pages because Cloudflare injects project environ
 
 Deployment safety depends on keeping each domain isolated and each deployment target explicit.
 
-- Verify the Cloudflare Pages project name follows `placeholder-[domain-name]` before changing settings.
+- Verify the Cloudflare Pages project name follows `placeholder-platform-[domain-name]` before changing settings.
 - Confirm the selected project matches the intended custom domain.
 - Review deployment-specific `PUBLIC_` variables before each production rollout.
 - Confirm `PUBLIC_SITE_URL` matches the exact production origin for that project.
@@ -60,7 +60,7 @@ Predictable project names support safer rollback procedures, operational clarity
 ## Production Deployment Checklist
 
 - [ ] `pnpm validate` passes locally.
-- [ ] Correct Cloudflare Pages project selected, using `placeholder-[domain-name]`.
+- [ ] Correct Cloudflare Pages project selected, using `placeholder-platform-[domain-name]`.
 - [ ] Correct custom domain mapped to the selected Pages project.
 - [ ] Project-specific `PUBLIC_` variables reviewed.
 - [ ] `PUBLIC_SITE_URL` exactly matches the production origin, including `https://`.
@@ -84,19 +84,27 @@ The full Definition of Done is maintained in [Governance](governance.md#definiti
 
 ## Environment Variables
 
-Set these in each Cloudflare Pages project:
+Set these identity-critical variables in each Cloudflare Pages project:
 
 ```text
 PUBLIC_SITE_URL=https://68tai.com
-PUBLIC_SITE_NAME=Domain Placeholder
 PUBLIC_SITE_TITLE=Domain Placeholder
-PUBLIC_SITE_DESCRIPTION=A lightweight placeholder page for a reserved domain.
-PUBLIC_PRIMARY_LOCALE=en
-PUBLIC_SECONDARY_LOCALE=zh-CN
-PUBLIC_ROBOTS_INDEX=false
 ```
 
-Repeat with the appropriate `PUBLIC_SITE_URL` for `6gou8.com` and `6xi8.com`.
+Optional safe defaults can be omitted during initial onboarding:
+
+```text
+PUBLIC_SITE_NAME defaults to PUBLIC_SITE_TITLE
+PUBLIC_SITE_DESCRIPTION defaults to A lightweight placeholder page for a reserved domain.
+PUBLIC_PRIMARY_LOCALE defaults to en
+PUBLIC_SECONDARY_LOCALE defaults to zh-CN
+PUBLIC_CONTACT_URL defaults to an empty string
+PUBLIC_ROBOTS_INDEX defaults to false
+```
+
+Repeat with the appropriate `PUBLIC_SITE_URL` and `PUBLIC_SITE_TITLE` for `6gou8.com` and `6xi8.com`.
+
+`PUBLIC_SITE_URL` remains required because it defines canonical metadata, sitemap generation, Open Graph URLs, and deployment identity. `PUBLIC_ROBOTS_INDEX` defaults to `false` so new or parked domains do not become indexable unless explicitly approved.
 
 The full pilot matrix is maintained in [Cloudflare Environment Variables](cloudflare-env.md).
 
