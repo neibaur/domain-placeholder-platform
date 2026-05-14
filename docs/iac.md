@@ -4,7 +4,7 @@ Phase 5A is planning-only. It documents the intended infrastructure-as-code dire
 
 ## Current Maturity
 
-The repository has an operational governance, validation, and deployment-readiness foundation. Terraform/IaC now has a validation-only skeleton: there is provider version pinning and backend-free validation, but no resources, no backend configuration, no state, no import workflow, and no apply automation.
+The repository has an operational governance, validation, and deployment-readiness foundation. Terraform/IaC now has a validation-only skeleton and a reusable Cloudflare Pages module contract: there is provider version pinning, backend-free validation, module input validation, and output design, but no resources, no backend configuration, no state, no import workflow, and no apply automation.
 
 This project can run non-destructive Terraform formatting and validation without touching real infrastructure.
 
@@ -52,6 +52,29 @@ terraform validate
 
 They do not include `terraform apply`, `terraform destroy`, remote state, imports, production environments, Cloudflare resources, or credentials.
 
+## Cloudflare Pages Module Contract
+
+Phase 5C adds a reusable module contract at `infra/terraform/modules/cloudflare-pages/`.
+
+The module currently defines:
+
+- `project_name`
+- `production_branch`
+- `build_command`
+- `build_output_directory`
+- `environment_variables`
+
+The contract is designed for one Cloudflare Pages project per domain. It validates the `placeholder-[domain-name]` project naming convention and requires environment variable keys to use the platform's `PUBLIC_` convention.
+
+The module has outputs for future inventory and operational workflows:
+
+- `project_name`
+- `project_subdomain`
+- `project_identifier`
+- `public_environment_variable_keys`
+
+The module intentionally declares no Cloudflare resources in this phase. Cloudflare dashboard configuration remains the source of truth until future import or migration work.
+
 ## Naming Conventions
 
 Future Cloudflare Pages resources should preserve the existing project naming convention:
@@ -80,6 +103,7 @@ infra/
     versions.tf
     providers.tf
     modules/
+      cloudflare-pages/
     environments/
     shared/
 ```
@@ -99,6 +123,20 @@ Possible future approaches:
 - manual approval before apply workflows
 
 Do not commit local state files, generated plans, provider credentials, or backend secrets.
+
+## Future Import Mapping Preparation
+
+Future Phase 5D should map existing manual Cloudflare Pages projects to reviewed Terraform addresses before any import occurs.
+
+Conceptual mapping examples:
+
+| Existing Cloudflare Pages Project | Future Terraform Address                                             |
+| --------------------------------- | -------------------------------------------------------------------- |
+| `placeholder-68tai-com`           | `module.cloudflare_pages["68tai-com"].cloudflare_pages_project.this` |
+| `placeholder-6gou8-com`           | `module.cloudflare_pages["6gou8-com"].cloudflare_pages_project.this` |
+| `placeholder-6xi8-com`            | `module.cloudflare_pages["6xi8-com"].cloudflare_pages_project.this`  |
+
+This is planning only. Do not execute imports, add import blocks, or migrate resources until Phase 5D defines a reviewed, reversible strategy.
 
 ## Phase 5 Roadmap
 

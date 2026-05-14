@@ -30,11 +30,11 @@ Operational changes should favor fail-fast validation, domain-level deployment i
 
 ## Operational Status
 
-| Category                    | Status                                                                                                                                                                                                               |
-| --------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Currently operational       | Astro static rendering, Zod env validation, production smoke tests, pa11y accessibility checks, CodeQL, Gitleaks, deployment safety docs, local security preflight guidance, and Terraform validation-only skeleton. |
-| Planned but not implemented | Cloudflare module design, safe import planning, provisioning workflows, and optional helper automation.                                                                                                              |
-| Longer-term enhancements    | Localization expansion, operational inventory helpers, and optional domain-specific features that preserve the low-cost governance-first model.                                                                      |
+| Category                    | Status                                                                                                                                                                                                                                                 |
+| --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Currently operational       | Astro static rendering, Zod env validation, production smoke tests, pa11y accessibility checks, CodeQL, Gitleaks, deployment safety docs, local security preflight guidance, Terraform validation-only skeleton, and Cloudflare Pages module contract. |
+| Planned but not implemented | Safe import planning, provisioning workflows, and optional helper automation.                                                                                                                                                                          |
+| Longer-term enhancements    | Localization expansion, operational inventory helpers, and optional domain-specific features that preserve the low-cost governance-first model.                                                                                                        |
 
 ## DevSecOps Posture
 
@@ -159,6 +159,8 @@ High-risk change areas require extra review:
 - future Terraform or infrastructure-as-code files
 
 Terraform/IaC planning is documented in [Terraform and IaC Planning](iac.md). The current Terraform workflow is validation-only. This repository should not include Cloudflare provider credentials, Terraform backend configuration, imports, production environments, or production apply automation until a later reviewed phase.
+
+Reusable Terraform modules should preserve simple interface contracts, validate naming conventions, and align environment variable inputs with the existing `PUBLIC_` rendering model. Module reuse should reduce cross-domain drift without hiding operational details.
 
 Production change checklist:
 

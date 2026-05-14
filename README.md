@@ -25,9 +25,9 @@ Lightweight placeholder domains are treated as production-grade operational asse
 | CI/CD quality and security validation | Operational. Validation, CodeQL, and Gitleaks workflows are defined.              |
 | Accessibility, smoke, and env checks  | Operational through `pnpm validate`.                                              |
 | Terraform/IaC planning                | Documented in [Terraform and IaC Planning](docs/iac.md).                          |
-| Terraform validation skeleton         | Planned next; no provisioning or apply workflow exists yet.                       |
+| Terraform validation skeleton         | Operational. Formatting and validation run without provisioning.                  |
 
-The project is ready for a future non-destructive Terraform validation phase. Cloudflare provisioning, Terraform applies, and automation helpers are not implemented.
+Cloudflare provisioning, Terraform applies, imports, production environment configs, and automation helpers are not implemented.
 
 ## Documentation Map
 
@@ -116,6 +116,8 @@ terraform validate
 ```
 
 Terraform is not authoritative yet. No Cloudflare resources are declared, imported, modified, or destroyed in this phase.
+
+The reusable Cloudflare Pages module contract lives at [infra/terraform/modules/cloudflare-pages](infra/terraform/modules/cloudflare-pages/README.md). It defines validation-safe inputs and outputs only; it does not create Cloudflare Pages projects.
 
 ## Secret Scanning
 

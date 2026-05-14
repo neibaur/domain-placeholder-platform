@@ -10,6 +10,8 @@ This directory is a validation-only Terraform foundation. Phase 5B introduces st
 
 No Cloudflare resources are declared here yet. Terraform is not authoritative for existing Cloudflare resources in this phase.
 
+Phase 5C adds a reusable Cloudflare Pages module contract under [modules/cloudflare-pages](modules/cloudflare-pages/README.md). The module defines inputs, validation, and outputs only; it does not declare Cloudflare resources.
+
 ## Local Validation
 
 Install Terraform from HashiCorp's official installation guidance, then run:
