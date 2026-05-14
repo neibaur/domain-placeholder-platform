@@ -4,7 +4,7 @@ Phase 5A started the infrastructure-as-code planning foundation. The repository 
 
 ## Current Maturity
 
-The repository has an operational governance, validation, and deployment-readiness foundation. Terraform/IaC now has a validation-only skeleton, a reusable Cloudflare Pages module contract, and a safe import planning strategy: there is provider version pinning, backend-free validation, module input validation, output design, and documented import governance, but no resources, no backend configuration, no state, no import automation, and no apply workflow.
+The repository has an operational governance, validation, and deployment-readiness foundation. Terraform/IaC now has a validation-only skeleton, a reusable Cloudflare Pages module contract, and a safe import planning strategy: there is provider version pinning, backend-free validation, module input validation, output design, documented import governance, and inventory guidance, but no resources, no backend configuration, no state, no import automation, and no apply workflow.
 
 This project can run non-destructive Terraform formatting and validation without touching real infrastructure.
 
@@ -169,7 +169,7 @@ Safe import principles:
 - Treat unknown drift as a review item, not as something Terraform should fix automatically.
 - Keep the Cloudflare dashboard as the recovery path during early onboarding.
 
-The manual inventory template is maintained in [Cloudflare Inventory Template](cloudflare-inventory.md).
+The manual inventory template is maintained in [Cloudflare Inventory Template](cloudflare-inventory.md). Update it after deployment validation, drift observations, and future import-readiness reviews.
 
 ## Import Readiness Checklist
 
@@ -241,6 +241,6 @@ Do not run `terraform destroy` or destructive apply operations as part of initia
 | 5B       | Terraform Validation Skeleton       | Terraform formatting and validation can run in CI without provisioning or modifying infrastructure.              |
 | 5C       | Cloudflare Module Design            | Reusable module structure and provider strategy are documented or scaffolded safely without destructive changes. |
 | 5D       | Safe Import / Migration Strategy    | Existing Cloudflare resources can be mapped to future Terraform state through a reviewed, reversible plan.       |
-| 5E       | Optional Automation Helpers         | Helper tooling improves inventory or onboarding workflows without storing secrets or applying unmanaged changes. |
+| 5E       | Operational Readiness Cleanup       | Documentation, inventory guidance, and governance language are cohesive before localization/i18n work begins.    |
 | Future 6 | Localization / Internationalization | Multilingual placeholder structure is planned or implemented with accessibility and UTF-8 considerations.        |
 | Future 7 | Operational Expansion               | Optional features are evaluated without weakening the core low-cost, governance-first platform model.            |
