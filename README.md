@@ -104,6 +104,19 @@ Current commands:
 | `pnpm check:a11y`  | Runs [scripts/check-accessibility.mjs](scripts/check-accessibility.mjs) with pa11y against served `dist/`.               |
 | `pnpm validate`    | Runs formatting, linting, markdown, env, smoke, and accessibility checks as the main confidence command.                 |
 
+## Terraform Validation
+
+Phase 5B adds a validation-only Terraform skeleton under [infra/terraform](infra/terraform/README.md). It supports formatting and configuration validation without provisioning infrastructure.
+
+```sh
+cd infra/terraform
+terraform fmt -recursive -check
+terraform init -backend=false
+terraform validate
+```
+
+Terraform is not authoritative yet. No Cloudflare resources are declared, imported, modified, or destroyed in this phase.
+
 ## Secret Scanning
 
 GitHub Actions runs Gitleaks to detect accidentally committed secrets on pull requests and pushes to `main`. Secrets should never be committed. Use GitHub Secrets, Cloudflare Pages project variables, or future reviewed IaC-safe workflows for sensitive values.

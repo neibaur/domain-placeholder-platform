@@ -18,6 +18,12 @@ pnpm-debug.log*
 
 tmp/
 temp/
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfplan
+terraform.tfvars
+terraform.tfvars.json
 
 *.pem
 *.key

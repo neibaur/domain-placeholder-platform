@@ -12,7 +12,7 @@ This repository uses governance-first engineering: small reviewed changes, expli
 - Prefer documentation-first changes for architecture, deployment, security, and operational practices.
 - Keep Cloudflare deployment changes separate from documentation-only governance changes unless a small repo hygiene update is clearly necessary.
 - Keep local `.env` usage separate from deployed configuration; Cloudflare Pages project variables are the source of truth for production and preview behavior.
-- Keep Terraform/IaC work plan-first until [Terraform and IaC Planning](iac.md) progresses beyond documentation-only scope.
+- Keep Terraform/IaC work validation-first until [Terraform and IaC Planning](iac.md) progresses beyond validation-only scope.
 
 ## Review Standards
 
@@ -30,11 +30,11 @@ Operational changes should favor fail-fast validation, domain-level deployment i
 
 ## Operational Status
 
-| Category                    | Status                                                                                                                                                                           |
-| --------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Currently operational       | Astro static rendering, Zod env validation, production smoke tests, pa11y accessibility checks, CodeQL, Gitleaks, deployment safety docs, and local security preflight guidance. |
-| Planned but not implemented | Terraform validation skeleton, Cloudflare module design, safe import planning, and optional helper automation.                                                                   |
-| Longer-term enhancements    | Localization expansion, operational inventory helpers, and optional domain-specific features that preserve the low-cost governance-first model.                                  |
+| Category                    | Status                                                                                                                                                                                                               |
+| --------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Currently operational       | Astro static rendering, Zod env validation, production smoke tests, pa11y accessibility checks, CodeQL, Gitleaks, deployment safety docs, local security preflight guidance, and Terraform validation-only skeleton. |
+| Planned but not implemented | Cloudflare module design, safe import planning, provisioning workflows, and optional helper automation.                                                                                                              |
+| Longer-term enhancements    | Localization expansion, operational inventory helpers, and optional domain-specific features that preserve the low-cost governance-first model.                                                                      |
 
 ## DevSecOps Posture
 
@@ -77,6 +77,7 @@ These gates map to current repository scripts and workflows:
 | Production smoke validation           | `pnpm smoke`, backed by `scripts/smoke-production.mjs`         |
 | Accessibility validation              | `pnpm check:a11y`, backed by `scripts/check-accessibility.mjs` |
 | Integrated local/CI validation        | `pnpm validate`                                                |
+| Terraform validation only             | `.github/workflows/terraform-validate.yml`                     |
 | CodeQL security analysis              | `.github/workflows/codeql.yml`                                 |
 | Secret scanning                       | `.github/workflows/gitleaks.yml`                               |
 
@@ -157,7 +158,7 @@ High-risk change areas require extra review:
 - secret scanning configuration
 - future Terraform or infrastructure-as-code files
 
-Terraform/IaC planning is documented in [Terraform and IaC Planning](iac.md). Until a future phase explicitly introduces a reviewed skeleton or workflow, this repository should not include Cloudflare provider credentials, Terraform backend configuration, or production apply automation.
+Terraform/IaC planning is documented in [Terraform and IaC Planning](iac.md). The current Terraform workflow is validation-only. This repository should not include Cloudflare provider credentials, Terraform backend configuration, imports, production environments, or production apply automation until a later reviewed phase.
 
 Production change checklist:
 
