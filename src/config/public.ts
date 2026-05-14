@@ -28,7 +28,7 @@ export const publicConfigSchema = z.object({
   PUBLIC_PRIMARY_LOCALE: languageCodeSchema,
   PUBLIC_SECONDARY_LOCALE: optionalLanguageCodeSchema,
   PUBLIC_CONTACT_URL: optionalUrlSchema,
-  PUBLIC_ROBOTS_INDEX: z.enum(["true", "false"]).default("true"),
+  PUBLIC_ROBOTS_INDEX: z.enum(["true", "false"]).default("false"),
 });
 
 export type PublicConfig = z.infer<typeof publicConfigSchema>;

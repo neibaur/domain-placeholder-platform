@@ -18,13 +18,56 @@ cp .env.example .env
 pnpm dev
 ```
 
+Local development reads `PUBLIC_` values from `.env`. Keep this file private and use [.env.example](.env.example) as the documented contract.
+
 ## Validation
 
 ```sh
 pnpm validate
 ```
 
-This runs formatting checks, ESLint, markdownlint, Astro type checking, and a production build.
+This is the main local confidence command. It runs:
+
+- Prettier formatting checks
+- ESLint
+- markdownlint
+- Zod environment validation checks
+- Astro type checking and production build
+- production smoke tests against generated `dist/` output
+- automated accessibility checks against the served production output
+
+Useful focused commands:
+
+```sh
+pnpm check:env
+pnpm smoke
+pnpm check:a11y
+pnpm build
+```
+
+## Accessibility Validation
+
+`pnpm check:a11y` runs pa11y against the built site served locally from `dist/`. It checks practical WCAG 2.2 AA issues including landmark usage, heading structure, semantic HTML concerns, image alternative text when images exist, and detectable color contrast issues.
+
+Automated checks are useful but incomplete. They cannot fully prove usability with screen readers, keyboard-only workflows, cognitive accessibility, translation quality, or whether visible content is contextually clear. Manual review should remain part of any production launch.
+
+If pa11y cannot locate a browser locally, set:
+
+```sh
+PA11Y_CHROME_PATH="C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"
+```
+
+## Smoke Testing
+
+`pnpm smoke` builds the project, serves `dist/` locally, and verifies:
+
+- expected placeholder text renders
+- the configured site URL appears in rendered output
+- canonical metadata is present
+- `PUBLIC_ROBOTS_INDEX=false` produces non-indexing metadata and `robots.txt`
+- sitemap output references the configured canonical site URL
+
+Run `pnpm build` before `pnpm check:a11y` when using the accessibility command by itself.
 
 ## Environment Variables
 
@@ -37,12 +80,12 @@ Required:
 - `PUBLIC_SITE_TITLE`
 - `PUBLIC_SITE_DESCRIPTION`
 - `PUBLIC_PRIMARY_LOCALE`
-- `PUBLIC_ROBOTS_INDEX`
 
 Optional:
 
 - `PUBLIC_SECONDARY_LOCALE`
 - `PUBLIC_CONTACT_URL`
+- `PUBLIC_ROBOTS_INDEX` defaults to `false` and must be explicitly set to `true` to allow indexing.
 
 ## Project Structure
 
