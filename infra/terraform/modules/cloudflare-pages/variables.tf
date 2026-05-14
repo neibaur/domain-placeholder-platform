@@ -1,10 +1,10 @@
 variable "project_name" {
   type        = string
-  description = "Cloudflare Pages project name. Must follow placeholder-[domain-name], with dots replaced by hyphens."
+  description = "Cloudflare Pages project name. Must follow placeholder-platform-[domain-name], with dots replaced by hyphens."
 
   validation {
-    condition     = can(regex("^placeholder-[a-z0-9]+(-[a-z0-9]+)*$", var.project_name))
-    error_message = "project_name must follow placeholder-[domain-name], using lowercase letters, numbers, and hyphens."
+    condition     = can(regex("^placeholder-platform-[a-z0-9]+(-[a-z0-9]+)*$", var.project_name))
+    error_message = "project_name must follow placeholder-platform-[domain-name], using lowercase letters, numbers, and hyphens."
   }
 }
 

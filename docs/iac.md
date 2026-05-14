@@ -64,7 +64,7 @@ The module currently defines:
 - `build_output_directory`
 - `environment_variables`
 
-The contract is designed for one Cloudflare Pages project per domain. It validates the `placeholder-[domain-name]` project naming convention and requires environment variable keys to use the platform's `PUBLIC_` convention.
+The contract is designed for one Cloudflare Pages project per domain. It validates the `placeholder-platform-[domain-name]` project naming convention and requires environment variable keys to use the platform's `PUBLIC_` convention.
 
 The module has outputs for future inventory and operational workflows:
 
@@ -80,16 +80,16 @@ The module intentionally declares no Cloudflare resources in this phase. Cloudfl
 Future Cloudflare Pages resources should preserve the existing project naming convention:
 
 ```text
-placeholder-[domain-name]
+placeholder-platform-[domain-name]
 ```
 
 Examples:
 
-| Domain      | Future Pages Project    |
-| ----------- | ----------------------- |
-| `68tai.com` | `placeholder-68tai-com` |
-| `6gou8.com` | `placeholder-6gou8-com` |
-| `6xi8.com`  | `placeholder-6xi8-com`  |
+| Domain      | Future Pages Project             |
+| ----------- | -------------------------------- |
+| `68tai.com` | `placeholder-platform-68tai-com` |
+| `6gou8.com` | `placeholder-platform-6gou8-com` |
+| `6xi8.com`  | `placeholder-platform-6xi8-com`  |
 
 Predictable names support safer imports, operational clarity, rollback and debugging, and future automation.
 
@@ -132,9 +132,9 @@ Conceptual mapping examples:
 
 | Existing Cloudflare Pages Project | Future Terraform Address                                             |
 | --------------------------------- | -------------------------------------------------------------------- |
-| `placeholder-68tai-com`           | `module.cloudflare_pages["68tai-com"].cloudflare_pages_project.this` |
-| `placeholder-6gou8-com`           | `module.cloudflare_pages["6gou8-com"].cloudflare_pages_project.this` |
-| `placeholder-6xi8-com`            | `module.cloudflare_pages["6xi8-com"].cloudflare_pages_project.this`  |
+| `placeholder-platform-68tai-com`  | `module.cloudflare_pages["68tai-com"].cloudflare_pages_project.this` |
+| `placeholder-platform-6gou8-com`  | `module.cloudflare_pages["6gou8-com"].cloudflare_pages_project.this` |
+| `placeholder-platform-6xi8-com`   | `module.cloudflare_pages["6xi8-com"].cloudflare_pages_project.this`  |
 
 This is planning only. Do not execute imports, add import blocks, or migrate resources until Phase 5D defines a reviewed, reversible strategy.
 

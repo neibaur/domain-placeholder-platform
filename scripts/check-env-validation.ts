@@ -9,8 +9,8 @@ function assert(condition: boolean, message: string): void {
 }
 
 const positiveConfig = getPublicConfig({
-  ...smokeEnv,
-  PUBLIC_ROBOTS_INDEX: undefined,
+  PUBLIC_SITE_URL: smokeEnv.PUBLIC_SITE_URL,
+  PUBLIC_SITE_TITLE: smokeEnv.PUBLIC_SITE_TITLE,
 });
 
 assert(
@@ -18,9 +18,39 @@ assert(
   "PUBLIC_ROBOTS_INDEX should default to false.",
 );
 assert(
+  positiveConfig.PUBLIC_SITE_NAME === smokeEnv.PUBLIC_SITE_TITLE,
+  "PUBLIC_SITE_NAME should default to PUBLIC_SITE_TITLE.",
+);
+assert(
+  positiveConfig.PUBLIC_PRIMARY_LOCALE === "en",
+  "PUBLIC_PRIMARY_LOCALE should default to en.",
+);
+assert(
+  positiveConfig.PUBLIC_SECONDARY_LOCALE === "zh-CN",
+  "PUBLIC_SECONDARY_LOCALE should default to zh-CN.",
+);
+assert(
   positiveConfig.PUBLIC_SITE_URL === "https://example.com",
   "PUBLIC_SITE_URL should normalize cleanly.",
 );
+
+try {
+  getPublicConfig({
+    ...smokeEnv,
+    PUBLIC_SITE_URL: undefined,
+  });
+  throw new Error("Missing PUBLIC_SITE_URL should fail validation.");
+} catch (error) {
+  const message = error instanceof Error ? error.message : String(error);
+  assert(
+    message.includes("Invalid PUBLIC_ environment configuration"),
+    "Missing site URL error should name config failure.",
+  );
+  assert(
+    message.includes("PUBLIC_SITE_URL"),
+    "Missing site URL error should identify PUBLIC_SITE_URL.",
+  );
+}
 
 try {
   getPublicConfig({
