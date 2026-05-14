@@ -23,3 +23,13 @@ The module defines the reusable inputs and outputs expected for a future one-dom
 This module currently contains no resources. It exists to validate naming, input shape, and future interface stability before any infrastructure is onboarded.
 
 Cloudflare dashboard configuration remains the source of truth until a later import or migration phase.
+
+## Future Address Pattern
+
+Future root configuration is expected to instantiate this module with stable domain keys, such as `68tai-com`, so import addresses remain predictable:
+
+```text
+module.cloudflare_pages["68tai-com"].cloudflare_pages_project.this
+```
+
+This is a planning example only. The module does not currently declare `cloudflare_pages_project.this`, and no import should be attempted until a later reviewed phase adds resource definitions, state handling, and approval controls.
