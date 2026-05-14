@@ -45,6 +45,22 @@ The architecture rationale for static output and Cloudflare Pages hosting is doc
 
 Use `pnpm build` for Cloudflare Pages because Cloudflare injects project environment variables into the build process. Use `pnpm build:local` only for local builds that should explicitly load `.env`.
 
+## New Domain Onboarding
+
+Use this lightweight flow before adding another domain to the portfolio:
+
+1. Choose the domain identifier and Pages project name using `placeholder-platform-[domain-name]`.
+2. Create or select one Cloudflare Pages project for that domain.
+3. Confirm the project builds from `main` with `pnpm build` and `dist`.
+4. Set required Cloudflare Pages variables: `PUBLIC_SITE_URL` and `PUBLIC_SITE_TITLE`.
+5. Decide whether to rely on safe defaults for optional public variables.
+6. Keep `PUBLIC_ROBOTS_INDEX=false` until indexing is explicitly approved.
+7. Validate the Pages subdomain before attaching the custom domain.
+8. Attach the custom domain and confirm DNS/certificate status.
+9. Run post-deployment verification and update the [Cloudflare Inventory Template](cloudflare-inventory.md).
+
+Do not attach a new domain to an existing pilot Pages project unless that shared deployment has a reviewed operational reason.
+
 ## Deployment Safety Controls
 
 Deployment safety depends on keeping each domain isolated and each deployment target explicit.
@@ -74,6 +90,23 @@ Predictable project names support safer rollback procedures, operational clarity
 - [ ] `public/.well-known/security.txt` is either intentionally configured with public URLs or removed.
 
 The full Definition of Done is maintained in [Governance](governance.md#definition-of-done).
+
+## Operational Readiness Checklist
+
+Before treating a domain deployment as operationally ready:
+
+- [ ] Repository validation passes with `pnpm validate`.
+- [ ] Cloudflare Pages build succeeds for the intended project.
+- [ ] Required `PUBLIC_` variables are present in the selected environment.
+- [ ] Optional/defaulted `PUBLIC_` variables are intentionally set or intentionally omitted.
+- [ ] Pages subdomain behavior is verified before custom domain attachment.
+- [ ] Preview deployment behavior is reviewed separately from production.
+- [ ] Canonical metadata uses the intended `PUBLIC_SITE_URL`.
+- [ ] Page robots metadata and `robots.txt` match the intended indexing posture.
+- [ ] `sitemap-index.xml` references the intended production origin.
+- [ ] DNS and custom domain routing are active.
+- [ ] Rollback or break-glass path is understood for the single domain.
+- [ ] Inventory documentation is updated with validation notes.
 
 ## Preview Deployment Checklist
 
@@ -190,3 +223,5 @@ Minimize unnecessary exposure of operational metadata in repository files, gener
 TODO(terraform): Manage Cloudflare Pages projects, custom domains, DNS records, and environment variables through reviewed infrastructure code.
 
 Terraform remains validation-only and non-authoritative. Future import or migration work should follow the staged strategy in [Terraform and IaC Planning](iac.md#safe-import-strategy) and should not recreate existing Cloudflare resources.
+
+Phase 6 localization work should continue to preserve this deployment model: one shared codebase, project-specific configuration, and domain-level isolation.

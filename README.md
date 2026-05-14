@@ -18,24 +18,28 @@ Lightweight placeholder domains are treated as production-grade operational asse
 
 ## Current Status Snapshot
 
-| Area                                  | Status                                                                            |
-| ------------------------------------- | --------------------------------------------------------------------------------- |
-| Governance-first foundation           | Operational. Documentation, validation, review, and safety guidance are in place. |
-| Multi-domain deployment architecture  | Documented. One shared repository and one Cloudflare Pages project per domain.    |
-| CI/CD quality and security validation | Operational. Validation, CodeQL, and Gitleaks workflows are defined.              |
-| Accessibility, smoke, and env checks  | Operational through `pnpm validate`.                                              |
-| Terraform/IaC planning                | Documented in [Terraform and IaC Planning](docs/iac.md).                          |
-| Terraform validation skeleton         | Operational. Formatting and validation run without provisioning.                  |
+| Component                         | Current Maturity                       |
+| --------------------------------- | -------------------------------------- |
+| Astro build/runtime               | Operational static placeholder site.   |
+| Cloudflare Pages deployment model | Operational through manual validation. |
+| Environment variable policy       | Operational hybrid required/defaulted. |
+| CI/CD validation                  | Operational via GitHub Actions.        |
+| Security scanning                 | Operational via CodeQL and Gitleaks.   |
+| Accessibility and smoke checks    | Operational through `pnpm validate`.   |
+| Terraform/IaC                     | Validation-only and non-authoritative. |
+| Import/onboarding                 | Planned and documented.                |
+| Localization/i18n                 | Planned for Phase 6.                   |
+| Automation helpers                | Deferred.                              |
 
-Cloudflare provisioning, Terraform applies, imports, production environment configs, and automation helpers are not implemented.
+Cloudflare provisioning, Terraform applies, imports, production environment configs, localization implementation, and automation helpers are intentionally deferred.
 
 ## What Is Real vs Planned
 
-| Category               | Status                                                                                                                                                                                        |
-| ---------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Real today             | Astro platform, validation scripts, CI/CD workflows, Cloudflare Pages-compatible builds, manual Cloudflare Pages deployments, Terraform validation skeleton, and reusable module scaffolding. |
-| Planned but not active | Terraform provisioning, imports, remote state, automated apply workflows, full domain onboarding automation, and helper tooling.                                                              |
-| Source of truth        | Cloudflare remains the operational source of truth until resources are intentionally imported or recreated through a reviewed plan.                                                           |
+| Category               | Status                                                                                                                                                                                                                       |
+| ---------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Real today             | Astro platform, validation scripts, CI/CD workflows, Cloudflare Pages-compatible builds, manual Cloudflare Pages deployments, Terraform validation skeleton, reusable module scaffolding, and import planning documentation. |
+| Planned but not active | Terraform provisioning, real imports, remote state, automated apply workflows, localization implementation, full domain onboarding automation, and helper tooling.                                                           |
+| Source of truth        | Cloudflare remains the operational source of truth until resources are intentionally imported or recreated through a reviewed plan.                                                                                          |
 
 ## Repository Demonstrates
 
@@ -68,6 +72,8 @@ The recommended Cloudflare Pages model is one shared GitHub repository with one 
 | `6xi8.com`  | `placeholder-platform-6xi8-com`  |
 
 See [Deployment](docs/deployment.md) for production, preview, verification, and rollback checklists before connecting Cloudflare resources.
+
+Operational onboarding for a new domain should start with the [Deployment](docs/deployment.md#new-domain-onboarding) guide and be recorded in the [Cloudflare Inventory Template](docs/cloudflare-inventory.md).
 
 ## Local Development
 
@@ -137,6 +143,10 @@ Terraform is not authoritative yet. No Cloudflare resources are declared, import
 The reusable Cloudflare Pages module contract lives at [infra/terraform/modules/cloudflare-pages](infra/terraform/modules/cloudflare-pages/README.md). It defines validation-safe inputs and outputs only; it does not create Cloudflare Pages projects.
 
 Future import planning is documented in [Terraform and IaC Planning](docs/iac.md#safe-import-strategy). Any eventual import should be inventory-first, keyed by domain identifiers, and reviewed through plan-only drift analysis before Terraform authority changes.
+
+## Ready for Phase 6
+
+The platform is ready for future localization/i18n planning because the deployment model, environment policy, validation pipeline, accessibility baseline, operational inventory, and Terraform posture are stable and documented. Phase 6 can focus on multilingual structure without also solving deployment governance or infrastructure authority.
 
 ## Secret Scanning
 

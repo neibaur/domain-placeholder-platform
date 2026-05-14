@@ -1,6 +1,6 @@
 # Terraform Validation Skeleton
 
-This directory is a validation-only Terraform foundation. Phase 5B introduces structure, formatting standards, and safe CI validation without provisioning, importing, modifying, or destroying infrastructure.
+This directory is a validation-only Terraform foundation. It provides structure, formatting standards, safe CI validation, module contracts, and import planning references without provisioning, importing, modifying, or destroying infrastructure.
 
 ## Current Scope
 
@@ -8,11 +8,11 @@ This directory is a validation-only Terraform foundation. Phase 5B introduces st
 - `terraform init -backend=false`
 - `terraform validate`
 
-No Cloudflare resources are declared here yet. Terraform is not authoritative for existing Cloudflare resources in this phase.
+No Cloudflare resources are declared here yet. Terraform is not authoritative for existing Cloudflare resources.
 
 Phase 5C adds a reusable Cloudflare Pages module contract under [modules/cloudflare-pages](modules/cloudflare-pages/README.md). The module defines inputs, validation, and outputs only; it does not declare Cloudflare resources.
 
-Phase 5D documents safe import and migration planning. It does not add import blocks, state files, remote backends, resources, apply workflows, or Cloudflare credentials.
+Phase 5D documents safe import and migration planning. Phase 5E consolidates operational readiness language. Neither phase adds import blocks, state files, remote backends, resources, apply workflows, or Cloudflare credentials.
 
 ## Local Validation
 
@@ -36,6 +36,7 @@ These commands validate formatting and configuration only. They do not apply cha
 - Do not configure remote state in this phase.
 - Do not import existing Cloudflare resources in this phase.
 - Keep Cloudflare dashboard configuration as the source of truth until a reviewed import or migration phase.
+- Keep inventory updates non-sensitive and aligned with [Cloudflare Inventory Template](../../docs/cloudflare-inventory.md).
 
 ## Future Import Planning
 
