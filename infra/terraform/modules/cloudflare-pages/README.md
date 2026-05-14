@@ -10,11 +10,13 @@ The module defines the reusable inputs and outputs expected for a future one-dom
 
 | Name                     | Purpose                                                                            |
 | ------------------------ | ---------------------------------------------------------------------------------- |
-| `project_name`           | Cloudflare Pages project name following `placeholder-[domain-name]`.               |
+| `project_name`           | Cloudflare Pages project name following `placeholder-platform-[domain-name]`.      |
 | `production_branch`      | Git branch intended for production deployments.                                    |
 | `build_command`          | Build command used by Cloudflare Pages.                                            |
 | `build_output_directory` | Output directory deployed by Cloudflare Pages.                                     |
 | `environment_variables`  | Public project variables aligned with the platform's `PUBLIC_` rendering contract. |
+
+`environment_variables` should include identity-critical values such as `PUBLIC_SITE_URL` and `PUBLIC_SITE_TITLE` when future provisioning is introduced. Other public variables may rely on application defaults when appropriate.
 
 ## Non-Destructive Status
 

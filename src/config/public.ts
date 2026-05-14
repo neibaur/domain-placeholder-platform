@@ -7,26 +7,37 @@ const languageCodeSchema = z
     "Use a BCP 47 language code such as en or zh-CN.",
   );
 
-const optionalUrlSchema = z.preprocess(
+const siteNameSchema = z.preprocess(
   (value) => (value === "" ? undefined : value),
-  z.url().optional(),
+  z.string().min(1).max(80).optional(),
 );
 
-const optionalLanguageCodeSchema = z.preprocess(
-  (value) => (value === "" ? undefined : value),
-  languageCodeSchema.optional(),
-);
+const contactUrlSchema = z.union([z.literal(""), z.url()]).default("");
 
-export const publicConfigSchema = z.object({
-  PUBLIC_SITE_URL: z.url().transform((value) => value.replace(/\/$/, "")),
-  PUBLIC_SITE_NAME: z.string().min(1).max(80),
-  PUBLIC_SITE_TITLE: z.string().min(1).max(120),
-  PUBLIC_SITE_DESCRIPTION: z.string().min(1).max(180),
-  PUBLIC_PRIMARY_LOCALE: languageCodeSchema,
-  PUBLIC_SECONDARY_LOCALE: optionalLanguageCodeSchema,
-  PUBLIC_CONTACT_URL: optionalUrlSchema,
-  PUBLIC_ROBOTS_INDEX: z.enum(["true", "false"]).default("false"),
-});
+export const publicConfigSchema = z
+  .object({
+    PUBLIC_SITE_URL: z.url().transform((value) => value.replace(/\/$/, "")),
+    PUBLIC_SITE_TITLE: z.string().min(1).max(120),
+    PUBLIC_SITE_NAME: siteNameSchema,
+    PUBLIC_SITE_DESCRIPTION: z
+      .string()
+      .min(1)
+      .max(180)
+      .default("A lightweight placeholder page for a reserved domain."),
+    PUBLIC_PRIMARY_LOCALE: languageCodeSchema.default("en"),
+    PUBLIC_SECONDARY_LOCALE: languageCodeSchema.default("zh-CN"),
+    PUBLIC_CONTACT_URL: z.preprocess(
+      (value) => (value === undefined ? "" : value),
+      contactUrlSchema,
+    ),
+    PUBLIC_ROBOTS_INDEX: z.enum(["true", "false"]).default("false"),
+  })
+  .transform((config) => ({
+    ...config,
+    // Site name is display metadata; when omitted, keep it aligned with the
+    // required identity title rather than failing deployment.
+    PUBLIC_SITE_NAME: config.PUBLIC_SITE_NAME ?? config.PUBLIC_SITE_TITLE,
+  }));
 
 export type PublicConfig = z.infer<typeof publicConfigSchema>;
 

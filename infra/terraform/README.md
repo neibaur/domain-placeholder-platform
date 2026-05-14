@@ -21,6 +21,8 @@ cd infra/terraform
 terraform fmt -recursive -check
 terraform init -backend=false
 terraform validate
+terraform -chdir=modules/cloudflare-pages init -backend=false
+terraform -chdir=modules/cloudflare-pages validate
 ```
 
 These commands validate formatting and configuration only. They do not apply changes, create state in a remote backend, or provision Cloudflare resources.
