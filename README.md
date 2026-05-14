@@ -47,14 +47,15 @@ Cloudflare provisioning, Terraform applies, imports, production environment conf
 
 ## Documentation Map
 
-| Document                                                   | Purpose                                                                                             |
-| ---------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
-| [Architecture](docs/architecture.md)                       | Explains the Astro/static-site design, configuration flow, SEO behavior, and future IaC boundaries. |
-| [Governance](docs/governance.md)                           | Defines workflow expectations, CI/CD gates, review standards, and Definition of Done.               |
-| [Deployment](docs/deployment.md)                           | Captures Cloudflare Pages setup expectations and the pre-deployment checklist.                      |
-| [Security and Privacy](docs/security-and-privacy.md)       | Defines public configuration boundaries and operational metadata privacy expectations.              |
-| [Cloudflare Environment Variables](docs/cloudflare-env.md) | Provides documentation-only examples for pilot domain environment configuration.                    |
-| [Terraform and IaC Planning](docs/iac.md)                  | Documents future Terraform scope, safety principles, naming, and Phase 5 roadmap.                   |
+| Document                                                      | Purpose                                                                                             |
+| ------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| [Architecture](docs/architecture.md)                          | Explains the Astro/static-site design, configuration flow, SEO behavior, and future IaC boundaries. |
+| [Governance](docs/governance.md)                              | Defines workflow expectations, CI/CD gates, review standards, and Definition of Done.               |
+| [Deployment](docs/deployment.md)                              | Captures Cloudflare Pages setup expectations and the pre-deployment checklist.                      |
+| [Security and Privacy](docs/security-and-privacy.md)          | Defines public configuration boundaries and operational metadata privacy expectations.              |
+| [Cloudflare Environment Variables](docs/cloudflare-env.md)    | Provides documentation-only examples for pilot domain environment configuration.                    |
+| [Terraform and IaC Planning](docs/iac.md)                     | Documents future Terraform scope, safety principles, naming, and Phase 5 roadmap.                   |
+| [Cloudflare Inventory Template](docs/cloudflare-inventory.md) | Provides a non-authoritative template for future import planning and drift review.                  |
 
 ## Deployment Model
 
@@ -134,6 +135,8 @@ terraform validate
 Terraform is not authoritative yet. No Cloudflare resources are declared, imported, modified, or destroyed in this phase.
 
 The reusable Cloudflare Pages module contract lives at [infra/terraform/modules/cloudflare-pages](infra/terraform/modules/cloudflare-pages/README.md). It defines validation-safe inputs and outputs only; it does not create Cloudflare Pages projects.
+
+Future import planning is documented in [Terraform and IaC Planning](docs/iac.md#safe-import-strategy). Any eventual import should be inventory-first, keyed by domain identifiers, and reviewed through plan-only drift analysis before Terraform authority changes.
 
 ## Secret Scanning
 

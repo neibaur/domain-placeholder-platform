@@ -31,6 +31,8 @@ Replace dots with hyphens.
 
 Consistent names improve operational clarity, reduce ambiguity when multiple domains share one repository, and make future Terraform import or state mapping predictable.
 
+Future Terraform import planning should use the keyed address patterns documented in [Terraform and IaC Planning](iac.md#future-import-mapping-preparation). Manual Cloudflare configuration can be recorded with the [Cloudflare Inventory Template](cloudflare-inventory.md) before any future import attempt.
+
 Recommended build settings:
 
 - Framework preset: `Astro`
@@ -186,3 +188,5 @@ Minimize unnecessary exposure of operational metadata in repository files, gener
 ## Future Terraform Integration
 
 TODO(terraform): Manage Cloudflare Pages projects, custom domains, DNS records, and environment variables through reviewed infrastructure code.
+
+Terraform remains validation-only and non-authoritative. Future import or migration work should follow the staged strategy in [Terraform and IaC Planning](iac.md#safe-import-strategy) and should not recreate existing Cloudflare resources.
