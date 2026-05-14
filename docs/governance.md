@@ -11,6 +11,7 @@ This repository uses governance-first engineering: small reviewed changes, expli
 - Use conventional commits.
 - Prefer documentation-first changes for architecture, deployment, security, and operational practices.
 - Keep Cloudflare deployment changes separate from documentation-only governance changes unless a small repo hygiene update is clearly necessary.
+- Keep local `.env` usage separate from deployed configuration; Cloudflare Pages project variables are the source of truth for production and preview behavior.
 
 ## Review Standards
 
@@ -85,6 +86,18 @@ A change is done when:
 | Accessibility checks pass            | pa11y runs successfully, with manual review planned for production-facing changes.          |
 
 Deployment-specific readiness is tracked in [Deployment](deployment.md#production-deployment-checklist).
+
+## Local Environment Loading
+
+Fail-fast environment validation is intentional. `pnpm build` should fail when required `PUBLIC_` variables are missing from the process environment.
+
+For local builds, contributors may use:
+
+```sh
+pnpm build:local
+```
+
+This loads `.env` through `dotenv-cli` before running the normal build. The script is a developer-experience wrapper only; it does not change the production build contract.
 
 ## Deployment Governance
 

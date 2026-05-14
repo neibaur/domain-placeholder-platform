@@ -11,6 +11,7 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro check && astro build",
+    "build:local": "dotenv -e .env -- pnpm build",
     "preview": "astro preview",
     "typecheck": "astro check",
     "lint": "eslint .",
@@ -30,6 +31,7 @@
   "devDependencies": {
     "@astrojs/check": "^0.9.4",
     "@eslint/js": "^9.17.0",
+    "dotenv-cli": "^11.0.0",
     "eslint": "^9.17.0",
     "eslint-plugin-astro": "^1.3.1",
     "globals": "^17.6.0",

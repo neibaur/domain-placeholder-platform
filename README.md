@@ -40,7 +40,21 @@ cp .env.example .env
 pnpm dev
 ```
 
-Local development reads `PUBLIC_` values from `.env`. Keep this file private and use [.env.example](.env.example) as the documented contract.
+Local development can use `.env`, but copying `.env.example` only creates the file. Shell commands such as `pnpm build` do not automatically load `.env` for every execution path, especially because the Astro config validates `process.env` before rendering.
+
+Use the cross-platform local build script when you want to build with values from `.env`:
+
+```sh
+pnpm build:local
+```
+
+This uses `dotenv-cli` as a small development-only wrapper so contributors do not need different Bash, Git Bash, and PowerShell export commands.
+
+`pnpm build` remains intentionally strict and expects `PUBLIC_` values to already be present in the process environment. This preserves fail-fast behavior for CI and Cloudflare Pages.
+
+Local `.env` files are for local development and validation only. Production and preview deployments should use Cloudflare Pages project environment variables, which remain the source of truth for deployed domain behavior. Do not commit `.env`.
+
+VS Code or Python env-file injection is unrelated to Astro/pnpm builds unless the variables are actually exported into the shell process that runs `pnpm`.
 
 ## Validation
 
@@ -67,6 +81,7 @@ pnpm check:env
 pnpm smoke
 pnpm check:a11y
 pnpm build
+pnpm build:local
 ```
 
 ## Accessibility Validation

@@ -2,6 +2,16 @@
 
 Use this checklist for each Cloudflare Pages project. These examples are documentation-only and must not be copied into application source code.
 
+Cloudflare Pages project variables are the source of truth for deployed preview and production behavior. Local `.env` files are only for local development and validation, and they are intentionally ignored by git.
+
+For local builds that should load `.env`, use:
+
+```sh
+pnpm build:local
+```
+
+For CI and Cloudflare builds, use `pnpm build` with environment variables already provided by the runner or Cloudflare project settings.
+
 ## Pilot Domain Matrix
 
 These are documentation-only deployment examples. Do not copy pilot domain values into application source code.
