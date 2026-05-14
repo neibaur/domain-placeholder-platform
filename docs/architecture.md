@@ -24,6 +24,7 @@ This platform builds a static placeholder page that can be reused across multipl
 | Isolated deployments             | Each pilot domain should use a separate Pages project.                                                   |
 | Reusable topology                | One repository can support multiple domains without hardcoding production values.                        |
 | Validation-first workflow        | Formatting, linting, env validation, build, smoke, and accessibility checks run through `pnpm validate`. |
+| Focused test foundation          | Vitest covers pure TypeScript config and localization helpers without browser-dependent tests.           |
 | Security-first governance        | CodeQL, Gitleaks, no-secret guidance, and protected-file care are documented.                            |
 | Future IaC compatibility         | Naming and safety principles are documented before Terraform scaffolding is introduced.                  |
 
@@ -61,8 +62,10 @@ Phase 6A keeps localization shallow and static:
 - Supported locales are `en` and `zh-CN`.
 - `PUBLIC_PRIMARY_LOCALE` selects the root `<html lang>` value and primary localized copy.
 - `PUBLIC_SECONDARY_LOCALE` selects a secondary localized message.
+- Locale-specific message blocks carry their own `lang` attributes.
 - Missing locale variables use the documented defaults: `en` and `zh-CN`.
 - Unsupported locale values fail validation during build.
+- Focused Vitest tests cover locale defaults, unsupported values, content shape, and duplicate secondary suppression.
 - Route-based i18n, locale-prefixed URLs, per-locale sitemap entries, and external i18n frameworks are deferred.
 
 Thai is future-ready in documentation but is not part of the current runtime locale schema.

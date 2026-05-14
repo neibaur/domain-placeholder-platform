@@ -16,6 +16,6 @@ export default [
     },
   },
   {
-    ignores: ["dist", ".astro", "node_modules"],
+    ignores: ["coverage", "dist", ".astro", "node_modules"],
   },
 ];

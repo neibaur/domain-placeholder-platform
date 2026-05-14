@@ -55,6 +55,8 @@ try {
     "Rendered HTML",
   );
   assertIncludes(html, "轻量域名占位页正在准备中。", "Rendered HTML");
+  assertIncludes(html, 'class="locale-card" lang="en"', "Rendered HTML");
+  assertIncludes(html, 'class="locale-card" lang="zh-CN"', "Rendered HTML");
   assertIncludes(html, 'lang="en"', "Rendered HTML");
   assertIncludes(html, 'lang="zh-CN"', "Rendered HTML");
   assertIncludes(html, "example.com", "Rendered HTML");

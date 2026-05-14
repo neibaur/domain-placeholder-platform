@@ -93,6 +93,7 @@ These gates map to current repository scripts and workflows:
 | ESLint validation                     | `pnpm lint`                                                    |
 | markdownlint validation               | `pnpm check:markdown`                                          |
 | Environment validation                | `pnpm check:env`, backed by `scripts/check-env-validation.ts`  |
+| Focused TypeScript tests              | `pnpm test`, backed by Vitest                                  |
 | Astro and TypeScript build validation | `pnpm build`, invoked by `pnpm smoke`                          |
 | Production smoke validation           | `pnpm smoke`, backed by `scripts/smoke-production.mjs`         |
 | Accessibility validation              | `pnpm check:a11y`, backed by `scripts/check-accessibility.mjs` |
@@ -128,6 +129,7 @@ A change is done when:
 | Requirement                          | Expected Evidence                                                                           |
 | ------------------------------------ | ------------------------------------------------------------------------------------------- |
 | Local validation passes              | `pnpm validate` completes successfully.                                                     |
+| Focused tests pass                   | `pnpm test` passes for TypeScript config and localization helpers.                          |
 | CI checks pass                       | Required GitHub Actions checks are green before merge.                                      |
 | Documentation is updated             | README or relevant `docs/` files reflect changed behavior or operations.                    |
 | Deployment implications are reviewed | Any Cloudflare, DNS, indexing, or environment-variable effects are understood before merge. |
@@ -213,6 +215,8 @@ Production change checklist:
 The governance baseline is ready for localization/i18n planning because validation gates, accessibility checks, deployment isolation, environment policy, inventory guidance, and Terraform authority boundaries are documented. Phase 6 should add multilingual capability without changing the conservative infrastructure posture by default.
 
 Phase 6A starts with a simple structured content/config model for `en` and `zh-CN`. Avoid full route-based i18n until there is a clear need for localized URLs, separate sitemap entries, or search behavior by locale. Any localization change should continue to meet the [Definition of Done](#definition-of-done), preserve semantic HTML and `lang` behavior, protect canonical URL correctness, and keep conservative robots defaults unless indexing is intentionally approved.
+
+Phase 6B adds focused Vitest coverage for pure TypeScript localization and config behavior. Coverage reporting is available locally through `pnpm test:coverage`, but no hard threshold is required yet; a threshold can be considered once there is enough reusable logic for the signal to be meaningful.
 
 ## Secret Scanning Governance
 

@@ -9,6 +9,7 @@ type Props = {
 const { config } = Astro.props;
 const content = getLocalizedPageContent(config);
 const { primary, secondary, visibleLocales } = content;
+const localizedBlocks = [primary, ...(secondary ? [secondary] : [])];
 ---
 
 <main class="page-shell" aria-labelledby="page-title">
@@ -18,7 +19,8 @@ const { primary, secondary, visibleLocales } = content;
     <p id="page-description" class="lede">{config.PUBLIC_SITE_DESCRIPTION}</p>
   </section>
 
-  <section class="status-grid" aria-label="Domain status">
+  <section class="status-grid" aria-labelledby="status-title">
+    <h2 id="status-title" class="sr-only">{primary.copy.statusSectionLabel}</h2>
     <div>
       <span>{primary.copy.statusLabel}</span>
       <strong>{primary.copy.statusValue}</strong>
@@ -33,18 +35,17 @@ const { primary, secondary, visibleLocales } = content;
     </div>
   </section>
 
-  <section class="message" aria-label="Localized message">
-    <article lang={primary.locale}>
-      <h2>{primary.copy.heading}</h2>
-      <p>{primary.copy.description}</p>
-    </article>
+  <section class="message" aria-labelledby="message-title">
+    <h2 id="message-title" class="sr-only">
+      {primary.copy.messageSectionLabel}
+    </h2>
     {
-      secondary ? (
-        <article lang={secondary.locale}>
-          <h2>{secondary.copy.heading}</h2>
-          <p>{secondary.copy.description}</p>
+      localizedBlocks.map(({ locale, copy }) => (
+        <article class="locale-card" lang={locale}>
+          <h3>{copy.heading}</h3>
+          <p>{copy.description}</p>
         </article>
-      ) : null
+      ))
     }
   </section>
 
