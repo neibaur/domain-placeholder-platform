@@ -58,6 +58,7 @@ a:focus-visible {
 
 h1,
 h2,
+h3,
 p {
   overflow-wrap: anywhere;
 }
@@ -94,6 +95,10 @@ h1 {
   background: #fffdf8;
 }
 
+.status-grid h2 {
+  position: absolute;
+}
+
 .status-grid span {
   color: #5f6a62;
   font-size: 0.82rem;
@@ -105,16 +110,24 @@ h1 {
 
 .message {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr));
   gap: 1.25rem;
 }
 
-.message article {
+.locale-card {
+  min-width: 0;
+  border: 1px solid #d7d0c2;
   border-left: 3px solid #d88d4a;
-  padding-left: 1rem;
+  border-radius: 8px;
+  padding: 1rem;
+  background: #fffdf8;
 }
 
-.message h2 {
+.locale-card:lang(zh-CN) {
+  line-height: 1.65;
+}
+
+.message h3 {
   margin: 0 0 0.5rem;
   font-size: clamp(1.15rem, 2vw, 1.45rem);
   line-height: 1.2;
@@ -126,13 +139,22 @@ h1 {
   color: #3f4c43;
 }
 
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  clip-path: inset(50%);
+}
+
 @media (max-width: 700px) {
   .page-shell {
     align-content: start;
   }
 
-  .status-grid,
-  .message {
+  .status-grid {
     grid-template-columns: 1fr;
   }
 }

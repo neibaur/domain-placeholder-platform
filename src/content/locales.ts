@@ -1,4 +1,4 @@
-import type { PublicConfig, SupportedLocale } from "@/config/public";
+import type { SupportedLocale } from "@/config/public";
 
 type LocaleCopy = {
   eyebrow: string;
@@ -6,6 +6,8 @@ type LocaleCopy = {
   description: string;
   statusLabel: string;
   statusValue: string;
+  statusSectionLabel: string;
+  messageSectionLabel: string;
   domainLabel: string;
   localesLabel: string;
   contactLabel: string;
@@ -23,6 +25,11 @@ export type LocalizedPageContent = {
   visibleLocales: SupportedLocale[];
 };
 
+type LocaleSelection = {
+  PUBLIC_PRIMARY_LOCALE: SupportedLocale;
+  PUBLIC_SECONDARY_LOCALE?: SupportedLocale;
+};
+
 const copyByLocale = {
   en: {
     eyebrow: "Placeholder platform",
@@ -31,6 +38,8 @@ const copyByLocale = {
       "This page is rendered from deployment environment variables and can be reused across multiple domains without hardcoded ownership details.",
     statusLabel: "Status",
     statusValue: "Reserved for future service",
+    statusSectionLabel: "Domain status",
+    messageSectionLabel: "Localized message",
     domainLabel: "Domain",
     localesLabel: "Locales",
     contactLabel: "Contact",
@@ -42,6 +51,8 @@ const copyByLocale = {
       "此页面由部署环境变量渲染，可在多个域名之间复用，避免在代码中硬编码域名归属信息。",
     statusLabel: "状态",
     statusValue: "预留给未来服务",
+    statusSectionLabel: "域名状态",
+    messageSectionLabel: "本地化消息",
     domainLabel: "域名",
     localesLabel: "语言",
     contactLabel: "联系",
@@ -53,14 +64,12 @@ export function getLocaleCopy(locale: SupportedLocale): LocaleCopy {
 }
 
 export function getLocalizedPageContent(
-  config: Pick<
-    PublicConfig,
-    "PUBLIC_PRIMARY_LOCALE" | "PUBLIC_SECONDARY_LOCALE"
-  >,
+  config: LocaleSelection,
 ): LocalizedPageContent {
   const primaryLocale = config.PUBLIC_PRIMARY_LOCALE;
-  const secondaryLocale = config.PUBLIC_SECONDARY_LOCALE;
-  const hasDistinctSecondary = secondaryLocale !== primaryLocale;
+  const secondaryLocale = config.PUBLIC_SECONDARY_LOCALE ?? undefined;
+  const hasDistinctSecondary =
+    secondaryLocale !== undefined && secondaryLocale !== primaryLocale;
   const visibleLocales = hasDistinctSecondary
     ? [primaryLocale, secondaryLocale]
     : [primaryLocale];

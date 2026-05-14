@@ -26,6 +26,7 @@ Lightweight placeholder domains are treated as production-grade operational asse
 | CI/CD validation                  | Operational via GitHub Actions.        |
 | Security scanning                 | Operational via CodeQL and Gitleaks.   |
 | Accessibility and smoke checks    | Operational through `pnpm validate`.   |
+| Focused tests                     | Operational via Vitest.                |
 | Phase 5 readiness                 | Operationally ready.                   |
 | Terraform/IaC                     | Validation-only and non-authoritative. |
 | Import/onboarding                 | Planned and documented.                |
@@ -145,6 +146,7 @@ This is the main local confidence command. It runs:
 
 - Prettier formatting checks
 - ESLint
+- Vitest focused TypeScript tests
 - markdownlint
 - Zod environment validation checks
 - Astro type checking and production build
@@ -155,13 +157,15 @@ The same validation path is expected in CI before merge. See [Governance](docs/g
 
 Current commands:
 
-| Command            | Purpose                                                                                                                  |
-| ------------------ | ------------------------------------------------------------------------------------------------------------------------ |
-| `pnpm build:local` | Loads local `.env` through `dotenv-cli`, then runs the normal build.                                                     |
-| `pnpm check:env`   | Runs [scripts/check-env-validation.ts](scripts/check-env-validation.ts) for positive and negative Zod validation checks. |
-| `pnpm smoke`       | Runs [scripts/smoke-production.mjs](scripts/smoke-production.mjs) against generated production output.                   |
-| `pnpm check:a11y`  | Runs [scripts/check-accessibility.mjs](scripts/check-accessibility.mjs) with pa11y against served `dist/`.               |
-| `pnpm validate`    | Runs formatting, linting, markdown, env, smoke, and accessibility checks as the main confidence command.                 |
+| Command              | Purpose                                                                                                                  |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| `pnpm build:local`   | Loads local `.env` through `dotenv-cli`, then runs the normal build.                                                     |
+| `pnpm test`          | Runs focused Vitest tests for pure TypeScript config and localization behavior.                                          |
+| `pnpm test:coverage` | Runs non-gating Vitest coverage reporting for local review.                                                              |
+| `pnpm check:env`     | Runs [scripts/check-env-validation.ts](scripts/check-env-validation.ts) for positive and negative Zod validation checks. |
+| `pnpm smoke`         | Runs [scripts/smoke-production.mjs](scripts/smoke-production.mjs) against generated production output.                   |
+| `pnpm check:a11y`    | Runs [scripts/check-accessibility.mjs](scripts/check-accessibility.mjs) with pa11y against served `dist/`.               |
+| `pnpm validate`      | Runs formatting, linting, markdown, env, smoke, and accessibility checks as the main confidence command.                 |
 
 ## Terraform Validation
 
@@ -188,7 +192,7 @@ Phase 6 should add localization carefully and incrementally. Prefer a simple str
 
 ## Localization Model
 
-Phase 6A uses a small typed content contract in [src/content/locales.ts](src/content/locales.ts). It supports:
+Phase 6A introduced a small typed content contract in [src/content/locales.ts](src/content/locales.ts). Phase 6B polishes the rendering and adds focused Vitest tests for the localization/config behavior. The current model supports:
 
 - `en` for English.
 - `zh-CN` for Simplified Chinese.
@@ -203,6 +207,10 @@ Current non-goals:
 - No per-locale sitemap entries.
 - No external i18n framework.
 - No Cloudflare deployment changes.
+
+Locale-specific message blocks are rendered from the same content structure and carry their own `lang` attributes. The root `<html lang>` remains tied to `PUBLIC_PRIMARY_LOCALE`.
+
+Coverage is available through `pnpm test:coverage`, but it is intentionally non-gating while the application remains small and mostly static. A formal threshold can be considered in Phase 6C if localization logic or reusable utilities grow.
 
 ## Secret Scanning
 
