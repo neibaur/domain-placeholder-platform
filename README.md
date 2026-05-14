@@ -14,6 +14,21 @@ Domain-specific values are intentionally not hardcoded. Each Cloudflare Pages pr
 
 This platform provides a low-cost, operationally durable foundation for managing a domain portfolio. It supports fast future project launches, multilingual placeholder readiness, reusable Cloudflare Pages deployment patterns, and visible platform-engineering governance practices without turning a placeholder page into a heavy application.
 
+Lightweight placeholder domains are treated as production-grade operational assets, not disposable static pages. The repository is intended to preserve a reusable Cloudflare Pages pattern, demonstrate platform governance practices, and provide a launchpad for future multilingual or domain-specific projects.
+
+## Current Status Snapshot
+
+| Area                                  | Status                                                                            |
+| ------------------------------------- | --------------------------------------------------------------------------------- |
+| Governance-first foundation           | Operational. Documentation, validation, review, and safety guidance are in place. |
+| Multi-domain deployment architecture  | Documented. One shared repository and one Cloudflare Pages project per domain.    |
+| CI/CD quality and security validation | Operational. Validation, CodeQL, and Gitleaks workflows are defined.              |
+| Accessibility, smoke, and env checks  | Operational through `pnpm validate`.                                              |
+| Terraform/IaC planning                | Documented in [Terraform and IaC Planning](docs/iac.md).                          |
+| Terraform validation skeleton         | Planned next; no provisioning or apply workflow exists yet.                       |
+
+The project is ready for a future non-destructive Terraform validation phase. Cloudflare provisioning, Terraform applies, and automation helpers are not implemented.
+
 ## Documentation Map
 
 | Document                                                   | Purpose                                                                                             |

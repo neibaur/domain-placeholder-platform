@@ -28,6 +28,18 @@ Every PR should answer:
 
 Operational changes should favor fail-fast validation, domain-level deployment isolation, operational clarity over abstraction, and reversible steps. The platform should minimize unnecessary exposure of operational metadata while keeping deployment behavior easy to inspect and explain.
 
+## Operational Status
+
+| Category                    | Status                                                                                                                                                                           |
+| --------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Currently operational       | Astro static rendering, Zod env validation, production smoke tests, pa11y accessibility checks, CodeQL, Gitleaks, deployment safety docs, and local security preflight guidance. |
+| Planned but not implemented | Terraform validation skeleton, Cloudflare module design, safe import planning, and optional helper automation.                                                                   |
+| Longer-term enhancements    | Localization expansion, operational inventory helpers, and optional domain-specific features that preserve the low-cost governance-first model.                                  |
+
+## DevSecOps Posture
+
+The platform applies DevSecOps principles through automated validation, CI/CD quality gates, secret scanning, CodeQL analysis, accessibility checks, production smoke validation, and deployment safety controls. These controls are intentionally lightweight and repository-managed so they can mature with the platform without hiding operational behavior.
+
 ## CI/CD Pipeline
 
 The repository's validation commands are part of the operational governance model. They make formatting, build behavior, environment validation, production-output smoke checks, and accessibility checks repeatable locally and in GitHub Actions.
@@ -102,6 +114,15 @@ A change is done when:
 | Accessibility checks pass            | pa11y runs successfully, with manual review planned for production-facing changes.          |
 
 Deployment-specific readiness is tracked in [Deployment](deployment.md#production-deployment-checklist).
+
+## Lessons Learned So Far
+
+- Governance is easier to maintain when introduced before deployment complexity grows.
+- Environment validation failures are cheaper to fix locally than during Cloudflare deployment.
+- Domain-level deployment isolation reduces operational risk.
+- Repository-managed CodeQL and Gitleaks workflows reduce configuration drift.
+- Automated accessibility checks are easier to maintain when added early.
+- Strict validation pipelines improve documentation quality and release confidence.
 
 ## Local Environment Loading
 
