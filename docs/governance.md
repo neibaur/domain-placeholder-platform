@@ -141,3 +141,27 @@ Use extra care when changing:
 - future Terraform or infrastructure-as-code files
 
 Code coverage gates are intentionally deferred. They can be considered later if meaningful application logic, reusable utilities, or IaC automation scripts are introduced.
+
+## Local Security Preflight
+
+Before opening a PR, run:
+
+```sh
+pnpm validate
+git diff --check
+```
+
+If Gitleaks is installed locally, optionally run:
+
+```sh
+gitleaks git --redact --verbose
+```
+
+Use this concise PR-readiness checklist:
+
+- [ ] `pnpm validate` passes locally.
+- [ ] `git diff --check` passes.
+- [ ] No secrets, tokens, account IDs, or private operational details are committed.
+- [ ] No `.env` files are committed.
+- [ ] Docs/examples do not contain real Cloudflare tokens or account IDs.
+- [ ] Workflow, environment, deployment, secret scanning, or future IaC changes received extra review.

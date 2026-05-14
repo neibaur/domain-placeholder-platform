@@ -18,6 +18,8 @@ This repository is governance-first. Prefer maintainable, documented, and review
 
 Use extra review care when editing GitHub Actions workflows, environment examples, Cloudflare deployment documentation, secret scanning configuration, or future Terraform/IaC files. These files can affect CI behavior, deployment safety, or secret-handling posture.
 
+For AI-assisted changes, inspect diffs carefully before finalizing edits to `.github/workflows/`, `.env.example`, Cloudflare environment documentation, `.gitleaks` configuration, `.cursorignore`, `.cursorindexingignore`, or future Terraform/IaC files. Keep examples synthetic, avoid real account identifiers, and do not infer or copy values from local `.env` files.
+
 ## Validation
 
 Run before opening a pull request:

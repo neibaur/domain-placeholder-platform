@@ -92,13 +92,31 @@ Current commands:
 
 GitHub Actions runs Gitleaks to detect accidentally committed secrets on pull requests and pushes to `main`. Secrets should never be committed. Use GitHub Secrets, Cloudflare Pages project variables, or future reviewed IaC-safe workflows for sensitive values.
 
-Local Gitleaks checks are optional but useful before opening a PR. If Gitleaks is installed locally, run:
+## Local Security Preflight
+
+Before opening a PR, run the standard validation and whitespace checks:
+
+```sh
+pnpm validate
+git diff --check
+```
+
+If Gitleaks is installed locally, optionally run:
 
 ```sh
 gitleaks git --redact --verbose
 ```
 
 Do not commit `.env` files, API tokens, Cloudflare credentials, account IDs, private ownership details, or private operational contact information.
+
+PR-readiness checklist:
+
+- [ ] `pnpm validate` passes locally.
+- [ ] `git diff --check` passes.
+- [ ] No secrets, tokens, account IDs, or private operational details are committed.
+- [ ] No `.env` files are committed.
+- [ ] Docs/examples do not contain real Cloudflare tokens or account IDs.
+- [ ] Workflow, environment, deployment, secret scanning, or future IaC changes received extra review.
 
 ## Accessibility Validation
 
