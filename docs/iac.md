@@ -1,10 +1,10 @@
 # Terraform and IaC Planning
 
-Phase 5A is planning-only. It documents the intended infrastructure-as-code direction for this repository and does not provision, import, modify, or destroy any Cloudflare resources.
+Phase 5A started the infrastructure-as-code planning foundation. The repository now includes validation-only Terraform structure and module contracts, but it still does not provision, import, modify, or destroy any Cloudflare resources.
 
 ## Current Maturity
 
-The repository has an operational governance, validation, and deployment-readiness foundation. Terraform/IaC now has a validation-only skeleton and a reusable Cloudflare Pages module contract: there is provider version pinning, backend-free validation, module input validation, and output design, but no resources, no backend configuration, no state, no import workflow, and no apply automation.
+The repository has an operational governance, validation, and deployment-readiness foundation. Terraform/IaC now has a validation-only skeleton, a reusable Cloudflare Pages module contract, and a safe import planning strategy: there is provider version pinning, backend-free validation, module input validation, output design, and documented import governance, but no resources, no backend configuration, no state, no import automation, and no apply workflow.
 
 This project can run non-destructive Terraform formatting and validation without touching real infrastructure.
 
@@ -64,7 +64,7 @@ The module currently defines:
 - `build_output_directory`
 - `environment_variables`
 
-The contract is designed for one Cloudflare Pages project per domain. It validates the `placeholder-[domain-name]` project naming convention and requires environment variable keys to use the platform's `PUBLIC_` convention.
+The contract is designed for one Cloudflare Pages project per domain. It validates the `placeholder-platform-[domain-name]` project naming convention and requires environment variable keys to use the platform's `PUBLIC_` convention.
 
 The module has outputs for future inventory and operational workflows:
 
@@ -80,16 +80,16 @@ The module intentionally declares no Cloudflare resources in this phase. Cloudfl
 Future Cloudflare Pages resources should preserve the existing project naming convention:
 
 ```text
-placeholder-[domain-name]
+placeholder-platform-[domain-name]
 ```
 
 Examples:
 
-| Domain      | Future Pages Project    |
-| ----------- | ----------------------- |
-| `68tai.com` | `placeholder-68tai-com` |
-| `6gou8.com` | `placeholder-6gou8-com` |
-| `6xi8.com`  | `placeholder-6xi8-com`  |
+| Domain      | Future Pages Project             |
+| ----------- | -------------------------------- |
+| `68tai.com` | `placeholder-platform-68tai-com` |
+| `6gou8.com` | `placeholder-platform-6gou8-com` |
+| `6xi8.com`  | `placeholder-platform-6xi8-com`  |
 
 Predictable names support safer imports, operational clarity, rollback and debugging, and future automation.
 
@@ -126,17 +126,113 @@ Do not commit local state files, generated plans, provider credentials, or backe
 
 ## Future Import Mapping Preparation
 
-Future Phase 5D should map existing manual Cloudflare Pages projects to reviewed Terraform addresses before any import occurs.
+Phase 5D maps existing manual Cloudflare Pages projects to reviewed Terraform address patterns before any import occurs.
 
 Conceptual mapping examples:
 
 | Existing Cloudflare Pages Project | Future Terraform Address                                             |
 | --------------------------------- | -------------------------------------------------------------------- |
-| `placeholder-68tai-com`           | `module.cloudflare_pages["68tai-com"].cloudflare_pages_project.this` |
-| `placeholder-6gou8-com`           | `module.cloudflare_pages["6gou8-com"].cloudflare_pages_project.this` |
-| `placeholder-6xi8-com`            | `module.cloudflare_pages["6xi8-com"].cloudflare_pages_project.this`  |
+| `placeholder-platform-68tai-com`  | `module.cloudflare_pages["68tai-com"].cloudflare_pages_project.this` |
+| `placeholder-platform-6gou8-com`  | `module.cloudflare_pages["6gou8-com"].cloudflare_pages_project.this` |
+| `placeholder-platform-6xi8-com`   | `module.cloudflare_pages["6xi8-com"].cloudflare_pages_project.this`  |
 
-This is planning only. Do not execute imports, add import blocks, or migrate resources until Phase 5D defines a reviewed, reversible strategy.
+These examples assume a future root configuration uses keyed module instances, such as `for_each`, keyed by domain identifiers with dots replaced by hyphens. The current module does not declare `cloudflare_pages_project.this`, so these addresses are planning examples only.
+
+Do not execute imports, add import blocks, or migrate resources until a later phase adds reviewed Terraform resources, state handling, and approval controls.
+
+## Terraform Authority Stages
+
+Terraform authority should mature in explicit stages:
+
+| Stage | Name                                          | Meaning                                                                                       |
+| ----- | --------------------------------------------- | --------------------------------------------------------------------------------------------- |
+| 0     | Manual Cloudflare / Terraform validation-only | Cloudflare dashboard is authoritative; Terraform validates structure and contracts only.      |
+| 1     | Import planning / inventory                   | Manual Cloudflare configuration is recorded and mapped before any state operation.            |
+| 2     | Read-only import rehearsal                    | Import behavior is rehearsed in a non-production or disposable context where possible.        |
+| 3     | Controlled import into state                  | Existing resources are imported only after review, backup, and rollback planning.             |
+| 4     | Plan-only drift review                        | Terraform plans are reviewed to understand differences before any apply is considered.        |
+| 5     | Carefully reviewed apply, future only         | Applies are manually approved and limited to well-understood, reversible infrastructure work. |
+
+This repository is currently between Stage 0 and Stage 1. Terraform validates contracts and documentation now; Cloudflare remains the operational source of truth.
+
+## Safe Import Strategy
+
+Future import work should onboard existing Cloudflare Pages projects without recreating them. Import should happen only after the manually managed project has been deployed, verified, and documented.
+
+Safe import principles:
+
+- Inventory the current Cloudflare dashboard configuration before writing Terraform resources.
+- Confirm the Pages project is stable and follows `placeholder-platform-[domain-name]`.
+- Model the existing resource shape in Terraform before attempting import.
+- Import existing resources into state instead of allowing Terraform to create replacement resources.
+- Review `terraform plan` output after import and resolve unexpected differences manually.
+- Treat unknown drift as a review item, not as something Terraform should fix automatically.
+- Keep the Cloudflare dashboard as the recovery path during early onboarding.
+
+The manual inventory template is maintained in [Cloudflare Inventory Template](cloudflare-inventory.md).
+
+## Import Readiness Checklist
+
+Before any future import is attempted:
+
+- [ ] Cloudflare Pages project exists and is stable.
+- [ ] Project name follows `placeholder-platform-[domain-name]`.
+- [ ] Production branch is confirmed.
+- [ ] Build command is confirmed.
+- [ ] Build output directory is confirmed.
+- [ ] Required and optional `PUBLIC_` variables are inventoried.
+- [ ] Preview and production variable differences are understood.
+- [ ] Custom domains are inventoried.
+- [ ] DNS records are inventoried.
+- [ ] Rollback or break-glass path is documented.
+- [ ] No secrets, API tokens, account IDs, or private metadata are stored in Terraform.
+- [ ] Current manual Cloudflare configuration is exported, screenshotted, or recorded.
+- [ ] Repository validation passes.
+- [ ] Import behavior has been tested in a non-production or sandbox scenario when possible.
+
+## Import Command Examples
+
+The following commands are examples only. They are not ready-to-run instructions and must be verified against the Cloudflare Terraform provider documentation before use.
+
+```sh
+terraform import 'module.cloudflare_pages["68tai-com"].cloudflare_pages_project.this' '<account_id>/<project_name>'
+terraform import 'module.cloudflare_pages["6gou8-com"].cloudflare_pages_project.this' '<account_id>/<project_name>'
+terraform import 'module.cloudflare_pages["6xi8-com"].cloudflare_pages_project.this' '<account_id>/<project_name>'
+```
+
+The exact import ID format depends on the provider resource being imported. Do not place real account IDs, project IDs, API tokens, or state files in the repository.
+
+## Drift and Reconciliation Strategy
+
+After a future import, drift review should be plan-only until the team understands every difference.
+
+Recommended review flow:
+
+1. Capture the current Cloudflare dashboard configuration.
+2. Import one project in a controlled context.
+3. Run `terraform plan` without applying changes.
+4. Compare Terraform output against the recorded dashboard configuration.
+5. Resolve differences in code or manually in Cloudflare only after review.
+6. Repeat for build settings, environment variables, custom domains, and DNS records.
+
+Do not use Terraform to automatically remediate unknown drift. Differences in `PUBLIC_` variables, build commands, branches, custom domains, or DNS should be treated as operational findings until reviewed.
+
+## Import Rollback and Break-Glass
+
+If future import state is wrong, prefer state correction over infrastructure changes.
+
+Conceptual recovery options:
+
+```sh
+terraform state rm 'module.cloudflare_pages["68tai-com"].cloudflare_pages_project.this'
+```
+
+- Remove the affected resource from Terraform state without destroying the Cloudflare resource.
+- Restore from a reviewed backup state if state corruption occurs.
+- Pause Terraform adoption for a specific project while continuing manual Cloudflare management.
+- Keep dashboard access and existing rollback procedures available during early onboarding.
+
+Do not run `terraform destroy` or destructive apply operations as part of initial import recovery.
 
 ## Phase 5 Roadmap
 

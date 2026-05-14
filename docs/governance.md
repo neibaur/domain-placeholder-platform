@@ -33,8 +33,25 @@ Operational changes should favor fail-fast validation, domain-level deployment i
 | Category                    | Status                                                                                                                                                                                                                                                 |
 | --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | Currently operational       | Astro static rendering, Zod env validation, production smoke tests, pa11y accessibility checks, CodeQL, Gitleaks, deployment safety docs, local security preflight guidance, Terraform validation-only skeleton, and Cloudflare Pages module contract. |
-| Planned but not implemented | Safe import planning, provisioning workflows, and optional helper automation.                                                                                                                                                                          |
+| Planned but not implemented | Terraform imports, provisioning workflows, and optional helper automation.                                                                                                                                                                             |
 | Longer-term enhancements    | Localization expansion, operational inventory helpers, and optional domain-specific features that preserve the low-cost governance-first model.                                                                                                        |
+
+## Current Operational Snapshot
+
+| Area              | Status                                                                                                                                   |
+| ----------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| Current maturity  | Governance-first platform foundation with validated CI/CD, deployment architecture, Cloudflare Pages testing, and Terraform scaffolding. |
+| Production status | Manual Cloudflare Pages deployments are supported; Terraform remains validation-only and non-authoritative.                              |
+| Risk posture      | Low-risk and non-destructive; no automated infrastructure provisioning is enabled.                                                       |
+| Next milestone    | Complete Phase 5D safe import planning before any Terraform onboarding or authority change.                                              |
+
+## What Is Real vs Planned
+
+| Category               | Status                                                                                                                                                   |
+| ---------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Real today             | Astro platform, validation scripts, CI/CD workflows, Cloudflare Pages-compatible builds, Terraform validation skeleton, and reusable module scaffolding. |
+| Planned but not active | Terraform provisioning, real imports, remote state, automated apply workflows, and full domain onboarding automation.                                    |
+| Source of truth        | Cloudflare remains the operational source of truth until a reviewed import or recreation plan is executed.                                               |
 
 ## DevSecOps Posture
 
@@ -143,7 +160,7 @@ Cloudflare deployment work should preserve the multi-project model documented in
 
 - one shared repository
 - one Cloudflare Pages project per pilot domain
-- strict `placeholder-[domain-name]` project naming
+- strict `placeholder-platform-[domain-name]` project naming
 - project-specific `PUBLIC_` variables
 - no production domain values hardcoded into application source
 - rollback or disablement scoped to the affected domain whenever possible
@@ -161,6 +178,10 @@ High-risk change areas require extra review:
 Terraform/IaC planning is documented in [Terraform and IaC Planning](iac.md). The current Terraform workflow is validation-only. This repository should not include Cloudflare provider credentials, Terraform backend configuration, imports, production environments, or production apply automation until a later reviewed phase.
 
 Reusable Terraform modules should preserve simple interface contracts, validate naming conventions, and align environment variable inputs with the existing `PUBLIC_` rendering model. Module reuse should reduce cross-domain drift without hiding operational details.
+
+Future Terraform import work must be inventory-first and non-destructive. Existing Cloudflare Pages projects should be mapped to keyed module addresses, reviewed against the Cloudflare dashboard, and reconciled through plan-only drift review before any apply workflow is considered.
+
+Terraform authority stages are defined in [Terraform and IaC Planning](iac.md#terraform-authority-stages). The repository remains between Stage 0 and Stage 1: validation-only Terraform exists, and import planning is documented, but Terraform does not manage live resources.
 
 Production change checklist:
 
