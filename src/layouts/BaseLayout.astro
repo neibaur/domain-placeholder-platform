@@ -1,0 +1,39 @@
+---
+import { shouldIndex, type PublicConfig } from "@/config/public";
+
+type Props = {
+  config: PublicConfig;
+};
+
+const { config } = Astro.props;
+const canonicalUrl = new URL(
+  Astro.url.pathname,
+  config.PUBLIC_SITE_URL,
+).toString();
+const robotsContent = shouldIndex(config) ? "index,follow" : "noindex,nofollow";
+---
+
+<!doctype html>
+<html lang={config.PUBLIC_PRIMARY_LOCALE}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content={robotsContent} />
+    <meta name="description" content={config.PUBLIC_SITE_DESCRIPTION} />
+    <link rel="canonical" href={canonicalUrl} />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <title>{config.PUBLIC_SITE_TITLE}</title>
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:site_name" content={config.PUBLIC_SITE_NAME} />
+    <meta property="og:title" content={config.PUBLIC_SITE_TITLE} />
+    <meta property="og:description" content={config.PUBLIC_SITE_DESCRIPTION} />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={config.PUBLIC_SITE_TITLE} />
+    <meta name="twitter:description" content={config.PUBLIC_SITE_DESCRIPTION} />
+    <slot name="head" />
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>
