@@ -39,3 +39,5 @@ jobs:
 
       - name: Validate
         run: pnpm validate
+        env:
+          PA11Y_CHROME_PATH: /usr/bin/google-chrome

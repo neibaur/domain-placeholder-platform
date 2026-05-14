@@ -7,6 +7,7 @@ dist/
 .env.*
 !.env.example
 *.log
+astro-dev*.log
 coverage/
 .DS_Store
 Thumbs.db

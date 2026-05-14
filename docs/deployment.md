@@ -12,6 +12,18 @@ Recommended build settings:
 - Node.js version: `22`
 - Package manager: `pnpm`
 
+## Pre-Deployment Checklist
+
+- `pnpm validate` passes locally.
+- The target Cloudflare Pages project has all required `PUBLIC_` variables configured.
+- `PUBLIC_SITE_URL` exactly matches the production origin, including `https://`.
+- `PUBLIC_ROBOTS_INDEX` is `false` until the domain is intentionally ready for search indexing.
+- No secrets, Cloudflare account IDs, registrant details, or private contact details are committed.
+- GitHub branch protection requires the validation workflow before merge.
+- Cloudflare production deployments are connected to `main`.
+- Preview deployments do not publish unintended ownership or operational metadata.
+- `public/.well-known/security.txt` is either intentionally configured with public URLs or removed.
+
 ## Environment Variables
 
 Set these in each Cloudflare Pages project:
