@@ -14,6 +14,10 @@ This repository is governance-first. Prefer maintainable, documented, and review
 - Add or update documentation alongside operational or architectural changes.
 - Use conventional commits and small PRs against `main`.
 
+## Protected-File Care
+
+Use extra review care when editing GitHub Actions workflows, environment examples, Cloudflare deployment documentation, secret scanning configuration, or future Terraform/IaC files. These files can affect CI behavior, deployment safety, or secret-handling posture.
+
 ## Validation
 
 Run before opening a pull request:

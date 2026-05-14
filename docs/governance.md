@@ -42,6 +42,8 @@ flowchart TD
   a11y --> ready[Ready for review or merge decision]
   pr --> codeql[CodeQL security analysis]
   codeql --> ready
+  pr --> gitleaks[Gitleaks secret scanning]
+  gitleaks --> ready
 ```
 
 ## Current CI/CD Gates
@@ -59,10 +61,12 @@ These gates map to current repository scripts and workflows:
 | Accessibility validation              | `pnpm check:a11y`, backed by `scripts/check-accessibility.mjs` |
 | Integrated local/CI validation        | `pnpm validate`                                                |
 | CodeQL security analysis              | `.github/workflows/codeql.yml`                                 |
+| Secret scanning                       | `.github/workflows/gitleaks.yml`                               |
 
 CodeQL runs on pull requests, pushes to `main`, and a weekly schedule.
+Gitleaks runs on pull requests and pushes to `main` to detect accidentally committed secrets.
 
-Local contributors should use the same primary confidence command documented in the [README](../README.md#validation):
+Local contributors should use the same primary confidence command documented in the [README](../README.md#current-validation-commands):
 
 ```sh
 pnpm validate
@@ -116,3 +120,24 @@ Cloudflare deployment work should preserve the multi-project model documented in
 - project-specific `PUBLIC_` variables
 - no production domain values hardcoded into application source
 - rollback or disablement scoped to the affected domain whenever possible
+
+## Secret Scanning Governance
+
+Gitleaks is used as a CI secret scanning layer. It complements GitHub secret scanning and code review; it does not make committing secrets safe.
+
+Secrets and sensitive operational values belong in GitHub Secrets, Cloudflare Pages project variables, or future reviewed IaC-safe secret workflows. Do not commit `.env` files, API tokens, Cloudflare credentials, account IDs, private ownership details, or private operational contact information.
+
+Local Gitleaks usage is optional. Developers who already have Gitleaks installed can run:
+
+```sh
+gitleaks git --redact --verbose
+```
+
+Use extra care when changing:
+
+- GitHub Actions workflows
+- environment examples and local env handling
+- Cloudflare deployment documentation
+- future Terraform or infrastructure-as-code files
+
+Code coverage gates are intentionally deferred. They can be considered later if meaningful application logic, reusable utilities, or IaC automation scripts are introduced.
