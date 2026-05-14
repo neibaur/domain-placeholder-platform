@@ -26,12 +26,48 @@ Lightweight placeholder domains are treated as production-grade operational asse
 | CI/CD validation                  | Operational via GitHub Actions.        |
 | Security scanning                 | Operational via CodeQL and Gitleaks.   |
 | Accessibility and smoke checks    | Operational through `pnpm validate`.   |
+| Phase 5 readiness                 | Operationally ready.                   |
 | Terraform/IaC                     | Validation-only and non-authoritative. |
 | Import/onboarding                 | Planned and documented.                |
-| Localization/i18n                 | Planned for Phase 6.                   |
+| Localization/i18n                 | Phase 6 in design.                     |
 | Automation helpers                | Deferred.                              |
 
 Cloudflare provisioning, Terraform applies, imports, production environment configs, localization implementation, and automation helpers are intentionally deferred.
+
+## Runtime Stack Snapshot
+
+| Area                  | Current Choice                                                                                         |
+| --------------------- | ------------------------------------------------------------------------------------------------------ |
+| Framework             | Astro with TypeScript.                                                                                 |
+| Package manager       | pnpm.                                                                                                  |
+| Hosting target        | Cloudflare Pages.                                                                                      |
+| Rendering model       | Static-first build output with minimal client-side JavaScript.                                         |
+| Build command         | `pnpm build`.                                                                                          |
+| Build output          | `dist`.                                                                                                |
+| Runtime configuration | Cloudflare Pages project variables for preview/production; local `.env` only for developer validation. |
+
+## Intentional Limitations
+
+The platform stays lightweight by design:
+
+- No database.
+- No authentication.
+- No SSR or long-running server runtime.
+- No edge functions yet.
+- No analytics yet.
+- No Terraform-managed Cloudflare resources yet.
+- No implemented localization/i18n routing yet.
+
+These constraints keep the placeholder platform low-cost, low-maintenance, and easy to validate while future needs are still small.
+
+## Architectural Principles
+
+- Prefer static-first output and Cloudflare Pages' simple deployment model.
+- Keep per-domain customization environment-driven.
+- Validate behavior before adding automation.
+- Treat governance, privacy, and accessibility as baseline engineering concerns.
+- Adopt Terraform progressively, with validation before authority.
+- Avoid overengineering until real operational needs justify more structure.
 
 ## What Is Real vs Planned
 
@@ -147,6 +183,8 @@ Future import planning is documented in [Terraform and IaC Planning](docs/iac.md
 ## Ready for Phase 6
 
 The platform is ready for future localization/i18n planning because the deployment model, environment policy, validation pipeline, accessibility baseline, operational inventory, and Terraform posture are stable and documented. Phase 6 can focus on multilingual structure without also solving deployment governance or infrastructure authority.
+
+Phase 6 should add localization carefully and incrementally. Prefer a simple structured content/config model before adding full route-based i18n, unless separate localized routes become a clear requirement. Localization changes should preserve accessibility, SEO metadata, canonical URL behavior, sitemap behavior, and conservative `PUBLIC_ROBOTS_INDEX=false` defaults. See [Governance](docs/governance.md#ready-for-phase-6) and the [Definition of Done](docs/governance.md#definition-of-done).
 
 ## Secret Scanning
 

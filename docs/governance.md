@@ -28,6 +28,8 @@ Every PR should answer:
 
 Operational changes should favor fail-fast validation, domain-level deployment isolation, operational clarity over abstraction, and reversible steps. The platform should minimize unnecessary exposure of operational metadata while keeping deployment behavior easy to inspect and explain.
 
+Architectural decisions should preserve the current static-first, low-maintenance model unless a concrete operational requirement justifies additional runtime complexity. Avoid adding databases, authentication, SSR, edge functions, analytics, or automation simply because they are available.
+
 ## Operational Status
 
 | Category                    | Status                                                                                                                                                                                                                                                                       |
@@ -43,7 +45,8 @@ Operational changes should favor fail-fast validation, domain-level deployment i
 | Current maturity  | Governance-first platform foundation with validated CI/CD, deployment architecture, Cloudflare Pages testing, and Terraform scaffolding. |
 | Production status | Manual Cloudflare Pages deployments are supported; Terraform remains validation-only and non-authoritative.                              |
 | Risk posture      | Low-risk and non-destructive; no automated infrastructure provisioning is enabled.                                                       |
-| Next milestone    | Begin Phase 6 localization/i18n planning without weakening deployment governance or validation gates.                                    |
+| Phase 5 status    | Operationally ready for the current placeholder platform scope.                                                                          |
+| Next milestone    | Begin Phase 6 localization/i18n design without weakening deployment governance or validation gates.                                      |
 
 ## What Is Real vs Planned
 
@@ -208,6 +211,8 @@ Production change checklist:
 ## Ready for Phase 6
 
 The governance baseline is ready for localization/i18n planning because validation gates, accessibility checks, deployment isolation, environment policy, inventory guidance, and Terraform authority boundaries are documented. Phase 6 should add multilingual capability without changing the conservative infrastructure posture by default.
+
+Phase 6 should start with a simple structured content/config model. Avoid full route-based i18n until there is a clear need for localized URLs, separate sitemap entries, or search behavior by locale. Any localization change should continue to meet the [Definition of Done](#definition-of-done), preserve semantic HTML and `lang` behavior, protect canonical URL correctness, and keep conservative robots defaults unless indexing is intentionally approved.
 
 ## Secret Scanning Governance
 

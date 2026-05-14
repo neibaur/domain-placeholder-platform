@@ -10,6 +10,11 @@ This directory is a validation-only Terraform foundation. It provides structure,
 
 No Cloudflare resources are declared here yet. Terraform is not authoritative for existing Cloudflare resources.
 
+In the shared authority model, this directory is between Stage 0 and Stage 1:
+
+- Stage 0: Cloudflare dashboard is authoritative; Terraform validates structure and contracts only.
+- Stage 1: import planning and inventory may be documented, but Terraform still does not manage live resources.
+
 Phase 5C adds a reusable Cloudflare Pages module contract under [modules/cloudflare-pages](modules/cloudflare-pages/README.md). The module defines inputs, validation, and outputs only; it does not declare Cloudflare resources.
 
 Phase 5D documents safe import and migration planning. Phase 5E consolidates operational readiness language. Neither phase adds import blocks, state files, remote backends, resources, apply workflows, or Cloudflare credentials.

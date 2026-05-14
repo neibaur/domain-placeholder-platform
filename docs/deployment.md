@@ -45,6 +45,15 @@ The architecture rationale for static output and Cloudflare Pages hosting is doc
 
 Use `pnpm build` for Cloudflare Pages because Cloudflare injects project environment variables into the build process. Use `pnpm build:local` only for local builds that should explicitly load `.env`.
 
+## Current Production Reality
+
+- Cloudflare Pages projects are configured manually.
+- Cloudflare Pages project variables are configured manually per project and environment.
+- Cloudflare dashboard remains the operational source of truth.
+- Terraform remains validation-only and non-authoritative.
+- GitHub Actions validation is active for repository quality and security checks.
+- The deployed runtime is static output; there is no SSR server, edge function, database, authentication layer, or analytics integration.
+
 ## New Domain Onboarding
 
 Use this lightweight flow before adding another domain to the portfolio:
@@ -224,4 +233,4 @@ TODO(terraform): Manage Cloudflare Pages projects, custom domains, DNS records, 
 
 Terraform remains validation-only and non-authoritative. Future import or migration work should follow the staged strategy in [Terraform and IaC Planning](iac.md#safe-import-strategy) and should not recreate existing Cloudflare resources.
 
-Phase 6 localization work should continue to preserve this deployment model: one shared codebase, project-specific configuration, and domain-level isolation.
+Phase 6 localization work should continue to preserve this deployment model: one shared codebase, project-specific configuration, domain-level isolation, canonical URL correctness, sitemap behavior, accessibility expectations, and conservative robots defaults.
