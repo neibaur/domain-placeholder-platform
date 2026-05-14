@@ -3,10 +3,7 @@ import { defineConfig } from "astro/config";
 import { z } from "zod";
 
 const configSchema = z.object({
-  PUBLIC_SITE_URL: z
-    .string()
-    .url()
-    .transform((value) => value.replace(/\/$/, "")),
+  PUBLIC_SITE_URL: z.url().transform((value) => value.replace(/\/$/, "")),
 });
 
 const result = configSchema.safeParse(process.env);

@@ -9,7 +9,7 @@ const languageCodeSchema = z
 
 const optionalUrlSchema = z.preprocess(
   (value) => (value === "" ? undefined : value),
-  z.string().url().optional(),
+  z.url().optional(),
 );
 
 const optionalLanguageCodeSchema = z.preprocess(
@@ -18,10 +18,7 @@ const optionalLanguageCodeSchema = z.preprocess(
 );
 
 export const publicConfigSchema = z.object({
-  PUBLIC_SITE_URL: z
-    .string()
-    .url()
-    .transform((value) => value.replace(/\/$/, "")),
+  PUBLIC_SITE_URL: z.url().transform((value) => value.replace(/\/$/, "")),
   PUBLIC_SITE_NAME: z.string().min(1).max(80),
   PUBLIC_SITE_TITLE: z.string().min(1).max(120),
   PUBLIC_SITE_DESCRIPTION: z.string().min(1).max(180),

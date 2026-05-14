@@ -41,6 +41,8 @@ Recommended build settings:
 
 The architecture rationale for static output and Cloudflare Pages hosting is documented in [Architecture](architecture.md#why-astro).
 
+Use `pnpm build` for Cloudflare Pages because Cloudflare injects project environment variables into the build process. Use `pnpm build:local` only for local builds that should explicitly load `.env`.
+
 ## Production Deployment Checklist
 
 - `pnpm validate` passes locally.
@@ -81,6 +83,8 @@ PUBLIC_ROBOTS_INDEX=false
 Repeat with the appropriate `PUBLIC_SITE_URL` for `6gou8.com` and `6xi8.com`.
 
 The full pilot matrix is maintained in [Cloudflare Environment Variables](cloudflare-env.md).
+
+Local `.env` files are not a deployment source of truth. They are developer convenience files for local commands, while Cloudflare Pages project variables control preview and production behavior.
 
 ## Custom Domain Configuration
 
