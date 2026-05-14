@@ -20,6 +20,8 @@ Use extra review care when editing GitHub Actions workflows, environment example
 
 For AI-assisted changes, inspect diffs carefully before finalizing edits to `.github/workflows/`, `.env.example`, Cloudflare environment documentation, `.gitleaks` configuration, `.cursorignore`, `.cursorindexingignore`, or future Terraform/IaC files. Keep examples synthetic, avoid real account identifiers, and do not infer or copy values from local `.env` files.
 
+Treat environment validation, canonical URL handling, robots/sitemap generation, deployment workflows, and future IaC as high-risk change areas. Prefer small reversible edits, and make sure deployment-specific values stay in Cloudflare project configuration rather than source code.
+
 ## Validation
 
 Run before opening a pull request:
