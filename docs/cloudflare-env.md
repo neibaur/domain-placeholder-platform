@@ -65,4 +65,6 @@ PUBLIC_SITE_TITLE=Domain Placeholder
 
 Defaults reduce onboarding friction without hiding identity-critical misconfiguration. `PUBLIC_ROBOTS_INDEX=false` is conservative for parked, private, test, or prelaunch domains.
 
+Supported Phase 6A locales are `en` and `zh-CN`. Invalid locale values fail Zod validation during build so Cloudflare Pages deployments do not silently render unsupported language settings. Thai is documented as future-ready only and should not be configured yet.
+
 TODO(terraform): Convert this matrix into Terraform variables once Cloudflare project provisioning is automated.

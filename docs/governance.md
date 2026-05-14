@@ -35,7 +35,7 @@ Architectural decisions should preserve the current static-first, low-maintenanc
 | Category                    | Status                                                                                                                                                                                                                                                                       |
 | --------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Currently operational       | Astro static rendering, Zod env validation, production smoke tests, pa11y accessibility checks, CodeQL, Gitleaks, deployment safety docs, local security preflight guidance, Terraform validation-only skeleton, Cloudflare Pages module contract, and import planning docs. |
-| Planned but not implemented | Terraform imports, provisioning workflows, localization implementation, and optional helper automation.                                                                                                                                                                      |
+| Planned but not implemented | Terraform imports, provisioning workflows, route-based localization, and optional helper automation.                                                                                                                                                                         |
 | Longer-term enhancements    | Operational inventory helpers and optional domain-specific features that preserve the low-cost governance-first model.                                                                                                                                                       |
 
 ## Current Operational Snapshot
@@ -53,7 +53,7 @@ Architectural decisions should preserve the current static-first, low-maintenanc
 | Category               | Status                                                                                                                                                                                  |
 | ---------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Real today             | Astro platform, validation scripts, CI/CD workflows, Cloudflare Pages-compatible builds, Terraform validation skeleton, reusable module scaffolding, and import planning documentation. |
-| Planned but not active | Terraform provisioning, real imports, remote state, automated apply workflows, localization implementation, and full domain onboarding automation.                                      |
+| Planned but not active | Terraform provisioning, real imports, remote state, automated apply workflows, route-based localization, and full domain onboarding automation.                                         |
 | Source of truth        | Cloudflare remains the operational source of truth until a reviewed import or recreation plan is executed.                                                                              |
 
 ## DevSecOps Posture
@@ -212,7 +212,7 @@ Production change checklist:
 
 The governance baseline is ready for localization/i18n planning because validation gates, accessibility checks, deployment isolation, environment policy, inventory guidance, and Terraform authority boundaries are documented. Phase 6 should add multilingual capability without changing the conservative infrastructure posture by default.
 
-Phase 6 should start with a simple structured content/config model. Avoid full route-based i18n until there is a clear need for localized URLs, separate sitemap entries, or search behavior by locale. Any localization change should continue to meet the [Definition of Done](#definition-of-done), preserve semantic HTML and `lang` behavior, protect canonical URL correctness, and keep conservative robots defaults unless indexing is intentionally approved.
+Phase 6A starts with a simple structured content/config model for `en` and `zh-CN`. Avoid full route-based i18n until there is a clear need for localized URLs, separate sitemap entries, or search behavior by locale. Any localization change should continue to meet the [Definition of Done](#definition-of-done), preserve semantic HTML and `lang` behavior, protect canonical URL correctness, and keep conservative robots defaults unless indexing is intentionally approved.
 
 ## Secret Scanning Governance
 

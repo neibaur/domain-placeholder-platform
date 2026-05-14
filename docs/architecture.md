@@ -13,7 +13,7 @@ This platform builds a static placeholder page that can be reused across multipl
 | Hosting target  | Cloudflare Pages static output from `dist/`.                                              |
 | SEO baseline    | Dynamic canonical URL, robots metadata, and sitemap generation.                           |
 | Privacy posture | Minimize unnecessary exposure of operational metadata in source code and rendered output. |
-| Localization    | Lightweight locale-ready copy structure before adding a full i18n framework.              |
+| Localization    | Typed English and Simplified Chinese content contract before route-based i18n.            |
 
 ## Platform Characteristics
 
@@ -43,7 +43,7 @@ Astro is a strong fit for this repository because the platform needs fast, stati
 - Astro static output keeps hosting simple and inexpensive.
 - Zod validates public configuration at build/startup time so missing Cloudflare Pages variables fail early.
 - The `astro.config.mjs` `site` value is read from `PUBLIC_SITE_URL` for correct canonical URLs and sitemap output.
-- Placeholder copy is locale-ready without introducing a full i18n framework before it is needed.
+- Placeholder copy uses a typed `en` and `zh-CN` content contract without introducing a full i18n framework before it is needed.
 - Domain ownership metadata is not represented in source code.
 - The source should minimize unnecessary exposure of operational metadata, including private ownership, account, deployment, or contact details.
 
@@ -53,6 +53,19 @@ Astro is a strong fit for this repository because the platform needs fast, stati
 2. `astro.config.mjs` validates `PUBLIC_SITE_URL` for site-level generation.
 3. `src/config/public.ts` validates all rendering configuration.
 4. Astro generates static HTML, metadata, `robots.txt`, and sitemap output.
+
+## Localization Foundation
+
+Phase 6A keeps localization shallow and static:
+
+- Supported locales are `en` and `zh-CN`.
+- `PUBLIC_PRIMARY_LOCALE` selects the root `<html lang>` value and primary localized copy.
+- `PUBLIC_SECONDARY_LOCALE` selects a secondary localized message.
+- Missing locale variables use the documented defaults: `en` and `zh-CN`.
+- Unsupported locale values fail validation during build.
+- Route-based i18n, locale-prefixed URLs, per-locale sitemap entries, and external i18n frameworks are deferred.
+
+Thai is future-ready in documentation but is not part of the current runtime locale schema.
 
 ```mermaid
 flowchart LR

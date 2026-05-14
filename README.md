@@ -29,7 +29,7 @@ Lightweight placeholder domains are treated as production-grade operational asse
 | Phase 5 readiness                 | Operationally ready.                   |
 | Terraform/IaC                     | Validation-only and non-authoritative. |
 | Import/onboarding                 | Planned and documented.                |
-| Localization/i18n                 | Phase 6 in design.                     |
+| Localization/i18n                 | Phase 6A foundation implemented.       |
 | Automation helpers                | Deferred.                              |
 
 Cloudflare provisioning, Terraform applies, imports, production environment configs, localization implementation, and automation helpers are intentionally deferred.
@@ -56,7 +56,7 @@ The platform stays lightweight by design:
 - No edge functions yet.
 - No analytics yet.
 - No Terraform-managed Cloudflare resources yet.
-- No implemented localization/i18n routing yet.
+- No route-based localization/i18n yet.
 
 These constraints keep the placeholder platform low-cost, low-maintenance, and easy to validate while future needs are still small.
 
@@ -74,7 +74,7 @@ These constraints keep the placeholder platform low-cost, low-maintenance, and e
 | Category               | Status                                                                                                                                                                                                                       |
 | ---------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Real today             | Astro platform, validation scripts, CI/CD workflows, Cloudflare Pages-compatible builds, manual Cloudflare Pages deployments, Terraform validation skeleton, reusable module scaffolding, and import planning documentation. |
-| Planned but not active | Terraform provisioning, real imports, remote state, automated apply workflows, localization implementation, full domain onboarding automation, and helper tooling.                                                           |
+| Planned but not active | Terraform provisioning, real imports, remote state, automated apply workflows, route-based localization, full domain onboarding automation, and helper tooling.                                                              |
 | Source of truth        | Cloudflare remains the operational source of truth until resources are intentionally imported or recreated through a reviewed plan.                                                                                          |
 
 ## Repository Demonstrates
@@ -186,6 +186,24 @@ The platform is ready for future localization/i18n planning because the deployme
 
 Phase 6 should add localization carefully and incrementally. Prefer a simple structured content/config model before adding full route-based i18n, unless separate localized routes become a clear requirement. Localization changes should preserve accessibility, SEO metadata, canonical URL behavior, sitemap behavior, and conservative `PUBLIC_ROBOTS_INDEX=false` defaults. See [Governance](docs/governance.md#ready-for-phase-6) and the [Definition of Done](docs/governance.md#definition-of-done).
 
+## Localization Model
+
+Phase 6A uses a small typed content contract in [src/content/locales.ts](src/content/locales.ts). It supports:
+
+- `en` for English.
+- `zh-CN` for Simplified Chinese.
+
+`PUBLIC_PRIMARY_LOCALE` controls the root `<html lang>` value and primary page copy. `PUBLIC_SECONDARY_LOCALE` controls the secondary localized message. Missing locale variables keep the existing safe defaults: primary `en`, secondary `zh-CN`.
+
+Unsupported locale values fail during Zod environment validation so Cloudflare Pages deployments do not silently render an unintended language. Thai remains future-ready in documentation but is not accepted by the Phase 6A schema yet.
+
+Current non-goals:
+
+- No locale-prefixed routes.
+- No per-locale sitemap entries.
+- No external i18n framework.
+- No Cloudflare deployment changes.
+
 ## Secret Scanning
 
 GitHub Actions runs Gitleaks to detect accidentally committed secrets on pull requests and pushes to `main`. Secrets should never be committed. Use GitHub Secrets, Cloudflare Pages project variables, or future reviewed IaC-safe workflows for sensitive values.
@@ -261,6 +279,8 @@ Defaulted safely when unset:
 - `PUBLIC_ROBOTS_INDEX` defaults to `false` and must be explicitly set to `true` to allow indexing.
 
 `PUBLIC_SITE_URL` remains required because it defines canonical URLs, sitemap output, Open Graph URLs, and deployment identity. Defaults reduce onboarding friction, but identity-critical values still fail fast when missing.
+
+Supported Phase 6A locale values are `en` and `zh-CN`. Invalid locale values fail environment validation clearly.
 
 ## Project Structure
 
