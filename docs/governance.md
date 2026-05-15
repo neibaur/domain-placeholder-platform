@@ -37,7 +37,7 @@ The current architecture decision baseline is documented in [Architecture Decisi
 
 Public metadata artifacts such as `/platform.json` are allowed only when they remain safe for static hosting. They may describe platform posture, supported locales, deployment model, and non-authoritative Terraform status, but they must not expose secrets, Cloudflare account IDs, zone IDs, API tokens, registrant details, private emails, or internal-only notes.
 
-The [Domain Inventory](domains.md) is an operational record for public-safe onboarding and review. It does not replace the Cloudflare dashboard as the operational source of truth and does not grant Terraform authority.
+The structured domain inventory and [Domain Inventory](domains.md) are operational records for public-safe onboarding and review. They do not replace the Cloudflare dashboard as the operational source of truth and do not grant Terraform authority.
 
 ## Operational Status
 
@@ -54,8 +54,8 @@ The [Domain Inventory](domains.md) is an operational record for public-safe onbo
 | Current maturity  | Governance-first platform foundation with validated CI/CD, deployment architecture, Cloudflare Pages testing, and Terraform scaffolding. |
 | Production status | Manual Cloudflare Pages deployments are supported; Terraform remains validation-only and non-authoritative.                              |
 | Risk posture      | Low-risk and non-destructive; no automated infrastructure provisioning is enabled.                                                       |
-| Phase 7A status   | Lightweight static metadata, domain inventory, and onboarding documentation are in place.                                                |
-| Next milestone    | Continue operational observability without weakening static-first deployment governance.                                                 |
+| Phase 7B status   | Structured domain inventory, validation, and lifecycle guidance are in place.                                                            |
+| Next milestone    | Consider read-only operational drift checks only if they remain safe and reviewed.                                                       |
 
 ## What Is Real vs Planned
 
@@ -222,7 +222,7 @@ Production change checklist:
 | Inventory updates | Update non-sensitive Cloudflare inventory after onboarding, validation, or drift observations.     |
 | Terraform changes | Keep validation-only unless a later reviewed phase explicitly introduces authority.                |
 
-New-domain onboarding should use [Domain Onboarding](domain-onboarding.md), preserve validation-first discipline, and update [Domain Inventory](domains.md) with only public-safe operational facts.
+New-domain onboarding should use [Domain Onboarding](domain-onboarding.md), preserve validation-first discipline, and update the structured inventory plus [Domain Inventory](domains.md) with only public-safe operational facts.
 
 ## Phase 7A Operational Observability
 
@@ -237,6 +237,14 @@ Phase 7A adds:
 The metadata artifact should stay safe for static public hosting. The inventory should remain a factual operational record, not Terraform state. Onboarding should preserve Cloudflare Pages Git integration, `PUBLIC_` configuration, validation-first review, and non-authoritative Terraform posture.
 
 Completed Phase 6 localization work remains governed by the current localization model: English, Simplified Chinese, and Thai are supported without route-based i18n, and coverage remains non-gating by percentage.
+
+## Phase 7B Domain Lifecycle
+
+Phase 7B standardizes domain lifecycle metadata without adding runtime infrastructure. The structured inventory validates domain names, Cloudflare Pages project naming, locale selections, robots indexing intent, contact routing intent, Terraform authority stages, operational statuses, and duplicate domains.
+
+Robots inventory values represent governance intent and should align with manually configured `PUBLIC_ROBOTS_INDEX` values in Cloudflare Pages. The repository does not read live Cloudflare settings or enforce parity.
+
+[Domain Lifecycle](domain-lifecycle.md) governs adding domains, disabling indexing, changing locale support, maintenance status, retirement, transfer preparation, and domain-scoped rollback.
 
 ## Coverage Governance
 
