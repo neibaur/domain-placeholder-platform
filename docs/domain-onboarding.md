@@ -52,9 +52,26 @@ This naming convention is operational governance. It does not make Terraform aut
   - root and locale-specific `lang` attributes
   - responsive readability
 - [ ] Optionally configure Cloudflare Email Routing for `help@<domain>`.
+- [ ] Add the domain to the structured inventory in [src/config/domains.ts](../src/config/domains.ts).
 - [ ] Update [Domain Inventory](domains.md).
 - [ ] Run local validation commands.
 - [ ] Open a pull request with this checklist copied into the PR description or linked from the PR.
+
+## Inventory Fields
+
+Each new domain should define:
+
+- `domain`
+- `pagesProjectName`
+- `primaryLocale`
+- `secondaryLocales`
+- `robotsIndexingEnabled`
+- `contactRoutingEnabled`
+- `terraformAuthority`
+- `operationalStatus`
+- `notes`
+
+`robotsIndexingEnabled` is documented operational intent and should match the Cloudflare Pages project's `PUBLIC_ROBOTS_INDEX` value. This repository does not read Cloudflare variables or call Cloudflare APIs.
 
 ## Local Validation
 
@@ -78,6 +95,7 @@ After build or deployment, `/platform.json` should be available as a static meta
 - [ ] Domain and project name follow `placeholder-platform-[domain-name]`.
 - [ ] Required `PUBLIC_` variables are documented and configured in Cloudflare, not source code.
 - [ ] Optional locale, contact, and robots values are intentionally selected.
+- [ ] Structured inventory and [Domain Inventory](domains.md) agree.
 - [ ] Preview deployment has been checked before production promotion.
 - [ ] Production deployment has been checked after custom domain attachment.
 - [ ] [Domain Inventory](domains.md) is updated.

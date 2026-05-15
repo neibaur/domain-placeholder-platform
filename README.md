@@ -97,6 +97,7 @@ These constraints keep the placeholder platform low-cost, low-maintenance, and e
 | [Cloudflare Environment Variables](docs/cloudflare-env.md)    | Provides documentation-only examples for pilot domain environment configuration.                    |
 | [Domain Inventory](docs/domains.md)                           | Records public-safe operational status for placeholder domains without becoming Terraform state.    |
 | [Domain Onboarding](docs/domain-onboarding.md)                | Provides the repeatable checklist for adding another placeholder domain.                            |
+| [Domain Lifecycle](docs/domain-lifecycle.md)                  | Standardizes adding, pausing, indexing, locale, retirement, transfer, and rollback practices.       |
 | [Terraform and IaC Planning](docs/iac.md)                     | Documents future Terraform scope, safety principles, naming, and Phase 5 roadmap.                   |
 | [Cloudflare Inventory Template](docs/cloudflare-inventory.md) | Provides a non-authoritative template for future import planning and drift review.                  |
 | [Architecture Decision Records](docs/adr/README.md)           | Records durable architecture, deployment, validation, Terraform, and localization decisions.        |
@@ -127,7 +128,7 @@ The recommended Cloudflare Pages model is one shared GitHub repository with one 
 
 See [Deployment](docs/deployment.md) for production, preview, verification, and rollback checklists before connecting Cloudflare resources.
 
-Operational onboarding for a new domain should start with the [Domain Onboarding](docs/domain-onboarding.md) guide and be recorded in the [Domain Inventory](docs/domains.md). Future Terraform import planning can additionally use the [Cloudflare Inventory Template](docs/cloudflare-inventory.md).
+Operational onboarding for a new domain should start with the [Domain Onboarding](docs/domain-onboarding.md) guide and be recorded in the structured inventory plus [Domain Inventory](docs/domains.md). Ongoing lifecycle changes should follow [Domain Lifecycle](docs/domain-lifecycle.md). Future Terraform import planning can additionally use the [Cloudflare Inventory Template](docs/cloudflare-inventory.md).
 
 ## Platform Metadata
 
@@ -212,6 +213,12 @@ Future import planning is documented in [Terraform and IaC Planning](docs/iac.md
 Phase 7A adds lightweight operational observability without changing the static deployment model. The public `/platform.json` artifact exposes safe platform metadata, [Domain Inventory](docs/domains.md) tracks public-safe domain status, and [Domain Onboarding](docs/domain-onboarding.md) provides a repeatable checklist for adding another placeholder domain.
 
 These additions are documentation and static-artifact changes only. They do not add Cloudflare deployment automation, Terraform authority, SSR, a backend, a database, an analytics pipeline, or a form processor.
+
+## Phase 7B Domain Lifecycle
+
+Phase 7B adds a Zod-validated structured domain inventory in [src/config/domains.ts](src/config/domains.ts). It standardizes domain metadata, validates Pages project naming, prevents duplicate domains, constrains lifecycle and Terraform authority values, and keeps inventory domains visible in [Domain Inventory](docs/domains.md).
+
+The structured inventory is operational intent only. It does not read Cloudflare configuration, provision resources, enforce live environment parity, or change deployment behavior.
 
 ## Localization Model
 
