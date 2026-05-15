@@ -33,7 +33,7 @@ Lightweight placeholder domains are treated as production-grade operational asse
 | Localization/i18n                 | Phase 6C governance-ready.             |
 | Automation helpers                | Deferred.                              |
 
-Cloudflare provisioning, Terraform applies, imports, production environment configs, localization implementation, and automation helpers are intentionally deferred.
+Cloudflare provisioning, Terraform applies, imports, production environment configs, route-based localization, and automation helpers are intentionally deferred.
 
 ## Runtime Stack Snapshot
 
@@ -97,6 +97,21 @@ These constraints keep the placeholder platform low-cost, low-maintenance, and e
 | [Cloudflare Environment Variables](docs/cloudflare-env.md)    | Provides documentation-only examples for pilot domain environment configuration.                    |
 | [Terraform and IaC Planning](docs/iac.md)                     | Documents future Terraform scope, safety principles, naming, and Phase 5 roadmap.                   |
 | [Cloudflare Inventory Template](docs/cloudflare-inventory.md) | Provides a non-authoritative template for future import planning and drift review.                  |
+| [Architecture Decision Records](docs/adr/README.md)           | Records durable architecture, deployment, validation, Terraform, and localization decisions.        |
+
+## Architecture Decision Records
+
+The project uses ADRs to preserve why major platform decisions were made and
+when they should be reconsidered. Start with the [ADR index](docs/adr/README.md).
+
+Initial accepted ADRs:
+
+- [ADR 0001: Static-First Placeholder Platform](docs/adr/0001-static-first-placeholder-platform.md)
+- [ADR 0002: Cloudflare Pages Git Integration](docs/adr/0002-cloudflare-pages-git-integration.md)
+- [ADR 0003: Validation Before Automation](docs/adr/0003-validation-before-automation.md)
+- [ADR 0004: Non-Authoritative Terraform Strategy](docs/adr/0004-non-authoritative-terraform-strategy.md)
+- [ADR 0005: Environment-Driven Multi-Domain Rendering](docs/adr/0005-environment-driven-multi-domain-rendering.md)
+- [ADR 0006: Localization Without Route-Based i18n](docs/adr/0006-localization-without-route-based-i18n.md)
 
 ## Deployment Model
 

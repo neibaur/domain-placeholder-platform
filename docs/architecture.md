@@ -48,6 +48,8 @@ Astro is a strong fit for this repository because the platform needs fast, stati
 - Domain ownership metadata is not represented in source code.
 - The source should minimize unnecessary exposure of operational metadata, including private ownership, account, deployment, or contact details.
 
+Durable decision rationale is recorded in [Architecture Decision Records](adr/README.md). The initial ADRs cover static-first rendering, Cloudflare Pages Git integration, validation-before-automation, non-authoritative Terraform, environment-driven multi-domain rendering, and localization without route-based i18n.
+
 ## Configuration Flow
 
 1. Cloudflare Pages injects `PUBLIC_` variables at build time.
@@ -69,7 +71,7 @@ Phase 6A keeps localization shallow and static:
 - Smoke validation checks localized content, UTF-8 output, root language metadata, locale-specific `lang` attributes, canonical URLs, robots behavior, and sitemap output.
 - Route-based i18n, locale-prefixed URLs, per-locale sitemap entries, and external i18n frameworks are deferred.
 
-Thai is future-ready in documentation but is not part of the current runtime locale schema.
+Thai is future-ready in documentation but is not part of the current runtime locale schema. A later Phase 6E can consider Thai locale expansion, including `th` schema support, Thai copy, UTF-8 rendering checks, `lang` metadata validation, tests, typography/readability review, and fallback stability.
 
 Coverage is visible through Vitest reports but remains non-gating. This keeps the validation signal focused while the runtime surface is small.
 
@@ -81,7 +83,7 @@ flowchart LR
   dist --> pages[Cloudflare Pages hosting]
 ```
 
-Deployment readiness is covered in [Deployment](deployment.md). CI/CD and review expectations are covered in [Governance](governance.md).
+Deployment readiness is covered in [Deployment](deployment.md). CI/CD and review expectations are covered in [Governance](governance.md). ADR governance is documented in [Architecture Decision Records](adr/README.md).
 
 ## Operational Lifecycle
 
