@@ -32,10 +32,10 @@ type LocaleSelection = {
 
 const copyByLocale = {
   en: {
-    eyebrow: "Placeholder platform",
-    heading: "A lightweight domain placeholder is being prepared.",
+    eyebrow: "Placeholder Page",
+    heading: "Coming Soon (ish)",
     description:
-      "This page is rendered from deployment environment variables and can be reused across multiple domains without hardcoded ownership details.",
+      "Feel free to reach out if you have ideas for this page or want to collaborate.",
     statusLabel: "Status",
     statusValue: "Reserved for future service",
     statusSectionLabel: "Domain status",
@@ -45,10 +45,10 @@ const copyByLocale = {
     contactLabel: "Contact",
   },
   "zh-CN": {
-    eyebrow: "域名占位平台",
-    heading: "轻量域名占位页正在准备中。",
+    eyebrow: "临时页面",
+    heading: "即将上线……大概吧 😄",
     description:
-      "此页面由部署环境变量渲染，可在多个域名之间复用，避免在代码中硬编码域名归属信息。",
+      "如果你对这个页面有想法，或者想一起合作，欢迎联系我。",
     statusLabel: "状态",
     statusValue: "预留给未来服务",
     statusSectionLabel: "域名状态",
@@ -58,10 +58,10 @@ const copyByLocale = {
     contactLabel: "联系",
   },
   th: {
-    eyebrow: "แพลตฟอร์มหน้าพักโดเมน",
-    heading: "เว็บไซต์นี้กำลังเตรียมพร้อม",
+    eyebrow: "หน้าอยู่ระหว่างจัดเตรียม",
+    heading: "เร็ว ๆ นี้…มั้ง 😄",
     description:
-      "หน้านี้แสดงผลจากค่ากำหนดของแต่ละการ deploy และสามารถใช้ซ้ำกับหลายโดเมนได้โดยไม่ต้องระบุข้อมูลเจ้าของโดเมนในโค้ด หากคุณสนใจร่วมงาน มีไอเดีย หรืออยากพูดคุยเกี่ยวกับโดเมนนี้ สามารถติดต่อเราได้",
+      "มีไอเดียหรืออยากร่วมงานกัน ติดต่อมาได้เลย",
     statusLabel: "สถานะ",
     statusValue: "สำรองไว้สำหรับบริการในอนาคต",
     statusSectionLabel: "สถานะของโดเมน",
