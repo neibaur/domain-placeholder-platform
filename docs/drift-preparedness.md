@@ -82,6 +82,14 @@ pnpm inventory:drift-review -- --json
 
 It generates inventory-derived manual review data only. It does not compare against live Cloudflare settings.
 
+Helper output follows a sanitize-by-default posture:
+
+- values explicitly classified as public may be shown
+- values not explicitly classified as public are redacted
+- no Cloudflare account IDs, zone IDs, project IDs, token names, private emails, or secret values should appear
+
+Future read-only automation must satisfy the [Read-Only Automation Checklist](read-only-automation-checklist.md) before implementation.
+
 ## Never Compare Or Expose
 
 Do not compare, print, commit, or expose:

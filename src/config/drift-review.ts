@@ -8,11 +8,34 @@ export type DriftReviewRow = {
   domain: string;
   check: string;
   inventoryValue: string;
+  valueClassification: "public" | "redacted";
   cloudflareManualLocation: string;
   publicVariable: string | null;
   futureAutomationCandidate: boolean;
   notes: string;
 };
+
+export const driftReviewWarning =
+  "Manual inventory-derived review only. No Cloudflare API calls, secrets, live settings, or remediation are used.";
+
+function publicValue(
+  value: string,
+): Pick<DriftReviewRow, "inventoryValue" | "valueClassification"> {
+  return {
+    inventoryValue: value,
+    valueClassification: "public",
+  };
+}
+
+function redactedValue(): Pick<
+  DriftReviewRow,
+  "inventoryValue" | "valueClassification"
+> {
+  return {
+    inventoryValue: "[REDACTED]",
+    valueClassification: "redacted",
+  };
+}
 
 function booleanIntent(value: boolean): string {
   return value ? "enabled" : "disabled";
@@ -27,7 +50,7 @@ function rowsForDomain(entry: DomainInventoryEntry): DriftReviewRow[] {
     {
       domain: entry.domain,
       check: "Domain custom mapping",
-      inventoryValue: entry.domain,
+      ...publicValue(entry.domain),
       cloudflareManualLocation: "Pages > Custom domains and DNS records",
       publicVariable: null,
       futureAutomationCandidate: true,
@@ -36,7 +59,7 @@ function rowsForDomain(entry: DomainInventoryEntry): DriftReviewRow[] {
     {
       domain: entry.domain,
       check: "Pages project name",
-      inventoryValue: entry.pagesProjectName,
+      ...publicValue(entry.pagesProjectName),
       cloudflareManualLocation: "Cloudflare Pages project list",
       publicVariable: null,
       futureAutomationCandidate: true,
@@ -45,7 +68,7 @@ function rowsForDomain(entry: DomainInventoryEntry): DriftReviewRow[] {
     {
       domain: entry.domain,
       check: "Production branch",
-      inventoryValue: "main",
+      ...publicValue("main"),
       cloudflareManualLocation: "Pages > Settings > Builds & deployments",
       publicVariable: null,
       futureAutomationCandidate: true,
@@ -54,7 +77,7 @@ function rowsForDomain(entry: DomainInventoryEntry): DriftReviewRow[] {
     {
       domain: entry.domain,
       check: "Canonical site URL",
-      inventoryValue: `https://${entry.domain}`,
+      ...publicValue(`https://${entry.domain}`),
       cloudflareManualLocation: "Pages > Settings > Environment variables",
       publicVariable: "PUBLIC_SITE_URL",
       futureAutomationCandidate: true,
@@ -63,16 +86,17 @@ function rowsForDomain(entry: DomainInventoryEntry): DriftReviewRow[] {
     {
       domain: entry.domain,
       check: "Site title",
-      inventoryValue: "manual review required",
+      ...redactedValue(),
       cloudflareManualLocation: "Pages > Settings > Environment variables",
       publicVariable: "PUBLIC_SITE_TITLE",
       futureAutomationCandidate: true,
-      notes: "Must be public-safe and intentionally configured per domain.",
+      notes:
+        "Review manually; values not explicitly classified public are redacted by default.",
     },
     {
       domain: entry.domain,
       check: "Primary locale",
-      inventoryValue: entry.primaryLocale,
+      ...publicValue(entry.primaryLocale),
       cloudflareManualLocation: "Pages > Settings > Environment variables",
       publicVariable: "PUBLIC_PRIMARY_LOCALE",
       futureAutomationCandidate: true,
@@ -81,7 +105,7 @@ function rowsForDomain(entry: DomainInventoryEntry): DriftReviewRow[] {
     {
       domain: entry.domain,
       check: "Secondary locale",
-      inventoryValue: entry.secondaryLocales.join(", "),
+      ...publicValue(entry.secondaryLocales.join(", ")),
       cloudflareManualLocation: "Pages > Settings > Environment variables",
       publicVariable: "PUBLIC_SECONDARY_LOCALE",
       futureAutomationCandidate: true,
@@ -90,7 +114,7 @@ function rowsForDomain(entry: DomainInventoryEntry): DriftReviewRow[] {
     {
       domain: entry.domain,
       check: "Robots indexing",
-      inventoryValue: robotsValue(entry.robotsIndexingEnabled),
+      ...publicValue(robotsValue(entry.robotsIndexingEnabled)),
       cloudflareManualLocation: "Pages > Settings > Environment variables",
       publicVariable: "PUBLIC_ROBOTS_INDEX",
       futureAutomationCandidate: true,
@@ -99,7 +123,7 @@ function rowsForDomain(entry: DomainInventoryEntry): DriftReviewRow[] {
     {
       domain: entry.domain,
       check: "Contact routing",
-      inventoryValue: booleanIntent(entry.contactRoutingEnabled),
+      ...publicValue(booleanIntent(entry.contactRoutingEnabled)),
       cloudflareManualLocation: "Email Routing rules and routing status",
       publicVariable: null,
       futureAutomationCandidate: true,
@@ -108,7 +132,7 @@ function rowsForDomain(entry: DomainInventoryEntry): DriftReviewRow[] {
     {
       domain: entry.domain,
       check: "Terraform authority",
-      inventoryValue: entry.terraformAuthority,
+      ...publicValue(entry.terraformAuthority),
       cloudflareManualLocation: "Repository IaC governance docs",
       publicVariable: null,
       futureAutomationCandidate: false,
@@ -126,7 +150,14 @@ export function getDriftReviewRows(
 export function getDriftReviewJson(
   inventory: DomainInventory = domainInventory,
 ): string {
-  return `${JSON.stringify(getDriftReviewRows(inventory), null, 2)}\n`;
+  return `${JSON.stringify(
+    {
+      warning: driftReviewWarning,
+      rows: getDriftReviewRows(inventory),
+    },
+    null,
+    2,
+  )}\n`;
 }
 
 export function getDriftReviewMarkdown(
@@ -134,14 +165,17 @@ export function getDriftReviewMarkdown(
 ): string {
   const rows = getDriftReviewRows(inventory);
   const lines = [
-    "| Domain | Check | Inventory Value | Cloudflare Manual Location | PUBLIC_ Variable | Future Automation Candidate | Notes |",
-    "| --- | --- | --- | --- | --- | --- | --- |",
+    `> ${driftReviewWarning}`,
+    "",
+    "| Domain | Check | Inventory Value | Classification | Cloudflare Manual Location | PUBLIC_ Variable | Future Automation Candidate | Notes |",
+    "| --- | --- | --- | --- | --- | --- | --- | --- |",
     ...rows.map(
       (row) =>
         `| ${[
           row.domain,
           row.check,
           row.inventoryValue,
+          row.valueClassification,
           row.cloudflareManualLocation,
           row.publicVariable ?? "N/A",
           row.futureAutomationCandidate ? "Yes" : "No",

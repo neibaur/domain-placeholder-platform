@@ -54,3 +54,4 @@ Use four-digit sequence numbers and concise kebab-case titles:
 | [0004: Non-Authoritative Terraform Strategy](0004-non-authoritative-terraform-strategy.md)           | Accepted |
 | [0005: Environment-Driven Multi-Domain Rendering](0005-environment-driven-multi-domain-rendering.md) | Accepted |
 | [0006: Localization Without Route-Based i18n](0006-localization-without-route-based-i18n.md)         | Accepted |
+| [0007: Read-Only Automation Readiness](0007-read-only-automation-readiness.md)                       | Proposed |
