@@ -1,4 +1,5 @@
 import { spawn } from "node:child_process";
+import copyByLocale from "../src/content/locale-copy.json" with { type: "json" };
 import { startStaticServer } from "./shared/static-server.mjs";
 import { smokeEnv, withSmokeEnv } from "./shared/site-env.mjs";
 
@@ -52,13 +53,11 @@ try {
 
   assertIncludes(html, smokeEnv.PUBLIC_SITE_TITLE, "Rendered HTML");
   assertIncludes(html, smokeEnv.PUBLIC_SITE_DESCRIPTION, "Rendered HTML");
-  assertIncludes(
-    html,
-    "A lightweight domain placeholder is being prepared.",
-    "Rendered HTML",
-  );
+  assertIncludes(html, copyByLocale.en.heading, "Rendered HTML");
+  assertIncludes(html, copyByLocale.en.description, "Rendered HTML");
   assertIncludes(html, '<html lang="en">', "Rendered HTML");
-  assertIncludes(html, "轻量域名占位页正在准备中。", "Rendered HTML");
+  assertIncludes(html, copyByLocale["zh-CN"].heading, "Rendered HTML");
+  assertIncludes(html, copyByLocale["zh-CN"].description, "Rendered HTML");
   assertIncludes(html, 'class="locale-card" lang="en"', "Rendered HTML");
   assertIncludes(html, 'class="locale-card" lang="zh-CN"', "Rendered HTML");
   assertIncludes(html, 'lang="en"', "Rendered HTML");
@@ -107,7 +106,8 @@ try {
   const thaiHtml = await getText(server.origin, "/");
 
   assertIncludes(thaiHtml, '<html lang="th">', "Thai rendered HTML");
-  assertIncludes(thaiHtml, "เว็บไซต์นี้กำลังเตรียมพร้อม", "Thai rendered HTML");
+  assertIncludes(thaiHtml, copyByLocale.th.heading, "Thai rendered HTML");
+  assertIncludes(thaiHtml, copyByLocale.th.description, "Thai rendered HTML");
   assertIncludes(
     thaiHtml,
     'class="locale-card" lang="th"',

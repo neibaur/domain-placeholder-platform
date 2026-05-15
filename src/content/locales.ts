@@ -1,4 +1,5 @@
 import type { SupportedLocale } from "@/config/public";
+import copyByLocaleData from "./locale-copy.json";
 
 type LocaleCopy = {
   eyebrow: string;
@@ -30,47 +31,10 @@ type LocaleSelection = {
   PUBLIC_SECONDARY_LOCALE?: SupportedLocale;
 };
 
-const copyByLocale = {
-  en: {
-    eyebrow: "Placeholder Page",
-    heading: "Coming Soon (ish)",
-    description:
-      "Feel free to reach out if you have ideas for this page or want to collaborate.",
-    statusLabel: "Status",
-    statusValue: "Reserved for future service",
-    statusSectionLabel: "Domain status",
-    messageSectionLabel: "Localized message",
-    domainLabel: "Domain",
-    localesLabel: "Locales",
-    contactLabel: "Contact",
-  },
-  "zh-CN": {
-    eyebrow: "临时页面",
-    heading: "即将上线……大概吧 😄",
-    description:
-      "如果你对这个页面有想法，或者想一起合作，欢迎联系我。",
-    statusLabel: "状态",
-    statusValue: "预留给未来服务",
-    statusSectionLabel: "域名状态",
-    messageSectionLabel: "本地化消息",
-    domainLabel: "域名",
-    localesLabel: "语言",
-    contactLabel: "联系",
-  },
-  th: {
-    eyebrow: "หน้าอยู่ระหว่างจัดเตรียม",
-    heading: "เร็ว ๆ นี้…มั้ง 😄",
-    description:
-      "มีไอเดียหรืออยากร่วมงานกัน ติดต่อมาได้เลย",
-    statusLabel: "สถานะ",
-    statusValue: "สำรองไว้สำหรับบริการในอนาคต",
-    statusSectionLabel: "สถานะของโดเมน",
-    messageSectionLabel: "ข้อความตามภาษา",
-    domainLabel: "โดเมน",
-    localesLabel: "ภาษา",
-    contactLabel: "ติดต่อ",
-  },
-} satisfies Record<SupportedLocale, LocaleCopy>;
+const copyByLocale = copyByLocaleData satisfies Record<
+  SupportedLocale,
+  LocaleCopy
+>;
 
 export function getLocaleCopy(locale: SupportedLocale): LocaleCopy {
   return copyByLocale[locale] ?? copyByLocale.en;
