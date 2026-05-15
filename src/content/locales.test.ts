@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { getPublicConfig, shouldIndex } from "@/config/public";
+import type { SupportedLocale } from "@/config/public";
 import { getLocaleCopy, getLocalizedPageContent } from "@/content/locales";
 
 describe("public locale configuration", () => {
@@ -63,6 +64,37 @@ describe("public locale configuration", () => {
     expect(shouldIndex(defaultConfig)).toBe(false);
     expect(shouldIndex(indexableConfig)).toBe(true);
   });
+
+  it("normalizes optional public configuration safely", () => {
+    const config = getPublicConfig({
+      PUBLIC_SITE_URL: "https://example.com/",
+      PUBLIC_SITE_TITLE: "Domain Placeholder",
+      PUBLIC_SITE_NAME: "",
+      PUBLIC_CONTACT_URL: "",
+    });
+
+    expect(config.PUBLIC_SITE_URL).toBe("https://example.com");
+    expect(config.PUBLIC_SITE_NAME).toBe("Domain Placeholder");
+    expect(config.PUBLIC_CONTACT_URL).toBe("");
+  });
+
+  it("rejects malformed optional public configuration", () => {
+    expect(() =>
+      getPublicConfig({
+        PUBLIC_SITE_URL: "https://example.com",
+        PUBLIC_SITE_TITLE: "Domain Placeholder",
+        PUBLIC_CONTACT_URL: "not-a-url",
+      }),
+    ).toThrow(/PUBLIC_CONTACT_URL/);
+
+    expect(() =>
+      getPublicConfig({
+        PUBLIC_SITE_URL: "https://example.com",
+        PUBLIC_SITE_TITLE: "Domain Placeholder",
+        PUBLIC_ROBOTS_INDEX: "yes",
+      }),
+    ).toThrow(/PUBLIC_ROBOTS_INDEX/);
+  });
 });
 
 describe("localized content contract", () => {
@@ -71,6 +103,23 @@ describe("localized content contract", () => {
     expect(getLocaleCopy("zh-CN").heading).toBe("轻量域名占位页正在准备中。");
     expect(getLocaleCopy("th").heading).toBe("เว็บไซต์นี้กำลังเตรียมพร้อม");
     expect(getLocaleCopy("th").description).toContain("ร่วมงาน");
+  });
+
+  it("preserves focused UTF-8 multilingual content integrity", () => {
+    const simplifiedChinese = getLocaleCopy("zh-CN");
+    const thai = getLocaleCopy("th");
+
+    expect(simplifiedChinese.heading).toContain("域名占位页");
+    expect(simplifiedChinese.description).toContain("部署环境变量");
+    expect(thai.heading).toContain("เว็บไซต์");
+    expect(thai.heading).toContain("กำลัง");
+    expect(thai.description).toContain("โดเมนนี้");
+  });
+
+  it("falls back to English copy for unexpected runtime locale input", () => {
+    const copy = getLocaleCopy("unsupported" as SupportedLocale);
+
+    expect(copy.heading).toBe(getLocaleCopy("en").heading);
   });
 
   it("renders distinct primary and secondary locale blocks", () => {

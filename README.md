@@ -176,7 +176,7 @@ Current commands:
 | -------------------- | ------------------------------------------------------------------------------------------------------------------------ |
 | `pnpm build:local`   | Loads local `.env` through `dotenv-cli`, then runs the normal build.                                                     |
 | `pnpm test`          | Runs focused Vitest tests for pure TypeScript config and localization behavior.                                          |
-| `pnpm test:coverage` | Runs non-gating Vitest coverage reporting for local review and CI log visibility.                                        |
+| `pnpm test:coverage` | Runs non-gating Vitest coverage reporting for source TypeScript runtime logic.                                           |
 | `pnpm check:env`     | Runs [scripts/check-env-validation.ts](scripts/check-env-validation.ts) for positive and negative Zod validation checks. |
 | `pnpm smoke`         | Runs [scripts/smoke-production.mjs](scripts/smoke-production.mjs) against generated production output.                   |
 | `pnpm check:a11y`    | Runs [scripts/check-accessibility.mjs](scripts/check-accessibility.mjs) with pa11y against served `dist/`.               |
@@ -233,14 +233,14 @@ Coverage is available through `pnpm test:coverage`, but it is intentionally non-
 
 Vitest is part of the main validation path through `pnpm test` and `pnpm validate`. Coverage reporting is available through `pnpm test:coverage` and is also printed in GitHub Actions logs for visibility.
 
-Coverage is intentionally non-gating:
+Phase 6F keeps coverage non-gating by percentage while making the signal more intentional:
 
-- The codebase is still small and mostly static.
-- Runtime logic is limited to configuration and localization helpers.
-- Early thresholds can encourage brittle tests or vanity percentages.
-- Meaningful assertions are preferred over broad but shallow coverage.
+- Source TypeScript runtime logic is included in coverage reporting.
+- Configuration validation, locale selection, UTF-8 multilingual content integrity, duplicate locale suppression, and robots text generation have focused behavior tests.
+- Astro component rendering, generated build output, scripts, docs, Terraform files, and framework route wrappers are validated through `pnpm validate`, smoke tests, pa11y, markdownlint, and Terraform validation instead of unit coverage.
+- Coverage output is for review visibility; no hard percentage threshold is enforced.
 
-A formal coverage threshold can be reconsidered when the project has more runtime logic, localization selection behavior, reusable utilities, or components where coverage would provide a stronger signal.
+Thresholds remain deferred because the app is still mostly static and small. Reconsider a modest threshold when more reusable TypeScript utilities, localization selection behavior, or runtime decision logic make percentage gates a helpful review signal rather than process noise.
 
 ## Secret Scanning
 

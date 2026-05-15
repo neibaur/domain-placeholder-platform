@@ -24,7 +24,7 @@ This platform builds a static placeholder page that can be reused across multipl
 | Isolated deployments             | Each pilot domain should use a separate Pages project.                                                   |
 | Reusable topology                | One repository can support multiple domains without hardcoding production values.                        |
 | Validation-first workflow        | Formatting, linting, env validation, build, smoke, and accessibility checks run through `pnpm validate`. |
-| Focused test foundation          | Vitest covers pure TypeScript config and localization helpers without browser-dependent tests.           |
+| Focused test foundation          | Vitest covers source TypeScript config, localization, UTF-8 integrity, and robots helpers.               |
 | Security-first governance        | CodeQL, Gitleaks, no-secret guidance, and protected-file care are documented.                            |
 | Future IaC compatibility         | Naming and safety principles are documented before Terraform scaffolding is introduced.                  |
 
@@ -73,7 +73,7 @@ Phase 6 keeps localization shallow and static:
 
 Phase 6E adds Thai through the existing `th` locale tag and shared multilingual layout. It does not add language switching, browser language detection, or route-based i18n.
 
-Coverage is visible through Vitest reports but remains non-gating. This keeps the validation signal focused while the runtime surface is small.
+Coverage is visible through Vitest reports but remains non-gating by percentage. Phase 6F focuses coverage on source TypeScript runtime decisions while leaving Astro rendering, generated output, scripts, docs, and Terraform validation to the existing build, smoke, pa11y, markdownlint, and Terraform checks.
 
 ```mermaid
 flowchart LR
