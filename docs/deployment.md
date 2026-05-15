@@ -150,7 +150,7 @@ Repeat with the appropriate `PUBLIC_SITE_URL` and `PUBLIC_SITE_TITLE` for `6gou8
 
 `PUBLIC_SITE_URL` remains required because it defines canonical metadata, sitemap generation, Open Graph URLs, and deployment identity. `PUBLIC_ROBOTS_INDEX` defaults to `false` so new or parked domains do not become indexable unless explicitly approved.
 
-Supported locale values are `en` and `zh-CN`. `PUBLIC_PRIMARY_LOCALE` controls the document language and primary localized copy. `PUBLIC_SECONDARY_LOCALE` controls the secondary localized message. Do not configure Thai or route-based localization until a later reviewed phase adds support.
+Supported locale values are `en`, `zh-CN`, and `th`. `PUBLIC_PRIMARY_LOCALE` controls the document language and primary localized copy. `PUBLIC_SECONDARY_LOCALE` controls the secondary localized message. Do not configure route-based localization until a later reviewed phase adds support.
 
 The full pilot matrix is maintained in [Cloudflare Environment Variables](cloudflare-env.md).
 
@@ -237,6 +237,6 @@ Terraform remains validation-only and non-authoritative. Future import or migrat
 
 Phase 6 localization work should continue to preserve this deployment model: one shared codebase, project-specific configuration, domain-level isolation, canonical URL correctness, sitemap behavior, accessibility expectations, and conservative robots defaults.
 
-Localized content does not change deployment routing in Phase 6B. Each domain still serves one static page, with primary and secondary locale rendering controlled by Cloudflare Pages `PUBLIC_` variables.
+Localized content does not change deployment routing in Phase 6. Each domain still serves one static page, with primary and secondary locale rendering controlled by Cloudflare Pages `PUBLIC_` variables.
 
 Phase 6C keeps coverage reporting non-gating and does not change Cloudflare deployment behavior. Deployment verification should continue to rely on `pnpm validate`, smoke checks, accessibility checks, and manual review of canonical, robots, sitemap, and language metadata.

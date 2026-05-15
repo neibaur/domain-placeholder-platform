@@ -228,7 +228,7 @@ Phase 6B adds focused Vitest coverage for pure TypeScript localization and confi
 
 Phase 6C keeps coverage non-gating. Multilingual changes must preserve accessibility, UTF-8 output, root and locale-specific `lang` metadata, canonical URL behavior, sitemap behavior, robots defaults, smoke validation, and pa11y validation.
 
-Phase 6D adds ADR governance only. Thai language support remains deferred to a possible Phase 6E, where it should be treated as a focused localization expansion with schema, copy, UTF-8, `lang`, test, typography, and fallback validation.
+Phase 6D adds ADR governance only. Phase 6E adds Thai support through the existing non-route-based localization model. Thai changes should preserve schema validation, copy quality, UTF-8 output, `lang` metadata, tests, typography/readability, and fallback stability.
 
 ## Coverage Governance
 

@@ -79,6 +79,27 @@ try {
   );
   assertIncludes(sitemap, "https://example.com/sitemap-0.xml", "sitemap index");
 
+  await run("pnpm build", {
+    env: {
+      PUBLIC_PRIMARY_LOCALE: "th",
+      PUBLIC_SECONDARY_LOCALE: "zh-CN",
+    },
+  });
+  const thaiHtml = await getText(server.origin, "/");
+
+  assertIncludes(thaiHtml, '<html lang="th">', "Thai rendered HTML");
+  assertIncludes(thaiHtml, "เว็บไซต์นี้กำลังเตรียมพร้อม", "Thai rendered HTML");
+  assertIncludes(
+    thaiHtml,
+    'class="locale-card" lang="th"',
+    "Thai rendered HTML",
+  );
+  assertIncludes(
+    thaiHtml,
+    'class="locale-card" lang="zh-CN"',
+    "Thai rendered HTML",
+  );
+
   console.log("Production smoke test passed.");
 } finally {
   await server.close();
