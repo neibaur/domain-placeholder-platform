@@ -56,7 +56,7 @@ Use `pnpm build` for Cloudflare Pages because Cloudflare injects project environ
 
 ## New Domain Onboarding
 
-Use this lightweight flow before adding another domain to the portfolio:
+Use the detailed [Domain Onboarding](domain-onboarding.md) checklist before adding another domain to the portfolio. The lightweight flow is:
 
 1. Choose the domain identifier and Pages project name using `placeholder-platform-[domain-name]`.
 2. Create or select one Cloudflare Pages project for that domain.
@@ -66,7 +66,7 @@ Use this lightweight flow before adding another domain to the portfolio:
 6. Keep `PUBLIC_ROBOTS_INDEX=false` until indexing is explicitly approved.
 7. Validate the Pages subdomain before attaching the custom domain.
 8. Attach the custom domain and confirm DNS/certificate status.
-9. Run post-deployment verification and update the [Cloudflare Inventory Template](cloudflare-inventory.md).
+9. Run post-deployment verification and update [Domain Inventory](domains.md).
 
 Do not attach a new domain to an existing pilot Pages project unless that shared deployment has a reviewed operational reason.
 

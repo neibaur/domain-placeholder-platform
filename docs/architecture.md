@@ -14,6 +14,7 @@ This platform builds a static placeholder page that can be reused across multipl
 | SEO baseline    | Dynamic canonical URL, robots metadata, and sitemap generation.                           |
 | Privacy posture | Minimize unnecessary exposure of operational metadata in source code and rendered output. |
 | Localization    | Typed English, Simplified Chinese, and Thai content contract before route-based i18n.     |
+| Observability   | Public-safe static `/platform.json` metadata with a Zod-validated contract.               |
 
 ## Platform Characteristics
 
@@ -45,6 +46,7 @@ Astro is a strong fit for this repository because the platform needs fast, stati
 - Zod validates public configuration at build/startup time so missing Cloudflare Pages variables fail early.
 - The `astro.config.mjs` `site` value is read from `PUBLIC_SITE_URL` for correct canonical URLs and sitemap output.
 - Placeholder copy uses a typed `en`, `zh-CN`, and `th` content contract without introducing a full i18n framework before it is needed.
+- `/platform.json` exposes safe static platform metadata for lightweight operational visibility.
 - Domain ownership metadata is not represented in source code.
 - The source should minimize unnecessary exposure of operational metadata, including private ownership, account, deployment, or contact details.
 
