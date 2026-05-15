@@ -88,20 +88,21 @@ These constraints keep the placeholder platform low-cost, low-maintenance, and e
 
 ## Documentation Map
 
-| Document                                                      | Purpose                                                                                             |
-| ------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
-| [Architecture](docs/architecture.md)                          | Explains the Astro/static-site design, configuration flow, SEO behavior, and future IaC boundaries. |
-| [Governance](docs/governance.md)                              | Defines workflow expectations, CI/CD gates, review standards, and Definition of Done.               |
-| [Deployment](docs/deployment.md)                              | Captures Cloudflare Pages setup expectations and the pre-deployment checklist.                      |
-| [Security and Privacy](docs/security-and-privacy.md)          | Defines public configuration boundaries and operational metadata privacy expectations.              |
-| [Cloudflare Environment Variables](docs/cloudflare-env.md)    | Provides documentation-only examples for pilot domain environment configuration.                    |
-| [Domain Inventory](docs/domains.md)                           | Records public-safe operational status for placeholder domains without becoming Terraform state.    |
-| [Domain Onboarding](docs/domain-onboarding.md)                | Provides the repeatable checklist for adding another placeholder domain.                            |
-| [Domain Lifecycle](docs/domain-lifecycle.md)                  | Standardizes adding, pausing, indexing, locale, retirement, transfer, and rollback practices.       |
-| [Drift Preparedness](docs/drift-preparedness.md)              | Defines manual drift review scope and safety rules before any future read-only automation.          |
-| [Terraform and IaC Planning](docs/iac.md)                     | Documents future Terraform scope, safety principles, naming, and Phase 5 roadmap.                   |
-| [Cloudflare Inventory Template](docs/cloudflare-inventory.md) | Provides a non-authoritative template for future import planning and drift review.                  |
-| [Architecture Decision Records](docs/adr/README.md)           | Records durable architecture, deployment, validation, Terraform, and localization decisions.        |
+| Document                                                                 | Purpose                                                                                             |
+| ------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------- |
+| [Architecture](docs/architecture.md)                                     | Explains the Astro/static-site design, configuration flow, SEO behavior, and future IaC boundaries. |
+| [Governance](docs/governance.md)                                         | Defines workflow expectations, CI/CD gates, review standards, and Definition of Done.               |
+| [Deployment](docs/deployment.md)                                         | Captures Cloudflare Pages setup expectations and the pre-deployment checklist.                      |
+| [Security and Privacy](docs/security-and-privacy.md)                     | Defines public configuration boundaries and operational metadata privacy expectations.              |
+| [Cloudflare Environment Variables](docs/cloudflare-env.md)               | Provides documentation-only examples for pilot domain environment configuration.                    |
+| [Domain Inventory](docs/domains.md)                                      | Records public-safe operational status for placeholder domains without becoming Terraform state.    |
+| [Domain Onboarding](docs/domain-onboarding.md)                           | Provides the repeatable checklist for adding another placeholder domain.                            |
+| [Domain Lifecycle](docs/domain-lifecycle.md)                             | Standardizes adding, pausing, indexing, locale, retirement, transfer, and rollback practices.       |
+| [Drift Preparedness](docs/drift-preparedness.md)                         | Defines manual drift review scope and safety rules before any future read-only automation.          |
+| [Read-Only Automation Checklist](docs/read-only-automation-checklist.md) | Defines the approval bar before any future Cloudflare read-only integration.                        |
+| [Terraform and IaC Planning](docs/iac.md)                                | Documents future Terraform scope, safety principles, naming, and Phase 5 roadmap.                   |
+| [Cloudflare Inventory Template](docs/cloudflare-inventory.md)            | Provides a non-authoritative template for future import planning and drift review.                  |
+| [Architecture Decision Records](docs/adr/README.md)                      | Records durable architecture, deployment, validation, Terraform, and localization decisions.        |
 
 ## Architecture Decision Records
 
@@ -116,6 +117,7 @@ Initial accepted ADRs:
 - [ADR 0004: Non-Authoritative Terraform Strategy](docs/adr/0004-non-authoritative-terraform-strategy.md)
 - [ADR 0005: Environment-Driven Multi-Domain Rendering](docs/adr/0005-environment-driven-multi-domain-rendering.md)
 - [ADR 0006: Localization Without Route-Based i18n](docs/adr/0006-localization-without-route-based-i18n.md)
+- [ADR 0007: Read-Only Automation Readiness](docs/adr/0007-read-only-automation-readiness.md) is proposed and does not authorize implementation.
 
 ## Deployment Model
 
@@ -227,6 +229,12 @@ The structured inventory is operational intent only. It does not read Cloudflare
 Phase 7C defines a manual drift review posture in [Drift Preparedness](docs/drift-preparedness.md). It documents what could eventually be compared between structured inventory intent and Cloudflare dashboard reality, while keeping Cloudflare as the operational source of truth and Terraform non-authoritative.
 
 The local `pnpm inventory:drift-review` helper prints inventory-derived review data only. It makes no network calls, reads no Cloudflare settings, requires no secrets, mutates nothing, and is not part of deployment behavior.
+
+## Phase 7D Automation Readiness Governance
+
+Phase 7D adds proposed [ADR 0007](docs/adr/0007-read-only-automation-readiness.md) and the [Read-Only Automation Checklist](docs/read-only-automation-checklist.md). These documents define the governance bar before any future read-only Cloudflare integration could be considered.
+
+The project remains operationally non-automated: no Cloudflare APIs, Wrangler deployment flows, tokens, Terraform apply/import behavior, backend service, SSR behavior, database, or runtime API is introduced.
 
 ## Localization Model
 

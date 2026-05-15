@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { domainInventory } from "@/config/domains";
 import {
+  driftReviewWarning,
   getDriftReviewJson,
   getDriftReviewMarkdown,
   getDriftReviewRows,
@@ -30,12 +31,21 @@ describe("drift review preparation", () => {
         expect.objectContaining({
           publicVariable: "PUBLIC_SITE_URL",
           inventoryValue: `https://${entry.domain}`,
+          valueClassification: "public",
         }),
       );
       expect(domainRows).toContainEqual(
         expect.objectContaining({
           publicVariable: "PUBLIC_ROBOTS_INDEX",
           inventoryValue: "false",
+          valueClassification: "public",
+        }),
+      );
+      expect(domainRows).toContainEqual(
+        expect.objectContaining({
+          publicVariable: "PUBLIC_SITE_TITLE",
+          inventoryValue: "[REDACTED]",
+          valueClassification: "redacted",
         }),
       );
     }
@@ -59,14 +69,20 @@ describe("drift review preparation", () => {
   it("renders deterministic markdown and JSON without live Cloudflare values", () => {
     const markdown = getDriftReviewMarkdown();
     const json = getDriftReviewJson();
+    const parsedJson = JSON.parse(json);
 
+    expect(markdown).toContain(driftReviewWarning);
     expect(markdown).toContain("| Domain | Check | Inventory Value |");
+    expect(markdown).toContain("Classification");
     expect(markdown).toContain("| 68tai.com | Domain custom mapping |");
+    expect(markdown).toContain("[REDACTED]");
     expect(markdown).toContain("Cloudflare Manual Location");
-    expect(markdown).toContain("manual review required");
     expect(markdown).not.toContain("account_id");
     expect(markdown).not.toContain("api_token");
 
-    expect(JSON.parse(json)).toEqual(getDriftReviewRows());
+    expect(parsedJson).toEqual({
+      warning: driftReviewWarning,
+      rows: getDriftReviewRows(),
+    });
   });
 });
