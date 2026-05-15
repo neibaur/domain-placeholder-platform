@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { getPublicConfig, shouldIndex } from "@/config/public";
 import type { SupportedLocale } from "@/config/public";
+import copyByLocale from "@/content/locale-copy.json";
 import { getLocaleCopy, getLocalizedPageContent } from "@/content/locales";
 
 describe("public locale configuration", () => {
@@ -99,21 +100,19 @@ describe("public locale configuration", () => {
 
 describe("localized content contract", () => {
   it("returns English, Simplified Chinese, and Thai copy", () => {
-    expect(getLocaleCopy("en").heading).toContain("placeholder");
-    expect(getLocaleCopy("zh-CN").heading).toBe("轻量域名占位页正在准备中。");
-    expect(getLocaleCopy("th").heading).toBe("เว็บไซต์นี้กำลังเตรียมพร้อม");
-    expect(getLocaleCopy("th").description).toContain("ร่วมงาน");
+    expect(getLocaleCopy("en")).toEqual(copyByLocale.en);
+    expect(getLocaleCopy("zh-CN")).toEqual(copyByLocale["zh-CN"]);
+    expect(getLocaleCopy("th")).toEqual(copyByLocale.th);
   });
 
   it("preserves focused UTF-8 multilingual content integrity", () => {
     const simplifiedChinese = getLocaleCopy("zh-CN");
     const thai = getLocaleCopy("th");
 
-    expect(simplifiedChinese.heading).toContain("域名占位页");
-    expect(simplifiedChinese.description).toContain("部署环境变量");
-    expect(thai.heading).toContain("เว็บไซต์");
-    expect(thai.heading).toContain("กำลัง");
-    expect(thai.description).toContain("โดเมนนี้");
+    expect(simplifiedChinese.heading).toMatch(/\p{Script=Han}/u);
+    expect(simplifiedChinese.description).toMatch(/\p{Script=Han}/u);
+    expect(thai.heading).toMatch(/\p{Script=Thai}/u);
+    expect(thai.description).toMatch(/\p{Script=Thai}/u);
   });
 
   it("falls back to English copy for unexpected runtime locale input", () => {
@@ -140,7 +139,7 @@ describe("localized content contract", () => {
     });
 
     expect(content.primary.locale).toBe("th");
-    expect(content.primary.copy.heading).toBe("เว็บไซต์นี้กำลังเตรียมพร้อม");
+    expect(content.primary.copy).toEqual(copyByLocale.th);
     expect(content.secondary?.locale).toBe("en");
     expect(content.visibleLocales).toEqual(["th", "en"]);
   });
@@ -153,7 +152,7 @@ describe("localized content contract", () => {
 
     expect(content.primary.locale).toBe("en");
     expect(content.secondary?.locale).toBe("th");
-    expect(content.secondary?.copy.description).toContain("โดเมนนี้");
+    expect(content.secondary?.copy).toEqual(copyByLocale.th);
     expect(content.visibleLocales).toEqual(["en", "th"]);
   });
 

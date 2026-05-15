@@ -1,4 +1,5 @@
 import type { SupportedLocale } from "@/config/public";
+import copyByLocaleData from "./locale-copy.json";
 
 type LocaleCopy = {
   eyebrow: string;
@@ -30,47 +31,10 @@ type LocaleSelection = {
   PUBLIC_SECONDARY_LOCALE?: SupportedLocale;
 };
 
-const copyByLocale = {
-  en: {
-    eyebrow: "Placeholder platform",
-    heading: "A lightweight domain placeholder is being prepared.",
-    description:
-      "This page is rendered from deployment environment variables and can be reused across multiple domains without hardcoded ownership details.",
-    statusLabel: "Status",
-    statusValue: "Reserved for future service",
-    statusSectionLabel: "Domain status",
-    messageSectionLabel: "Localized message",
-    domainLabel: "Domain",
-    localesLabel: "Locales",
-    contactLabel: "Contact",
-  },
-  "zh-CN": {
-    eyebrow: "域名占位平台",
-    heading: "轻量域名占位页正在准备中。",
-    description:
-      "此页面由部署环境变量渲染，可在多个域名之间复用，避免在代码中硬编码域名归属信息。",
-    statusLabel: "状态",
-    statusValue: "预留给未来服务",
-    statusSectionLabel: "域名状态",
-    messageSectionLabel: "本地化消息",
-    domainLabel: "域名",
-    localesLabel: "语言",
-    contactLabel: "联系",
-  },
-  th: {
-    eyebrow: "แพลตฟอร์มหน้าพักโดเมน",
-    heading: "เว็บไซต์นี้กำลังเตรียมพร้อม",
-    description:
-      "หน้านี้แสดงผลจากค่ากำหนดของแต่ละการ deploy และสามารถใช้ซ้ำกับหลายโดเมนได้โดยไม่ต้องระบุข้อมูลเจ้าของโดเมนในโค้ด หากคุณสนใจร่วมงาน มีไอเดีย หรืออยากพูดคุยเกี่ยวกับโดเมนนี้ สามารถติดต่อเราได้",
-    statusLabel: "สถานะ",
-    statusValue: "สำรองไว้สำหรับบริการในอนาคต",
-    statusSectionLabel: "สถานะของโดเมน",
-    messageSectionLabel: "ข้อความตามภาษา",
-    domainLabel: "โดเมน",
-    localesLabel: "ภาษา",
-    contactLabel: "ติดต่อ",
-  },
-} satisfies Record<SupportedLocale, LocaleCopy>;
+const copyByLocale = copyByLocaleData satisfies Record<
+  SupportedLocale,
+  LocaleCopy
+>;
 
 export function getLocaleCopy(locale: SupportedLocale): LocaleCopy {
   return copyByLocale[locale] ?? copyByLocale.en;
