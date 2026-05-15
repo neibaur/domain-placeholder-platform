@@ -24,11 +24,16 @@ Every PR should answer:
 - Does it preserve environment-variable-driven rendering?
 - Does it remain lightweight and maintainable?
 
+Meaningful architecture, operations, deployment, Terraform authority, or
+localization decisions should be captured in an [Architecture Decision Record](adr/README.md). Accepted ADRs are part of the governance baseline and should be superseded with a new ADR when a material decision changes.
+
 ## Operational Philosophy
 
 Operational changes should favor fail-fast validation, domain-level deployment isolation, operational clarity over abstraction, and reversible steps. The platform should minimize unnecessary exposure of operational metadata while keeping deployment behavior easy to inspect and explain.
 
 Architectural decisions should preserve the current static-first, low-maintenance model unless a concrete operational requirement justifies additional runtime complexity. Avoid adding databases, authentication, SSR, edge functions, analytics, or automation simply because they are available.
+
+The current architecture decision baseline is documented in [Architecture Decision Records](adr/README.md), including validation-before-automation and the non-authoritative Terraform strategy.
 
 ## Operational Status
 
@@ -222,6 +227,8 @@ Phase 6A starts with a simple structured content/config model for `en` and `zh-C
 Phase 6B adds focused Vitest coverage for pure TypeScript localization and config behavior. Coverage reporting is available locally through `pnpm test:coverage`, but no hard threshold is required yet; a threshold can be considered once there is enough reusable logic for the signal to be meaningful.
 
 Phase 6C keeps coverage non-gating. Multilingual changes must preserve accessibility, UTF-8 output, root and locale-specific `lang` metadata, canonical URL behavior, sitemap behavior, robots defaults, smoke validation, and pa11y validation.
+
+Phase 6D adds ADR governance only. Thai language support remains deferred to a possible Phase 6E, where it should be treated as a focused localization expansion with schema, copy, UTF-8, `lang`, test, typography, and fallback validation.
 
 ## Coverage Governance
 

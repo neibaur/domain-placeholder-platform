@@ -14,6 +14,8 @@ Terraform is currently validation-only and non-authoritative. Stage 0 means Clou
 
 This repository is between Stage 0 and Stage 1. Cloudflare dashboard configuration remains the operational source of truth until a later reviewed phase intentionally introduces Terraform-managed resources, state, imports, and authority.
 
+The decision rationale is captured in [ADR 0004: Non-Authoritative Terraform Strategy](adr/0004-non-authoritative-terraform-strategy.md). The reconsideration triggers in that ADR are review triggers only; they do not authorize Terraform import, apply, or provisioning work by themselves.
+
 ## Intended Future Scope
 
 Future Terraform work may manage:
