@@ -72,6 +72,8 @@ flowchart TD
   install --> format[Prettier]
   format --> lint[ESLint]
   lint --> markdown[markdownlint]
+  lint --> tests[Vitest tests]
+  tests --> markdown
   markdown --> env[Environment validation]
   env --> build[Astro and TypeScript build validation]
   build --> smoke[Production smoke tests]
@@ -104,6 +106,7 @@ These gates map to current repository scripts and workflows:
 
 CodeQL runs on pull requests, pushes to `main`, and a weekly schedule.
 Gitleaks runs on pull requests and pushes to `main` to detect accidentally committed secrets.
+The validation workflow also prints a non-gating `pnpm test:coverage` summary for visibility; no percentage threshold is enforced.
 
 Local contributors should use the same primary confidence command documented in the [README](../README.md#current-validation-commands):
 
@@ -217,6 +220,19 @@ The governance baseline is ready for localization/i18n planning because validati
 Phase 6A starts with a simple structured content/config model for `en` and `zh-CN`. Avoid full route-based i18n until there is a clear need for localized URLs, separate sitemap entries, or search behavior by locale. Any localization change should continue to meet the [Definition of Done](#definition-of-done), preserve semantic HTML and `lang` behavior, protect canonical URL correctness, and keep conservative robots defaults unless indexing is intentionally approved.
 
 Phase 6B adds focused Vitest coverage for pure TypeScript localization and config behavior. Coverage reporting is available locally through `pnpm test:coverage`, but no hard threshold is required yet; a threshold can be considered once there is enough reusable logic for the signal to be meaningful.
+
+Phase 6C keeps coverage non-gating. Multilingual changes must preserve accessibility, UTF-8 output, root and locale-specific `lang` metadata, canonical URL behavior, sitemap behavior, robots defaults, smoke validation, and pa11y validation.
+
+## Coverage Governance
+
+Current posture:
+
+- `pnpm test` runs Vitest and is part of `pnpm validate`.
+- `pnpm test:coverage` generates a local and CI-visible coverage report.
+- Coverage output is ignored by git and excluded from TypeScript, ESLint, and Prettier checks.
+- No hard coverage threshold is enforced.
+
+Coverage remains non-gating because the project has limited runtime logic and should prioritize meaningful tests over percentages. Revisit a threshold when localization selection, reusable utilities, or runtime behavior grow enough for a threshold to help review quality instead of creating noise.
 
 ## Secret Scanning Governance
 

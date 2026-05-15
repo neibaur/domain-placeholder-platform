@@ -54,6 +54,7 @@ try {
     "A lightweight domain placeholder is being prepared.",
     "Rendered HTML",
   );
+  assertIncludes(html, '<html lang="en">', "Rendered HTML");
   assertIncludes(html, "轻量域名占位页正在准备中。", "Rendered HTML");
   assertIncludes(html, 'class="locale-card" lang="en"', "Rendered HTML");
   assertIncludes(html, 'class="locale-card" lang="zh-CN"', "Rendered HTML");

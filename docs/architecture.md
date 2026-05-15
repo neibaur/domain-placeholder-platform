@@ -66,9 +66,12 @@ Phase 6A keeps localization shallow and static:
 - Missing locale variables use the documented defaults: `en` and `zh-CN`.
 - Unsupported locale values fail validation during build.
 - Focused Vitest tests cover locale defaults, unsupported values, content shape, and duplicate secondary suppression.
+- Smoke validation checks localized content, UTF-8 output, root language metadata, locale-specific `lang` attributes, canonical URLs, robots behavior, and sitemap output.
 - Route-based i18n, locale-prefixed URLs, per-locale sitemap entries, and external i18n frameworks are deferred.
 
 Thai is future-ready in documentation but is not part of the current runtime locale schema.
+
+Coverage is visible through Vitest reports but remains non-gating. This keeps the validation signal focused while the runtime surface is small.
 
 ```mermaid
 flowchart LR

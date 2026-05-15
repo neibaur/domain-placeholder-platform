@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { getPublicConfig } from "@/config/public";
+import { getPublicConfig, shouldIndex } from "@/config/public";
 import { getLocaleCopy, getLocalizedPageContent } from "@/content/locales";
 
 describe("public locale configuration", () => {
@@ -31,6 +31,21 @@ describe("public locale configuration", () => {
         PUBLIC_SECONDARY_LOCALE: "th",
       }),
     ).toThrow(/PUBLIC_SECONDARY_LOCALE/);
+  });
+
+  it("keeps robots indexing disabled unless explicitly enabled", () => {
+    const defaultConfig = getPublicConfig({
+      PUBLIC_SITE_URL: "https://example.com",
+      PUBLIC_SITE_TITLE: "Domain Placeholder",
+    });
+    const indexableConfig = getPublicConfig({
+      PUBLIC_SITE_URL: "https://example.com",
+      PUBLIC_SITE_TITLE: "Domain Placeholder",
+      PUBLIC_ROBOTS_INDEX: "true",
+    });
+
+    expect(shouldIndex(defaultConfig)).toBe(false);
+    expect(shouldIndex(indexableConfig)).toBe(true);
   });
 });
 
