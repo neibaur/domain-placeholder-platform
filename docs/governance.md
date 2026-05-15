@@ -230,16 +230,20 @@ Phase 6C keeps coverage non-gating. Multilingual changes must preserve accessibi
 
 Phase 6D adds ADR governance only. Phase 6E adds Thai support through the existing non-route-based localization model. Thai changes should preserve schema validation, copy quality, UTF-8 output, `lang` metadata, tests, typography/readability, and fallback stability.
 
+Phase 6F improves coverage maturity without introducing a hard coverage gate. Tests should remain behavior-oriented and cover meaningful runtime decisions such as configuration validation, locale handling, UTF-8 integrity, duplicate locale suppression, and robots behavior.
+
 ## Coverage Governance
 
 Current posture:
 
 - `pnpm test` runs Vitest and is part of `pnpm validate`.
 - `pnpm test:coverage` generates a local and CI-visible coverage report.
-- Coverage output is ignored by git and excluded from TypeScript, ESLint, and Prettier checks.
-- No hard coverage threshold is enforced.
+- Coverage focuses on source TypeScript runtime logic under `src/**/*.ts`.
+- Coverage excludes tests, type declarations, generated output, docs, scripts, Terraform files, dependencies, and local coverage artifacts.
+- Astro rendering behavior and framework route wrappers are validated through build, smoke, and accessibility checks rather than fragile unit tests.
+- No hard coverage percentage threshold is enforced.
 
-Coverage remains non-gating because the project has limited runtime logic and should prioritize meaningful tests over percentages. Revisit a threshold when localization selection, reusable utilities, or runtime behavior grow enough for a threshold to help review quality instead of creating noise.
+Coverage remains non-gating by percentage because the project has limited runtime logic and should prioritize meaningful tests over vanity metrics. Revisit a modest threshold when localization selection, reusable utilities, or runtime behavior grow enough for a threshold to help review quality instead of creating noise.
 
 ## Secret Scanning Governance
 
