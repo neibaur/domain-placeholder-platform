@@ -21,6 +21,7 @@
     "test:coverage": "vitest run --coverage",
     "check:markdown": "markdownlint-cli2 \"**/*.{md,markdown}\" \"!node_modules\" \"!dist\"",
     "check:env": "tsx scripts/check-env-validation.ts",
+    "inventory:drift-review": "tsx scripts/domain-drift-review.ts",
     "smoke": "node scripts/smoke-production.mjs",
     "check:a11y": "node scripts/check-accessibility.mjs",
     "validate": "pnpm format:check && pnpm lint && pnpm test && pnpm check:markdown && pnpm check:env && pnpm smoke && pnpm check:a11y"

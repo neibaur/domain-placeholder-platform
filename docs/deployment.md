@@ -84,6 +84,8 @@ Deployment safety depends on keeping each domain isolated and each deployment ta
 
 Predictable project names support safer rollback procedures, operational clarity, multi-domain scaling, and future Terraform/IaC import or management.
 
+Manual drift review guidance is documented in [Drift Preparedness](drift-preparedness.md). Drift review does not authorize Terraform apply, Terraform import, Cloudflare automation, or live remediation.
+
 ## Production Deployment Checklist
 
 - [ ] `pnpm validate` passes locally.

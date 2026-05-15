@@ -98,6 +98,7 @@ These constraints keep the placeholder platform low-cost, low-maintenance, and e
 | [Domain Inventory](docs/domains.md)                           | Records public-safe operational status for placeholder domains without becoming Terraform state.    |
 | [Domain Onboarding](docs/domain-onboarding.md)                | Provides the repeatable checklist for adding another placeholder domain.                            |
 | [Domain Lifecycle](docs/domain-lifecycle.md)                  | Standardizes adding, pausing, indexing, locale, retirement, transfer, and rollback practices.       |
+| [Drift Preparedness](docs/drift-preparedness.md)              | Defines manual drift review scope and safety rules before any future read-only automation.          |
 | [Terraform and IaC Planning](docs/iac.md)                     | Documents future Terraform scope, safety principles, naming, and Phase 5 roadmap.                   |
 | [Cloudflare Inventory Template](docs/cloudflare-inventory.md) | Provides a non-authoritative template for future import planning and drift review.                  |
 | [Architecture Decision Records](docs/adr/README.md)           | Records durable architecture, deployment, validation, Terraform, and localization decisions.        |
@@ -181,15 +182,16 @@ The same validation path is expected in CI before merge. See [Governance](docs/g
 
 Current commands:
 
-| Command              | Purpose                                                                                                                  |
-| -------------------- | ------------------------------------------------------------------------------------------------------------------------ |
-| `pnpm build:local`   | Loads local `.env` through `dotenv-cli`, then runs the normal build.                                                     |
-| `pnpm test`          | Runs focused Vitest tests for pure TypeScript config and localization behavior.                                          |
-| `pnpm test:coverage` | Runs non-gating Vitest coverage reporting for source TypeScript runtime logic.                                           |
-| `pnpm check:env`     | Runs [scripts/check-env-validation.ts](scripts/check-env-validation.ts) for positive and negative Zod validation checks. |
-| `pnpm smoke`         | Runs [scripts/smoke-production.mjs](scripts/smoke-production.mjs) against generated production output.                   |
-| `pnpm check:a11y`    | Runs [scripts/check-accessibility.mjs](scripts/check-accessibility.mjs) with pa11y against served `dist/`.               |
-| `pnpm validate`      | Runs formatting, linting, markdown, env, smoke, and accessibility checks as the main confidence command.                 |
+| Command                       | Purpose                                                                                                                  |
+| ----------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| `pnpm build:local`            | Loads local `.env` through `dotenv-cli`, then runs the normal build.                                                     |
+| `pnpm test`                   | Runs focused Vitest tests for pure TypeScript config and localization behavior.                                          |
+| `pnpm test:coverage`          | Runs non-gating Vitest coverage reporting for source TypeScript runtime logic.                                           |
+| `pnpm check:env`              | Runs [scripts/check-env-validation.ts](scripts/check-env-validation.ts) for positive and negative Zod validation checks. |
+| `pnpm inventory:drift-review` | Prints a deterministic, local-only manual drift review table derived from structured inventory.                          |
+| `pnpm smoke`                  | Runs [scripts/smoke-production.mjs](scripts/smoke-production.mjs) against generated production output.                   |
+| `pnpm check:a11y`             | Runs [scripts/check-accessibility.mjs](scripts/check-accessibility.mjs) with pa11y against served `dist/`.               |
+| `pnpm validate`               | Runs formatting, linting, markdown, env, smoke, and accessibility checks as the main confidence command.                 |
 
 ## Terraform Validation
 
@@ -219,6 +221,12 @@ These additions are documentation and static-artifact changes only. They do not 
 Phase 7B adds a Zod-validated structured domain inventory in [src/config/domains.ts](src/config/domains.ts). It standardizes domain metadata, validates Pages project naming, prevents duplicate domains, constrains lifecycle and Terraform authority values, and keeps inventory domains visible in [Domain Inventory](docs/domains.md).
 
 The structured inventory is operational intent only. It does not read Cloudflare configuration, provision resources, enforce live environment parity, or change deployment behavior.
+
+## Phase 7C Drift Preparedness
+
+Phase 7C defines a manual drift review posture in [Drift Preparedness](docs/drift-preparedness.md). It documents what could eventually be compared between structured inventory intent and Cloudflare dashboard reality, while keeping Cloudflare as the operational source of truth and Terraform non-authoritative.
+
+The local `pnpm inventory:drift-review` helper prints inventory-derived review data only. It makes no network calls, reads no Cloudflare settings, requires no secrets, mutates nothing, and is not part of deployment behavior.
 
 ## Localization Model
 

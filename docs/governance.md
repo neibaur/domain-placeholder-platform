@@ -54,8 +54,8 @@ The structured domain inventory and [Domain Inventory](domains.md) are operation
 | Current maturity  | Governance-first platform foundation with validated CI/CD, deployment architecture, Cloudflare Pages testing, and Terraform scaffolding. |
 | Production status | Manual Cloudflare Pages deployments are supported; Terraform remains validation-only and non-authoritative.                              |
 | Risk posture      | Low-risk and non-destructive; no automated infrastructure provisioning is enabled.                                                       |
-| Phase 7B status   | Structured domain inventory, validation, and lifecycle guidance are in place.                                                            |
-| Next milestone    | Consider read-only operational drift checks only if they remain safe and reviewed.                                                       |
+| Phase 7C status   | Read-only drift preparedness is documented, with a local manual review helper and no live Cloudflare checks.                             |
+| Next milestone    | Decide whether any future read-only Cloudflare comparison is worth a separate reviewed phase.                                            |
 
 ## What Is Real vs Planned
 
@@ -245,6 +245,14 @@ Phase 7B standardizes domain lifecycle metadata without adding runtime infrastru
 Robots inventory values represent governance intent and should align with manually configured `PUBLIC_ROBOTS_INDEX` values in Cloudflare Pages. The repository does not read live Cloudflare settings or enforce parity.
 
 [Domain Lifecycle](domain-lifecycle.md) governs adding domains, disabling indexing, changing locale support, maintenance status, retirement, transfer preparation, and domain-scoped rollback.
+
+## Phase 7C Drift Preparedness
+
+Phase 7C prepares for future drift review without introducing live automation. [Drift Preparedness](drift-preparedness.md) defines comparison scope, manual review steps, non-exposure rules, and safety requirements before any future Cloudflare API usage.
+
+The local `pnpm inventory:drift-review` helper is deterministic and inventory-derived. It does not call Cloudflare, read secrets, mutate files, deploy, import Terraform resources, apply Terraform changes, or enforce live parity.
+
+Cloudflare dashboard settings remain the operational source of truth. Structured inventory remains intended posture. Terraform remains validation-only or import-planning only until a later reviewed phase explicitly changes authority.
 
 ## Coverage Governance
 
