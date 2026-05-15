@@ -30,7 +30,7 @@ Lightweight placeholder domains are treated as production-grade operational asse
 | Phase 5 readiness                 | Operationally ready.                   |
 | Terraform/IaC                     | Validation-only and non-authoritative. |
 | Import/onboarding                 | Planned and documented.                |
-| Localization/i18n                 | Phase 6A foundation implemented.       |
+| Localization/i18n                 | Phase 6C governance-ready.             |
 | Automation helpers                | Deferred.                              |
 
 Cloudflare provisioning, Terraform applies, imports, production environment configs, localization implementation, and automation helpers are intentionally deferred.
@@ -161,7 +161,7 @@ Current commands:
 | -------------------- | ------------------------------------------------------------------------------------------------------------------------ |
 | `pnpm build:local`   | Loads local `.env` through `dotenv-cli`, then runs the normal build.                                                     |
 | `pnpm test`          | Runs focused Vitest tests for pure TypeScript config and localization behavior.                                          |
-| `pnpm test:coverage` | Runs non-gating Vitest coverage reporting for local review.                                                              |
+| `pnpm test:coverage` | Runs non-gating Vitest coverage reporting for local review and CI log visibility.                                        |
 | `pnpm check:env`     | Runs [scripts/check-env-validation.ts](scripts/check-env-validation.ts) for positive and negative Zod validation checks. |
 | `pnpm smoke`         | Runs [scripts/smoke-production.mjs](scripts/smoke-production.mjs) against generated production output.                   |
 | `pnpm check:a11y`    | Runs [scripts/check-accessibility.mjs](scripts/check-accessibility.mjs) with pa11y against served `dist/`.               |
@@ -212,6 +212,19 @@ Locale-specific message blocks are rendered from the same content structure and 
 
 Coverage is available through `pnpm test:coverage`, but it is intentionally non-gating while the application remains small and mostly static. A formal threshold can be considered in Phase 6C if localization logic or reusable utilities grow.
 
+## Coverage Governance
+
+Vitest is part of the main validation path through `pnpm test` and `pnpm validate`. Coverage reporting is available through `pnpm test:coverage` and is also printed in GitHub Actions logs for visibility.
+
+Coverage is intentionally non-gating:
+
+- The codebase is still small and mostly static.
+- Runtime logic is limited to configuration and localization helpers.
+- Early thresholds can encourage brittle tests or vanity percentages.
+- Meaningful assertions are preferred over broad but shallow coverage.
+
+A formal coverage threshold can be reconsidered when the project has more runtime logic, localization selection behavior, reusable utilities, or components where coverage would provide a stronger signal.
+
 ## Secret Scanning
 
 GitHub Actions runs Gitleaks to detect accidentally committed secrets on pull requests and pushes to `main`. Secrets should never be committed. Use GitHub Secrets, Cloudflare Pages project variables, or future reviewed IaC-safe workflows for sensitive values.
@@ -261,6 +274,8 @@ PA11Y_CHROME_PATH="C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"
 `pnpm smoke` builds the project, serves `dist/` locally, and verifies:
 
 - expected placeholder text renders
+- root and locale-specific `lang` attributes render
+- Simplified Chinese UTF-8 content renders
 - the configured site URL appears in rendered output
 - canonical metadata is present
 - `PUBLIC_ROBOTS_INDEX=false` produces non-indexing metadata and `robots.txt`

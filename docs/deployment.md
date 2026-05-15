@@ -238,3 +238,5 @@ Terraform remains validation-only and non-authoritative. Future import or migrat
 Phase 6 localization work should continue to preserve this deployment model: one shared codebase, project-specific configuration, domain-level isolation, canonical URL correctness, sitemap behavior, accessibility expectations, and conservative robots defaults.
 
 Localized content does not change deployment routing in Phase 6B. Each domain still serves one static page, with primary and secondary locale rendering controlled by Cloudflare Pages `PUBLIC_` variables.
+
+Phase 6C keeps coverage reporting non-gating and does not change Cloudflare deployment behavior. Deployment verification should continue to rely on `pnpm validate`, smoke checks, accessibility checks, and manual review of canonical, robots, sitemap, and language metadata.

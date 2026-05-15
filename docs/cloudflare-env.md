@@ -69,4 +69,6 @@ Supported Phase 6A locales are `en` and `zh-CN`. Invalid locale values fail Zod 
 
 Phase 6B keeps the same environment contract. Locale-specific content blocks render with their own `lang` attributes, while the document-level `<html lang>` remains controlled by `PUBLIC_PRIMARY_LOCALE`.
 
+Phase 6C does not change the environment contract. Missing locale variables still default to `en` and `zh-CN`; unsupported locale values still fail validation; route-based i18n, language switching, browser language detection, and Thai runtime support remain deferred.
+
 TODO(terraform): Convert this matrix into Terraform variables once Cloudflare project provisioning is automated.
