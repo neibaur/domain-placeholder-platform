@@ -97,7 +97,7 @@ try {
     "Unsupported primary locale error should identify PUBLIC_PRIMARY_LOCALE.",
   );
   assert(
-    message.includes("en or zh-CN"),
+    message.includes("en, zh-CN, or th"),
     "Unsupported primary locale error should identify supported locales.",
   );
 }
@@ -105,7 +105,7 @@ try {
 try {
   getPublicConfig({
     ...smokeEnv,
-    PUBLIC_SECONDARY_LOCALE: "th",
+    PUBLIC_SECONDARY_LOCALE: "fr",
   });
   throw new Error(
     "Unsupported PUBLIC_SECONDARY_LOCALE should fail validation.",

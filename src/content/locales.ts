@@ -57,6 +57,19 @@ const copyByLocale = {
     localesLabel: "语言",
     contactLabel: "联系",
   },
+  th: {
+    eyebrow: "แพลตฟอร์มหน้าพักโดเมน",
+    heading: "เว็บไซต์นี้กำลังเตรียมพร้อม",
+    description:
+      "หน้านี้แสดงผลจากค่ากำหนดของแต่ละการ deploy และสามารถใช้ซ้ำกับหลายโดเมนได้โดยไม่ต้องระบุข้อมูลเจ้าของโดเมนในโค้ด หากคุณสนใจร่วมงาน มีไอเดีย หรืออยากพูดคุยเกี่ยวกับโดเมนนี้ สามารถติดต่อเราได้",
+    statusLabel: "สถานะ",
+    statusValue: "สำรองไว้สำหรับบริการในอนาคต",
+    statusSectionLabel: "สถานะของโดเมน",
+    messageSectionLabel: "ข้อความตามภาษา",
+    domainLabel: "โดเมน",
+    localesLabel: "ภาษา",
+    contactLabel: "ติดต่อ",
+  },
 } satisfies Record<SupportedLocale, LocaleCopy>;
 
 export function getLocaleCopy(locale: SupportedLocale): LocaleCopy {

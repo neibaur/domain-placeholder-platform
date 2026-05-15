@@ -65,10 +65,12 @@ PUBLIC_SITE_TITLE=Domain Placeholder
 
 Defaults reduce onboarding friction without hiding identity-critical misconfiguration. `PUBLIC_ROBOTS_INDEX=false` is conservative for parked, private, test, or prelaunch domains.
 
-Supported Phase 6A locales are `en` and `zh-CN`. Invalid locale values fail Zod validation during build so Cloudflare Pages deployments do not silently render unsupported language settings. Thai is documented as future-ready only and should not be configured yet.
+Supported locale values are `en`, `zh-CN`, and `th`. Invalid locale values fail Zod validation during build so Cloudflare Pages deployments do not silently render unsupported language settings.
 
 Phase 6B keeps the same environment contract. Locale-specific content blocks render with their own `lang` attributes, while the document-level `<html lang>` remains controlled by `PUBLIC_PRIMARY_LOCALE`.
 
-Phase 6C does not change the environment contract. Missing locale variables still default to `en` and `zh-CN`; unsupported locale values still fail validation; route-based i18n, language switching, browser language detection, and Thai runtime support remain deferred.
+Phase 6C does not change the environment contract. Missing locale variables still default to `en` and `zh-CN`; unsupported locale values still fail validation; route-based i18n, language switching, and browser language detection remain deferred.
+
+Phase 6E adds Thai as `th` through the same `PUBLIC_PRIMARY_LOCALE` and `PUBLIC_SECONDARY_LOCALE` mechanism. Thai support does not change Cloudflare Pages setup, routing, canonical metadata, sitemap behavior, or Terraform authority.
 
 TODO(terraform): Convert this matrix into Terraform variables once Cloudflare project provisioning is automated.

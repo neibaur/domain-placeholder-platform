@@ -30,7 +30,7 @@ Lightweight placeholder domains are treated as production-grade operational asse
 | Phase 5 readiness                 | Operationally ready.                   |
 | Terraform/IaC                     | Validation-only and non-authoritative. |
 | Import/onboarding                 | Planned and documented.                |
-| Localization/i18n                 | Phase 6C governance-ready.             |
+| Localization/i18n                 | Phase 6E Thai locale supported.        |
 | Automation helpers                | Deferred.                              |
 
 Cloudflare provisioning, Terraform applies, imports, production environment configs, route-based localization, and automation helpers are intentionally deferred.
@@ -207,20 +207,22 @@ Phase 6 should add localization carefully and incrementally. Prefer a simple str
 
 ## Localization Model
 
-Phase 6A introduced a small typed content contract in [src/content/locales.ts](src/content/locales.ts). Phase 6B polishes the rendering and adds focused Vitest tests for the localization/config behavior. The current model supports:
+Phase 6A introduced a small typed content contract in [src/content/locales.ts](src/content/locales.ts). Phase 6B polishes the rendering and adds focused Vitest tests for the localization/config behavior. Phase 6E adds Thai to the same shallow model. The current model supports:
 
 - `en` for English.
 - `zh-CN` for Simplified Chinese.
+- `th` for Thai.
 
 `PUBLIC_PRIMARY_LOCALE` controls the root `<html lang>` value and primary page copy. `PUBLIC_SECONDARY_LOCALE` controls the secondary localized message. Missing locale variables keep the existing safe defaults: primary `en`, secondary `zh-CN`.
 
-Unsupported locale values fail during Zod environment validation so Cloudflare Pages deployments do not silently render an unintended language. Thai remains future-ready in documentation but is not accepted by the Phase 6A schema yet.
+Unsupported locale values fail during Zod environment validation so Cloudflare Pages deployments do not silently render an unintended language. Thai support does not change deployment routing, Cloudflare Pages setup, or Terraform authority.
 
 Current non-goals:
 
 - No locale-prefixed routes.
 - No per-locale sitemap entries.
 - No external i18n framework.
+- No language switcher or browser language detection.
 - No Cloudflare deployment changes.
 
 Locale-specific message blocks are rendered from the same content structure and carry their own `lang` attributes. The root `<html lang>` remains tied to `PUBLIC_PRIMARY_LOCALE`.
@@ -290,7 +292,7 @@ PA11Y_CHROME_PATH="C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"
 
 - expected placeholder text renders
 - root and locale-specific `lang` attributes render
-- Simplified Chinese UTF-8 content renders
+- Simplified Chinese and Thai UTF-8 content renders
 - the configured site URL appears in rendered output
 - canonical metadata is present
 - `PUBLIC_ROBOTS_INDEX=false` produces non-indexing metadata and `robots.txt`
@@ -318,7 +320,7 @@ Defaulted safely when unset:
 
 `PUBLIC_SITE_URL` remains required because it defines canonical URLs, sitemap output, Open Graph URLs, and deployment identity. Defaults reduce onboarding friction, but identity-critical values still fail fast when missing.
 
-Supported Phase 6A locale values are `en` and `zh-CN`. Invalid locale values fail environment validation clearly.
+Supported locale values are `en`, `zh-CN`, and `th`. Invalid locale values fail environment validation clearly.
 
 ## Project Structure
 

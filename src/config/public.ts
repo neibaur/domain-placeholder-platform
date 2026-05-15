@@ -1,10 +1,10 @@
 import { z } from "zod";
 
-export const supportedLocales = ["en", "zh-CN"] as const;
+export const supportedLocales = ["en", "zh-CN", "th"] as const;
 export type SupportedLocale = (typeof supportedLocales)[number];
 
 const supportedLocaleSchema = z.enum(supportedLocales, {
-  error: "Use a supported locale: en or zh-CN.",
+  error: "Use a supported locale: en, zh-CN, or th.",
 });
 
 const siteNameSchema = z.preprocess(
