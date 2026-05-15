@@ -27,10 +27,10 @@ Lightweight placeholder domains are treated as production-grade operational asse
 | Security scanning                 | Operational via CodeQL and Gitleaks.   |
 | Accessibility and smoke checks    | Operational through `pnpm validate`.   |
 | Focused tests                     | Operational via Vitest.                |
-| Phase 5 readiness                 | Operationally ready.                   |
+| Platform metadata                 | Operational through `/platform.json`.  |
 | Terraform/IaC                     | Validation-only and non-authoritative. |
 | Import/onboarding                 | Planned and documented.                |
-| Localization/i18n                 | Phase 6E Thai locale supported.        |
+| Localization/i18n                 | English, Simplified Chinese, and Thai. |
 | Automation helpers                | Deferred.                              |
 
 Cloudflare provisioning, Terraform applies, imports, production environment configs, route-based localization, and automation helpers are intentionally deferred.
@@ -95,6 +95,8 @@ These constraints keep the placeholder platform low-cost, low-maintenance, and e
 | [Deployment](docs/deployment.md)                              | Captures Cloudflare Pages setup expectations and the pre-deployment checklist.                      |
 | [Security and Privacy](docs/security-and-privacy.md)          | Defines public configuration boundaries and operational metadata privacy expectations.              |
 | [Cloudflare Environment Variables](docs/cloudflare-env.md)    | Provides documentation-only examples for pilot domain environment configuration.                    |
+| [Domain Inventory](docs/domains.md)                           | Records public-safe operational status for placeholder domains without becoming Terraform state.    |
+| [Domain Onboarding](docs/domain-onboarding.md)                | Provides the repeatable checklist for adding another placeholder domain.                            |
 | [Terraform and IaC Planning](docs/iac.md)                     | Documents future Terraform scope, safety principles, naming, and Phase 5 roadmap.                   |
 | [Cloudflare Inventory Template](docs/cloudflare-inventory.md) | Provides a non-authoritative template for future import planning and drift review.                  |
 | [Architecture Decision Records](docs/adr/README.md)           | Records durable architecture, deployment, validation, Terraform, and localization decisions.        |
@@ -125,7 +127,13 @@ The recommended Cloudflare Pages model is one shared GitHub repository with one 
 
 See [Deployment](docs/deployment.md) for production, preview, verification, and rollback checklists before connecting Cloudflare resources.
 
-Operational onboarding for a new domain should start with the [Deployment](docs/deployment.md#new-domain-onboarding) guide and be recorded in the [Cloudflare Inventory Template](docs/cloudflare-inventory.md).
+Operational onboarding for a new domain should start with the [Domain Onboarding](docs/domain-onboarding.md) guide and be recorded in the [Domain Inventory](docs/domains.md). Future Terraform import planning can additionally use the [Cloudflare Inventory Template](docs/cloudflare-inventory.md).
+
+## Platform Metadata
+
+The static build exposes a public-safe metadata artifact at `/platform.json`. It documents the platform name, purpose, supported locales, static-first architecture posture, Cloudflare Pages Git deployment model, validation-only Terraform posture, preferred contact strategy, and generation timestamp.
+
+The artifact is intentionally safe for public static hosting. It must not include secrets, Cloudflare account IDs, zone IDs, API tokens, private emails, registrant details, or internal-only operational notes.
 
 ## Local Development
 
@@ -199,11 +207,11 @@ The reusable Cloudflare Pages module contract lives at [infra/terraform/modules/
 
 Future import planning is documented in [Terraform and IaC Planning](docs/iac.md#safe-import-strategy). Any eventual import should be inventory-first, keyed by domain identifiers, and reviewed through plan-only drift analysis before Terraform authority changes.
 
-## Ready for Phase 6
+## Phase 7A Operational Metadata
 
-The platform is ready for future localization/i18n planning because the deployment model, environment policy, validation pipeline, accessibility baseline, operational inventory, and Terraform posture are stable and documented. Phase 6 can focus on multilingual structure without also solving deployment governance or infrastructure authority.
+Phase 7A adds lightweight operational observability without changing the static deployment model. The public `/platform.json` artifact exposes safe platform metadata, [Domain Inventory](docs/domains.md) tracks public-safe domain status, and [Domain Onboarding](docs/domain-onboarding.md) provides a repeatable checklist for adding another placeholder domain.
 
-Phase 6 should add localization carefully and incrementally. Prefer a simple structured content/config model before adding full route-based i18n, unless separate localized routes become a clear requirement. Localization changes should preserve accessibility, SEO metadata, canonical URL behavior, sitemap behavior, and conservative `PUBLIC_ROBOTS_INDEX=false` defaults. See [Governance](docs/governance.md#ready-for-phase-6) and the [Definition of Done](docs/governance.md#definition-of-done).
+These additions are documentation and static-artifact changes only. They do not add Cloudflare deployment automation, Terraform authority, SSR, a backend, a database, an analytics pipeline, or a form processor.
 
 ## Localization Model
 

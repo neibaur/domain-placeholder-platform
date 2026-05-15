@@ -35,6 +35,10 @@ Architectural decisions should preserve the current static-first, low-maintenanc
 
 The current architecture decision baseline is documented in [Architecture Decision Records](adr/README.md), including validation-before-automation and the non-authoritative Terraform strategy.
 
+Public metadata artifacts such as `/platform.json` are allowed only when they remain safe for static hosting. They may describe platform posture, supported locales, deployment model, and non-authoritative Terraform status, but they must not expose secrets, Cloudflare account IDs, zone IDs, API tokens, registrant details, private emails, or internal-only notes.
+
+The [Domain Inventory](domains.md) is an operational record for public-safe onboarding and review. It does not replace the Cloudflare dashboard as the operational source of truth and does not grant Terraform authority.
+
 ## Operational Status
 
 | Category                    | Status                                                                                                                                                                                                                                                                       |
@@ -50,8 +54,8 @@ The current architecture decision baseline is documented in [Architecture Decisi
 | Current maturity  | Governance-first platform foundation with validated CI/CD, deployment architecture, Cloudflare Pages testing, and Terraform scaffolding. |
 | Production status | Manual Cloudflare Pages deployments are supported; Terraform remains validation-only and non-authoritative.                              |
 | Risk posture      | Low-risk and non-destructive; no automated infrastructure provisioning is enabled.                                                       |
-| Phase 5 status    | Operationally ready for the current placeholder platform scope.                                                                          |
-| Next milestone    | Begin Phase 6 localization/i18n design without weakening deployment governance or validation gates.                                      |
+| Phase 7A status   | Lightweight static metadata, domain inventory, and onboarding documentation are in place.                                                |
+| Next milestone    | Continue operational observability without weakening static-first deployment governance.                                                 |
 
 ## What Is Real vs Planned
 
@@ -218,19 +222,21 @@ Production change checklist:
 | Inventory updates | Update non-sensitive Cloudflare inventory after onboarding, validation, or drift observations.     |
 | Terraform changes | Keep validation-only unless a later reviewed phase explicitly introduces authority.                |
 
-## Ready for Phase 6
+New-domain onboarding should use [Domain Onboarding](domain-onboarding.md), preserve validation-first discipline, and update [Domain Inventory](domains.md) with only public-safe operational facts.
 
-The governance baseline is ready for localization/i18n planning because validation gates, accessibility checks, deployment isolation, environment policy, inventory guidance, and Terraform authority boundaries are documented. Phase 6 should add multilingual capability without changing the conservative infrastructure posture by default.
+## Phase 7A Operational Observability
 
-Phase 6A starts with a simple structured content/config model for `en` and `zh-CN`. Avoid full route-based i18n until there is a clear need for localized URLs, separate sitemap entries, or search behavior by locale. Any localization change should continue to meet the [Definition of Done](#definition-of-done), preserve semantic HTML and `lang` behavior, protect canonical URL correctness, and keep conservative robots defaults unless indexing is intentionally approved.
+The governance baseline now includes lightweight operational observability through static metadata and public-safe domain records. This should improve reviewability without changing production deployment behavior.
 
-Phase 6B adds focused Vitest coverage for pure TypeScript localization and config behavior. Coverage reporting is available locally through `pnpm test:coverage`, but no hard threshold is required yet; a threshold can be considered once there is enough reusable logic for the signal to be meaningful.
+Phase 7A adds:
 
-Phase 6C keeps coverage non-gating. Multilingual changes must preserve accessibility, UTF-8 output, root and locale-specific `lang` metadata, canonical URL behavior, sitemap behavior, robots defaults, smoke validation, and pa11y validation.
+- a static `/platform.json` metadata artifact
+- a [Domain Inventory](domains.md) for public-safe operational records
+- a [Domain Onboarding](domain-onboarding.md) checklist for repeatable new-domain setup
 
-Phase 6D adds ADR governance only. Phase 6E adds Thai support through the existing non-route-based localization model. Thai changes should preserve schema validation, copy quality, UTF-8 output, `lang` metadata, tests, typography/readability, and fallback stability.
+The metadata artifact should stay safe for static public hosting. The inventory should remain a factual operational record, not Terraform state. Onboarding should preserve Cloudflare Pages Git integration, `PUBLIC_` configuration, validation-first review, and non-authoritative Terraform posture.
 
-Phase 6F improves coverage maturity without introducing a hard coverage gate. Tests should remain behavior-oriented and cover meaningful runtime decisions such as configuration validation, locale handling, UTF-8 integrity, duplicate locale suppression, and robots behavior.
+Completed Phase 6 localization work remains governed by the current localization model: English, Simplified Chinese, and Thai are supported without route-based i18n, and coverage remains non-gating by percentage.
 
 ## Coverage Governance
 

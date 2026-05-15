@@ -46,6 +46,9 @@ try {
   const html = await getText(server.origin, "/");
   const robots = await getText(server.origin, "/robots.txt");
   const sitemap = await getText(server.origin, "/sitemap-index.xml");
+  const platformMetadata = JSON.parse(
+    await getText(server.origin, "/platform.json"),
+  );
 
   assertIncludes(html, smokeEnv.PUBLIC_SITE_TITLE, "Rendered HTML");
   assertIncludes(html, smokeEnv.PUBLIC_SITE_DESCRIPTION, "Rendered HTML");
@@ -78,6 +81,22 @@ try {
     "robots.txt",
   );
   assertIncludes(sitemap, "https://example.com/sitemap-0.xml", "sitemap index");
+  if (platformMetadata.platformName !== "Domain Placeholder Platform") {
+    throw new Error(
+      "platform.json did not include the expected platform name.",
+    );
+  }
+  if (platformMetadata.architecture?.staticFirst !== true) {
+    throw new Error("platform.json did not preserve static-first metadata.");
+  }
+  if (
+    platformMetadata.terraform?.authority !==
+    "validation-only-non-authoritative"
+  ) {
+    throw new Error(
+      "platform.json did not preserve Terraform authority status.",
+    );
+  }
 
   await run("pnpm build", {
     env: {
