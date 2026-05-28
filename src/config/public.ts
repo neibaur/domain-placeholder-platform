@@ -7,6 +7,11 @@ const supportedLocaleSchema = z.enum(supportedLocales, {
   error: "Use a supported locale: en, zh-CN, or th.",
 });
 
+const secondaryLocaleSchema = z.preprocess(
+  (value) => (value === "" ? undefined : value),
+  supportedLocaleSchema.default("zh-CN"),
+);
+
 const siteNameSchema = z.preprocess(
   (value) => (value === "" ? undefined : value),
   z.string().min(1).max(80).optional(),
@@ -25,7 +30,7 @@ export const publicConfigSchema = z
       .max(180)
       .default("A lightweight placeholder page for a reserved domain."),
     PUBLIC_PRIMARY_LOCALE: supportedLocaleSchema.default("en"),
-    PUBLIC_SECONDARY_LOCALE: supportedLocaleSchema.default("zh-CN"),
+    PUBLIC_SECONDARY_LOCALE: secondaryLocaleSchema,
     PUBLIC_CONTACT_URL: z.preprocess(
       (value) => (value === undefined ? "" : value),
       contactUrlSchema,
