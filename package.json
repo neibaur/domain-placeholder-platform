@@ -19,7 +19,7 @@
     "format:check": "prettier --check .",
     "test": "vitest run",
     "test:coverage": "vitest run --coverage",
-    "check:markdown": "markdownlint-cli2 \"**/*.{md,markdown}\" \"!node_modules\" \"!dist\"",
+    "check:markdown": "markdownlint-cli2 \"**/*.{md,markdown}\" \"!node_modules\" \"!dist\" \"!.venv\"",
     "check:env": "tsx scripts/check-env-validation.ts",
     "inventory:drift-review": "tsx scripts/domain-drift-review.ts",
     "smoke": "node scripts/smoke-production.mjs",

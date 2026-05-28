@@ -3,5 +3,5 @@
     "MD013": false,
     "MD033": false,
   },
-  "globs": ["**/*.{md,markdown}", "!node_modules", "!dist"],
+  "globs": ["**/*.{md,markdown}", "!node_modules", "!dist", "!.venv"],
 }
