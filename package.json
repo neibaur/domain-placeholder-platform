@@ -27,7 +27,7 @@
     "validate": "pnpm format:check && pnpm lint && pnpm test && pnpm check:markdown && pnpm check:env && pnpm smoke && pnpm check:a11y"
   },
   "dependencies": {
-    "@astrojs/sitemap": "^3.2.1",
+    "@astrojs/sitemap": "^3.7.3",
     "astro": "^6.3.7",
     "zod": "^4.4.3"
   },
