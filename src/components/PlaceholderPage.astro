@@ -16,11 +16,15 @@ const localizedBlocks = [primary, ...(secondary ? [secondary] : [])];
   <section class="intro" aria-describedby="page-description">
     <p class="eyebrow">{primary.copy.eyebrow}</p>
     <h1 id="page-title">{config.PUBLIC_SITE_TITLE}</h1>
-    <p id="page-description" class="lede">{config.PUBLIC_SITE_DESCRIPTION}</p>
+    <p id="page-description" class="lede">
+      {config.PUBLIC_SITE_DESCRIPTION}
+    </p>
   </section>
 
   <section class="status-grid" aria-labelledby="status-title">
-    <h2 id="status-title" class="sr-only">{primary.copy.statusSectionLabel}</h2>
+    <h2 id="status-title" class="sr-only">
+      {primary.copy.statusSectionLabel}
+    </h2>
     <div>
       <span>{primary.copy.statusLabel}</span>
       <strong>{primary.copy.statusValue}</strong>
@@ -39,21 +43,17 @@ const localizedBlocks = [primary, ...(secondary ? [secondary] : [])];
     <h2 id="message-title" class="sr-only">
       {primary.copy.messageSectionLabel}
     </h2>
-    {
-      localizedBlocks.map(({ locale, copy }) => (
-        <article class="locale-card" lang={locale}>
-          <h3>{copy.heading}</h3>
-          <p>{copy.description}</p>
-        </article>
-      ))
-    }
+    {localizedBlocks.map(({ locale, copy }) => (
+      <article class="locale-card" lang={locale}>
+        <h3>{copy.heading}</h3>
+        <p>{copy.description}</p>
+      </article>
+    ))}
   </section>
 
-  {
-    config.PUBLIC_CONTACT_URL ? (
-      <p class="contact">
-        <a href={config.PUBLIC_CONTACT_URL}>{primary.copy.contactLabel}</a>
-      </p>
-    ) : null
-  }
+  {config.PUBLIC_CONTACT_URL ? (
+    <p class="contact">
+      <a href={config.PUBLIC_CONTACT_URL}>{primary.copy.contactLabel}</a>
+    </p>
+  ) : null}
 </main>
