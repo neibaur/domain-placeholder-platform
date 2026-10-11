@@ -1,4 +1,12 @@
 version: 2
+
+# Every minor and patch update arrives as one pull request per ecosystem per
+# week, after a 7-day cooldown. Major updates arrive separately, because each
+# one needs a decision. Packages that must move together share a group, so they
+# arrive as one pull request instead of several that cannot pass alone (vitest
+# refuses to run with a mismatched @vitest/* package). A dependency joins the
+# first group it matches, so minor-and-patch comes first.
+
 updates:
   - package-ecosystem: npm
     directory: /
@@ -6,20 +14,37 @@ updates:
       interval: weekly
     cooldown:
       default-days: 7
-    open-pull-requests-limit: 5
-    labels:
-      - dependencies
-    commit-message:
-      prefix: chore
-      include: scope
+    groups:
+      minor-and-patch:
+        patterns:
+          - "*"
+        update-types:
+          - minor
+          - patch
+      vitest-major:
+        patterns:
+          - "vitest"
+          - "@vitest/*"
+        update-types:
+          - major
+      eslint-major:
+        patterns:
+          - "eslint"
+          - "@eslint/*"
+          - "typescript-eslint"
+        update-types:
+          - major
+
   - package-ecosystem: github-actions
     directory: /
     schedule:
       interval: weekly
     cooldown:
       default-days: 7
-    labels:
-      - dependencies
-    commit-message:
-      prefix: chore
-      include: scope
+    groups:
+      actions-minor-and-patch:
+        patterns:
+          - "*"
+        update-types:
+          - minor
+          - patch
