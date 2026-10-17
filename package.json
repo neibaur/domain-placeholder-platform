@@ -57,16 +57,24 @@
       "fast-uri": "3.1.8",
       "ip-address": "10.3.1",
       "linkify-it": "5.0.2",
-      "markdown-it": "14.2.0",
+      "markdown-it": "14.3.1",
       "esbuild": "0.28.1",
       "postcss": "8.5.23",
-      "sharp@^0.35": "0.35.4",
-      "smol-toml@^1": "1.8.0",
+      "sharp@^0.35": "0.35.5",
+      "smol-toml@^1": "1.9.0",
       "svgo@^4": "4.1.0",
       "puppeteer@^25": "25.11.0",
       "puppeteer-core@^25": "25.11.0",
       "undici@^8": "8.10.2",
-      "devalue@^5": "5.9.4"
+      "devalue@^5": "5.9.4",
+      "source-map-js@^1": "1.2.2",
+      "postcss-selector-parser@^7": "7.1.6",
+      "yaml@2.7.1": "2.8.3"
+    },
+    "auditConfig": {
+      "ignoreGhsas": [
+        "GHSA-vfj7-8cjw-p6xm"
+      ]
     }
   }
 }
