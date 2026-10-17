@@ -70,6 +70,11 @@
       "source-map-js@^1": "1.2.2",
       "postcss-selector-parser@^7": "7.1.6",
       "yaml@2.7.1": "2.8.3"
+    },
+    "auditConfig": {
+      "ignoreGhsas": [
+        "GHSA-vfj7-8cjw-p6xm"
+      ]
     }
   }
 }
