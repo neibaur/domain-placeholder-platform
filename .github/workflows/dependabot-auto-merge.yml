@@ -24,7 +24,7 @@ on:
     # lockfile; GitHub Actions updates change only .github/workflows, so
     # they never start a run that could do nothing.
     paths:
-      - '**/package.json'
+      - "**/package.json"
       - pnpm-lock.yaml
 
 permissions: {}
