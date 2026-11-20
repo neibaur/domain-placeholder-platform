@@ -31,6 +31,11 @@ pnpm install
 pnpm validate
 ```
 
+`pnpm build` fails with `PUBLIC_SITE_URL: Invalid input` unless the `PUBLIC_*`
+values are in the process environment. Export the synthetic values that
+`.github/workflows/validate.yml` sets. `pnpm validate` supplies its own for
+its smoke step.
+
 ## Future IaC Notes
 
 TODO(terraform): Add Terraform modules for Cloudflare Pages projects, DNS records, environment variables, and branch deployment controls once the manual pilot is stable.
